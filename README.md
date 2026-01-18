@@ -81,56 +81,206 @@ We are a **team of 5** and our target scope is designed to reach **at least 14 p
 
 ---
 
-## Work Distribution (Team of 5)
+## Work Split (Team of 5)
 
-We split work so everyone can develop in parallel with clean boundaries.
+> No dedicated Scrum Master. Planning is shared.
 
-### Person 1 — PO + PM/Scrum (and Dev support)
-**Owns:** planning + evaluation readiness
-- Backlog creation, sprint planning, ticket management
-- Definition of Done (DoD) per module
-- “How to demo each module in 3 minutes” checklist
-- Required site pages: Terms / Privacy (project compliance)
+### Person 1 — Product + Backend (Auth/API) + Evaluation Readiness
+**Owns:**
+- Backlog + acceptance criteria + evaluation checklist (shared planning)
+- Backend: auth endpoints + user/profile APIs
+- Documentation: README, demo script, Terms/Privacy pages
 - End-to-end testing of user journeys (signup → play → history → AI)
 
-### Person 2 — Tech Lead / Backend Lead
-**Owns:** backend architecture + database + auth
-- Backend framework setup & structure
-- API conventions, validation, error handling
+### Person 2 — Architecture + Database/ORM + Server Integration
+**Owns:**
+- Backend architecture conventions (shared planning)
 - Database schema + migrations + ORM integration
-- Auth (sessions/JWT), password hashing
-- Coordinates shared types and game state format
+- Shared types/contracts: `GameState`, WS event payloads, API response formats
+- Backend integration support: common middleware, validation, error patterns
 
 ### Person 3 — Frontend Lead
-**Owns:** UI/UX + integration
-- Frontend framework setup, routing, pages:
-  - Lobby
-  - Game room
-  - Profile
-  - Friends
-  - Match history
-  - Leaderboard
-- Chessboard UI implementation and responsive layout
-- Integrates WebSocket events into UI state machine
+**Owns:**
+- Frontend framework setup, routing, pages (Lobby, Game Room, Profile, Friends, History, Leaderboard)
+- Chessboard UI (drag/drop + click-to-move) + responsive layout
+- Integrates WebSocket events into the UI state machine
 
 ### Person 4 — Real-time / Multiplayer Engineer
-**Owns:** WebSockets + multiplayer robustness
+**Owns:**
 - WebSocket gateway + rooms lifecycle
 - Matchmaking queue / invite flow
-- Reconnect logic (rejoin token/session)
+- Reconnect logic (rejoin token/session) + state resync
 - Disconnect handling + presence
 - Server-authoritative clocks synchronization
 - Basic load testing: multiple games concurrently
 
 ### Person 5 — Game Engine + AI Engineer
-**Owns:** chess rules engine + AI + stats derivation
-- Authoritative server-side chess logic:
+**Owns:**
+- Server-authoritative chess logic:
   - move generation
   - legality checking
   - applying moves to state
   - endgame detection
-- AI opponent implementation + difficulty
-- Outcome computation & persisted match stats updates
+- AI opponent + difficulty levels
+- Outcome computation & persisted match stats updates (with Person 2 for DB)
+---
+
+## Sprint Plan (Who does what)
+
+> Adjust sprint length to your calendar (e.g., 1 week each).  
+> Each sprint should end with something **demo-able**.
+
+---
+
+### Sprint 1 — Foundations (Frameworks, DB, Auth, Base UI, WS Skeleton)
+
+**Person 1 — Product + Backend (Auth/APIs)**
+- Create initial backlog + acceptance criteria for all modules
+- Set up backend project structure (framework chosen)
+- Implement auth:
+  - signup/login/logout
+  - password hashing
+  - auth middleware/guards
+- Implement basic user/profile endpoints (`/me`, profile update)
+- Draft Terms + Privacy pages (placeholders) + README skeleton
+- Define demo checklist (“how we prove each module”)
+
+**Person 2 — Architecture + DB/ORM + Contracts**
+- Design DB schema (Users, Friendships, Games, Results, Stats)
+- Set up ORM + migrations + seed scripts
+- Define shared contracts:
+  - `GameState` shape
+  - initial WS event payload formats
+  - common API response/error format
+- Add backend validation/error middleware patterns
+
+**Person 3 — Frontend**
+- Set up frontend project + routing
+- Create initial pages: Lobby, Login/Signup, Profile (stub), Game Room (stub)
+- Implement chessboard rendering (static board + pieces)
+- Add UI state container for `GameState` (dummy state is fine at first)
+
+**Person 4 — Real-time / WebSockets**
+- Set up WS server/gateway (rooms + connection lifecycle)
+- Implement handshake + ping/pong
+- Implement baseline `STATE_SYNC` event
+- Presence tracking prototype (online users)
+
+**Person 5 — Game Engine + AI**
+- Implement chess state representation (FEN parsing or internal board model)
+- Implement move generation skeleton + legality check framework
+- Implement apply-move reducer (state updates)
+- Create endgame detection scaffolding (placeholders OK in Sprint 1)
+
+**Sprint 1 exit criteria (demo)**
+- Users can sign up/login
+- Frontend displays a board screen
+- WS can connect and send/receive a dummy `STATE_SYNC`
+- DB migrations run and Users persist
+
+---
+
+### Sprint 2 — Multiplayer Core (1v1, Move Validation, Sync, Reconnect, Clocks)
+
+**Person 1 — Backend APIs + Product**
+- Implement Friends APIs:
+  - add/remove/list
+- Implement secure auth integration with WS (auth on socket connect)
+- Implement match history endpoint skeleton (`/games/history`)
+- Continue docs: “how to run locally” + module mapping
+
+**Person 2 — DB/ORM + Integration**
+- Implement Games/Results persistence:
+  - create game
+  - update state snapshot (FEN + clocks)
+  - persist result on end
+- Add DB constraints/indexes (unique users, friendship pairs, etc.)
+- Provide helpers/services for consistent writes (moves/results)
+- Keep shared contracts consistent across FE/BE/WS
+
+**Person 3 — Frontend**
+- Implement lobby flow:
+  - “Play 1v1” queue / “Invite link”
+  - show opponent found
+- Implement real-time UI updates:
+  - move list
+  - turn indicator
+  - clocks display
+- Handle reconnect UI state (loading → resync)
+
+**Person 4 — Real-time / WebSockets**
+- Implement matchmaking (queue or invite link)
+- Implement room lifecycle:
+  - create/join/start game
+  - broadcast `MATCH_FOUND` and `STATE_SYNC`
+- Implement reconnect:
+  - rejoin token/session
+  - resync authoritative state
+- Implement server-authoritative clocks + periodic `CLOCK_TICK`
+
+**Person 5 — Game Engine + AI**
+- Finish legality checks + server-side validation
+- Implement check/checkmate/stalemate detection
+- Integrate engine into WS:
+  - receive `MOVE_SUBMIT`
+  - validate → apply → broadcast updates
+- Implement resign + timeout end conditions
+
+**Sprint 2 exit criteria (demo)**
+- Two remote players can play a full 1v1 game with:
+  - real-time sync
+  - server-validated moves
+  - clocks
+  - reconnect after refresh
+- Completed games are stored in DB (result + timestamp at minimum)
+
+---
+
+### Sprint 3 — AI + Stats + Polish (AI difficulty, history, leaderboard, quality)
+
+**Person 1 — Backend APIs + Evaluation**
+- Finalize match history endpoint (filters: vs AI / 1v1)
+- Implement profile enhancements (avatar URL, display name)
+- Finalize Terms/Privacy content
+- Create evaluation demo script + “module proof” checklist
+- E2E test: full flows + regression checks
+
+**Person 2 — DB/ORM + Stats/Leaderboard**
+- Implement stats aggregation:
+  - W/L/D counts
+  - rating updates (basic Elo or points)
+- Implement leaderboard endpoint
+- Optimize queries for match history + leaderboard
+- Add basic audit logging (optional) for debugging
+
+**Person 3 — Frontend**
+- Implement Match History page
+- Implement Leaderboard page
+- Implement Friends page + online status
+- UI polish: responsiveness, error states, loading states
+
+**Person 4 — Real-time / WebSockets**
+- Implement presence in friends list (online/offline)
+- Improve disconnect handling (grace period, forfeit on timeout)
+- Load test: multiple concurrent rooms (basic)
+- Improve WS reliability: message validation + simple rate limits
+
+**Person 5 — Game Engine + AI**
+- Implement AI:
+  - minimax + alpha-beta
+  - evaluation function
+  - difficulty levels
+  - randomness/blunder chance
+- Integrate AI mode:
+  - start AI game
+  - AI replies automatically on its turn
+- Ensure AI games also write results/stats to DB
+
+**Sprint 3 exit criteria (demo)**
+- Play vs AI with difficulty levels
+- History + leaderboard reflect completed games
+- Friends list + online presence works
+- Full evaluation demo works end-to-end
 
 ---
 
@@ -158,3 +308,4 @@ GameState {
   lastMove?: { from: string, to: string, promotion?: string },
   players: { whiteId: string, blackId: string },
 }
+
