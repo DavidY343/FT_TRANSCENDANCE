@@ -136,7 +136,7 @@ json
   "error": "Token does not belong to user"
 }
 
-### 4. Token Refresh (Si lo implementas)
+### 4. Token Refresh
 
 #### Endpoint: `POST /api/auth/token/refresh/`
 
@@ -158,4 +158,39 @@ json
 json
 {
   "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+
+
+### 5. Get Game State
+
+#### Endpoint: `GET /api/game/GameState/`
+
+#### Description: Get the state of the game
+#### Headers:
+
+* `Content-Type`: `application/json`
+
+#### Example:
+
+GET /api/game/GameState/?game_id=254a2ae6-b15b-48e0-8b24-acccea908542
+
+
+#### Response (Success - 200 OK):
+
+{
+  "event": "STATE_SYNC",
+  "payload": {
+    "gameId": "254a2ae6-b15b-48e0-8b24-acccea908542",
+    "fen": "startpos",
+    "turn": "w",
+    "status": "ACTIVE",
+    "clocks": {
+      "wMs": 600000,
+      "bMs": 600000
+    },
+    "players": {
+      "whiteId": "3ce94a66-6ebd-4e7e-9911-8c9a256d3d21",
+      "blackId": "3436368b-7acf-4be2-9a83-9a290a1c7d07"
+    }
+  }
 }
