@@ -65,12 +65,14 @@ def run():
     for i in range(3):
         white = users[i % len(users)]
         black = users[(i + 1) % len(users)]
+        game_id = uuid.uuid4()
+        print(f"Creating game {game_id} between {white.username} and {black.username}")
         game, created = Game.objects.get_or_create(
             player_white=white,
             player_black=black,
             status="PLAYING",
             defaults={
-                "id": uuid.uuid4(),
+                "id": game_id,
                 "vs_ai": False,
                 "fen": "startpos",
                 "turn": "w",
