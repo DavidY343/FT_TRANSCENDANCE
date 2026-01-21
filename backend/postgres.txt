@@ -1,0 +1,12 @@
+sudo -u postgres psql
+
+
+
+
+CREATE DATABASE chess_db;
+CREATE USER chess_user WITH PASSWORD 'chess_password';
+ALTER ROLE chess_user SET client_encoding TO 'utf8';
+ALTER ROLE chess_user SET default_transaction_isolation TO 'read committed';
+ALTER ROLE chess_user SET timezone TO 'UTC';
+GRANT ALL PRIVILEGES ON DATABASE chess_db TO chess_user;
+\q
