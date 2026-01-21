@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'apps.game',
     'apps.friends',
     'apps.authentication',
+    'rest_framework',
     'apps.core',
 ]
 
