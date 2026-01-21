@@ -2,27 +2,54 @@ import uuid
 import os
 import django
 from django.utils import timezone
+from django.db import connection
 
-# 1️⃣ Configurar Django
+# ============================================================
+# 1️⃣ CONFIGURACIÓN DJANGO (PostgreSQL)
+# ============================================================
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
+
+# ============================================================
+# 2️⃣ COMPROBAR QUE SE USA POSTGRESQL
+# ============================================================
+
+if connection.vendor != "postgresql":
+    raise RuntimeError(
+        f"❌ Database backend incorrecto: {connection.vendor}. "
+        "Este seed requiere PostgreSQL."
+    )
+
+print("✅ PostgreSQL detected")
+
+# ============================================================
+# 3️⃣ IMPORTS DE MODELOS
+# ============================================================
 
 from apps.users.models import User, GameStatistics
 from apps.friends.models import Friendship
 from apps.game.models import Game, GameResult
 
+# ============================================================
+# 4️⃣ SEED
+# ============================================================
 
 def run():
-    print("Seeding database...")
+    print("🌱 Seeding database (PostgreSQL)...")
 
-    # --- 1️⃣ Crear usuarios (si no existen por email) ---
+    # --------------------------------------------------------
+    # 1️⃣ USUARIOS
+    # --------------------------------------------------------
     user_data = [
         {"username": "alice", "email": "alice@example.com", "first_name": "Alice", "last_name": "Test"},
         {"username": "bob", "email": "bob@example.com", "first_name": "Bob", "last_name": "Test"},
         {"username": "charlie", "email": "charlie@example.com", "first_name": "Charlie", "last_name": "Test"},
         {"username": "diana", "email": "diana@example.com", "first_name": "Diana", "last_name": "Test"},
     ]
+
     users = []
+
     for data in user_data:
         user, created = User.objects.get_or_create(
             email=data["email"],
@@ -31,7 +58,7 @@ def run():
                 "username": data["username"],
                 "first_name": data["first_name"],
                 "last_name": data["last_name"],
-                "password": "pbkdf2_sha256$fakehash",  # fake password, normalmente usar set_password
+                "password": "pbkdf2_sha256$fakehash",  # seed only
                 "avatar_url": f"https://example.com/avatar/{data['username']}.png",
                 "is_active": True,
                 "date_joined": timezone.now(),
@@ -39,15 +66,18 @@ def run():
         )
         users.append(user)
 
-    print(f"Users seeded: {len(users)}")
+    print(f"👤 Users seeded: {len(users)}")
 
-    # --- 2️⃣ Crear amistades (si no existen) ---
+    # --------------------------------------------------------
+    # 2️⃣ FRIENDSHIPS
+    # --------------------------------------------------------
     friendship_pairs = [
         (users[0], users[1]),
         (users[0], users[2]),
         (users[1], users[2]),
         (users[2], users[3]),
     ]
+
     for requester, addressee in friendship_pairs:
         Friendship.objects.get_or_create(
             requester=requester,
@@ -58,19 +88,23 @@ def run():
                 "created_at": timezone.now(),
             }
         )
-    print(f"Friendships seeded: {len(friendship_pairs)}")
 
-    # --- 3️⃣ Crear partidas (si no existen por combinación de jugadores y estado) ---
+    print(f"🤝 Friendships seeded: {len(friendship_pairs)}")
+
+    # --------------------------------------------------------
+    # 3️⃣ GAMES
+    # --------------------------------------------------------
     games = []
+
     for i in range(3):
         white = users[i % len(users)]
         black = users[(i + 1) % len(users)]
         game_id = uuid.uuid4()
-        print(f"Creating game {game_id} between {white.username} and {black.username}")
+
         game, created = Game.objects.get_or_create(
             player_white=white,
             player_black=black,
-            status="PLAYING",
+            status="ACTIVE",
             defaults={
                 "id": game_id,
                 "vs_ai": False,
@@ -82,14 +116,18 @@ def run():
                 "finished_at": timezone.now(),
             }
         )
+
         games.append(game)
 
-    print(f"Games seeded: {len(games)}")
+    print(f"♟️ Games seeded: {len(games)}")
 
-    # --- 4️⃣ Crear resultados (si no existen) ---
+    # --------------------------------------------------------
+    # 4️⃣ GAME RESULTS
+    # --------------------------------------------------------
     for i, game in enumerate(games):
         winner = game.player_white if i % 2 == 0 else game.player_black
         loser = game.player_black if winner == game.player_white else game.player_white
+
         GameResult.objects.get_or_create(
             game=game,
             defaults={
@@ -100,9 +138,12 @@ def run():
                 "created_at": timezone.now(),
             }
         )
-    print(f"Game results seeded: {len(games)}")
 
-    # --- 5️⃣ Crear estadísticas (si no existen) ---
+    print(f"🏁 Game results seeded: {len(games)}")
+
+    # --------------------------------------------------------
+    # 5️⃣ USER STATISTICS
+    # --------------------------------------------------------
     for user in users:
         GameStatistics.objects.get_or_create(
             user=user,
@@ -116,8 +157,13 @@ def run():
             }
         )
 
-    print("Database seeding complete!")
+    print("📊 User statistics seeded")
+    print("✅ Database seeding complete (PostgreSQL)")
 
+
+# ============================================================
+# 5️⃣ ENTRYPOINT
+# ============================================================
 
 if __name__ == "__main__":
     run()
