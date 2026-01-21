@@ -162,37 +162,101 @@ All core logic, design decisions, and implementations were **written, reviewed, 
 
 ---
 
-## Database Schema
+# Database Schema
 
-### Main tables
+## Main Tables
 
-**users**
+### Users
 
-* id (PK)
-* username (varchar)
-* email (varchar)
-* password_hash (varchar)
-* avatar_url (varchar)
+| Column       | Type       | Notes                          |
+|-------------|------------|--------------------------------|
+| id          | UUID (PK)  | Primary key                    |
+| username    | varchar    | Unique                         |
+| email       | varchar    | Unique                         |
+| password    | varchar    |                                |
+| first_name  | varchar    | Nullable                       |
+| last_name   | varchar    | Nullable                       |
+| avatar_url  | varchar    | Nullable                       |
+| is_active   | boolean    |                                |
+| date_joined | timestamp  | Auto-added                     |
+| is_staff    | boolean    |                                |
 
-**games**
+---
 
-* id (PK)
-* white_player_id (FK)
-* black_player_id (FK)
-* status (enum)
-* created_at (timestamp)
+### Friendships
 
-**game_results**
+| Column       | Type       | Notes                              |
+|-------------|------------|------------------------------------|
+| id          | UUID (PK)  | Primary key                        |
+| requester   | FK → users.id | User who sent the request          |
+| addressee   | FK → users.id | User who received the request      |
+| status      | enum       | PENDING / ACCEPTED / DECLINED      |
+| created_at  | timestamp  | Auto-added                         |
 
-* id (PK)
-* game_id (FK)
-* winner_id (FK, nullable)
-* result_type (enum: win/loss/draw)
+**Constraints:**  
+- Unique together: (requester_id, addressee_id)  
 
-Relationships:
+**Relationships:**  
+- One user → many friendships sent  
+- One user → many friendships received
 
-* One user → many games
-* One game → one result
+---
+
+### Game
+
+| Column         | Type       | Notes                        |
+|----------------|------------|------------------------------|
+| id             | UUID (PK)  | Primary key                  |
+| player_white   | FK → users.id | White player                  |
+| player_black   | FK → users.id | Black player (nullable)       |
+| vs_ai          | boolean    | Default False                |
+| fen            | varchar    | Default ""                   |
+| status         | enum       | WAITING / ACTIVE / FINISHED  |
+| turn           | enum       | w / b                        |
+| white_clock    | integer    | Default 600000               |
+| black_clock    | integer    | Default 600000               |
+| created_at     | timestamp  | Auto-added                   |
+| finished_at    | timestamp  |                              |
+
+**Relationships:**  
+- One user → many games as white  
+- One user → many games as black
+
+---
+
+### GameResults
+
+| Column    | Type       | Notes                              |
+|-----------|------------|------------------------------------|
+| id        | UUID (PK)  | Primary key                        |
+| game      | FK → games.id | OneToOne                          |
+| winner    | FK → users.id | Nullable                           |
+| loser     | FK → users.id | Nullable                           |
+| result    | enum       | WIN / LOSS / DRAW / RESIGNED / TIMEOUT |
+| created_at| timestamp  | Auto-added                         |
+
+**Relationships:**  
+- One game → one result  
+- One user → many games won  
+- One user → many games lost  
+  
+---
+
+### GameStatistics
+
+| Column       | Type       | Notes                        |
+|-------------|------------|------------------------------|
+| user        | PK, FK → users.id | OneToOne relationship         |
+| total_games | integer    | Default 0                     |
+| wins        | integer    | Default 0                     |
+| losses      | integer    | Default 0                     |
+| draws       | integer    | Default 0                     |
+| elo_rating  | integer    | Default 1000                  |
+| updated_at  | timestamp  |                               |
+
+**Relationships:**  
+- One user → one statistics record  
+
 
 ---
 
@@ -272,3 +336,4 @@ Relationships:
 ## License
 
 This project is developed for educational purposes as part of the 42 curriculum.
+
