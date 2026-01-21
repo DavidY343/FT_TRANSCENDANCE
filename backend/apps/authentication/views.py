@@ -1,19 +1,15 @@
 from tokenize import TokenError
 from django.shortcuts import render
-
-# Create your views here.
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
-from rest_framework import status
+from django.contrib.auth import authenticate, get_user_model
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
-
-
 from .serializers import RegisterSerializer, LoginSerializer
 
+# Obtiene TU modelo User personalizado (con UUID)
+User = get_user_model()
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -29,6 +25,7 @@ class LoginView(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
+        # Tu USERNAME_FIELD = "username", así que autentica con username
         user = authenticate(
             username=serializer.validated_data["username"],
             password=serializer.validated_data["password"],
@@ -46,6 +43,13 @@ class LoginView(generics.GenericAPIView):
             {
                 "access": str(refresh.access_token),
                 "refresh": str(refresh),
+                "user": {  # Añade info del usuario en la respuesta
+                    "id": str(user.id),  # UUID convertido a string
+                    "username": user.username,
+                    "email": user.email,
+                    "first_name": user.first_name,
+                    "last_name": user.last_name,
+                }
             }
         )
     
@@ -55,7 +59,6 @@ class LogoutView(APIView):
 
     def post(self, request):
         try:
-            # 1. Validar que viene refresh token en el body
             refresh_token = request.data.get("refresh")
             if not refresh_token:
                 return Response(
@@ -63,22 +66,16 @@ class LogoutView(APIView):
                     status=status.HTTP_400_BAD_REQUEST
                 )
             
-            # 2. Verificar que el refresh token es válido
             token = RefreshToken(refresh_token)
             
-            # 3. OPCIONAL PERTO RECOMENDADO: Verificar ownership
-            # El usuario autenticado (request.user) debe ser el dueño del token
-            if token.payload.get('user_id') != request.user.id:
+            # IMPORTANTE: Tu user.id es UUID, convertir ambos a string para comparar
+            if str(token.payload.get('user_id')) != str(request.user.id):
                 return Response(
                     {"error": "Token does not belong to user"},
                     status=status.HTTP_403_FORBIDDEN
                 )
             
-            # 4. Blacklistear el refresh token
             token.blacklist()
-            
-            # 5. NO blacklistear el access token - expira solo en 5-15 min
-            # El frontend debe eliminar ambos tokens localmente
             
             return Response(
                 {"message": "Successfully logged out"},
@@ -86,7 +83,6 @@ class LogoutView(APIView):
             )
             
         except TokenError as e:
-            # Token inválido, expirado, ya blacklisteado, etc.
             return Response(
                 {"error": f"Invalid refresh token: {str(e)}"},
                 status=status.HTTP_400_BAD_REQUEST
