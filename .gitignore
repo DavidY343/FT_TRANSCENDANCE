@@ -313,3 +313,14 @@ db.sqlite3
 
 # CUSTOM
 Db_diagram.png
+
+# Manu
+GUIDE
+.env
+=*
+daphne.log
+daphne.pid
+tokens.txt
+postgres.txt
+__pycache__/
+venv/

@@ -48,6 +48,15 @@ INSTALLED_APPS = [
     'apps.core',
 ]
 
+# Channels
+# Add 'channels' to installed apps when using WebSockets/ASGI
+INSTALLED_APPS += [
+    'channels',
+]
+INSTALLED_APPS += [
+    'apps.realtime',
+]
+
 MIDDLEWARE = [
 
     'corsheaders',
@@ -91,6 +100,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
+# ASGI application for handling WebSockets
+ASGI_APPLICATION = 'config.asgi.application'
 
 
 # Database
@@ -165,6 +176,16 @@ REST_FRAMEWORK = {
     ),
 }
 
+# Channel layer (development - Redis)
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
+
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=config("ACCESS_TOKEN_LIFETIME_MINUTES", cast=int)),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=config("REFRESH_TOKEN_LIFETIME_DAYS", cast=int)),
@@ -174,3 +195,25 @@ SIMPLE_JWT = {
 }
 
 CORS_ALLOW_ALL_ORIGINS = True 
+
+
+# Basic logging configuration: print INFO+ to console so Daphne shows connection/auth logs
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'default': {
+            'format': '%(asctime)s %(levelname)s %(name)s: %(message)s'
+        }
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'default',
+        }
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+}

@@ -9,8 +9,20 @@ https://docs.djangoproject.com/en/6.0/howto/deployment/asgi/
 
 import os
 
-from django.core.asgi import get_asgi_application
-
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 
-application = get_asgi_application()
+import django
+# Initialize Django apps registry before importing app modules that access
+# Django models or settings (TokenAuthMiddleware imports auth models).
+django.setup()
+
+from django.core.asgi import get_asgi_application
+from channels.routing import ProtocolTypeRouter, URLRouter
+from apps.realtime.middleware import TokenAuthMiddleware
+from apps.realtime import routing as realtime_routing
+
+application = ProtocolTypeRouter({
+    "http": get_asgi_application(),
+    # Use TokenAuthMiddleware to populate scope['user'] from Authorization header
+    "websocket": TokenAuthMiddleware(URLRouter(realtime_routing.websocket_urlpatterns)),
+})
