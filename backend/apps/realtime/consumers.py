@@ -140,6 +140,16 @@ class GameConsumer(AsyncJsonWebsocketConsumer):
                 async with self.waiting_lock:
                     queue = self.__class__.waiting_queue
                     self.__class__.waiting_queue = [w for w in queue if w.get('channel') != self.channel_name]
+                # Cleanup game_clocks if game not started
+                room = getattr(self, 'room_name', None)
+                if room and room in self.__class__.game_clocks:
+                    clock_data = self.__class__.game_clocks[room]
+                    if clock_data['last_update'] is None:  # Game not started
+                        user_id = str(getattr(user, 'id', ''))
+                        clock_data['ready_players'].discard(user_id)
+                        if not clock_data['ready_players']:
+                            # No players ready, remove room
+                            del self.__class__.game_clocks[room]
                 await self.channel_layer.group_discard('presence', self.channel_name)
                 room_group = getattr(self, 'room_group', None)
                 if room_group:
@@ -336,9 +346,6 @@ class GameConsumer(AsyncJsonWebsocketConsumer):
             if clock_data['last_update'] is None:
                 await self.send_json({'type': 'ERROR', 'message': 'game not started'})
                 return
-            #if clock_data['wMs'] <= 0 or clock_data['bMs'] <= 0:
-            #    await self.send_json({'type': 'ERROR', 'message': 'game over'})
-            #    return
             # Check turn using IDs
             user_id = str(getattr(self.scope.get('user'), 'id', ''))
             if (clock_data['active_player'] == 'w' and user_id != clock_data['white_id']) or \
@@ -357,12 +364,49 @@ class GameConsumer(AsyncJsonWebsocketConsumer):
                 new_turn = 'w'
             clock_data['active_player'] = new_turn
             clock_data['last_update'] = now
+            # Check for game over (maqueta para futuros finales)
+            winner = None
+            reason = None
+            # TODO: Timeout detection (comentado por ahora)
+            # if clock_data['wMs'] <= 0:
+            #     winner = 'black'
+            #     reason = 'timeout'
+            # elif clock_data['bMs'] <= 0:
+            #     winner = 'white'
+            #     reason = 'timeout'
+            # TODO: Checkmate detection (futuro: integrar con lógica de ajedrez)
+            # if is_checkmate(board, new_turn):  # Función hipotética
+            #     winner = 'white' if new_turn == 'b' else 'black'
+            #     reason = 'checkmate'
+            # TODO: Stalemate detection (futuro)
+            # elif is_stalemate(board, new_turn):
+            #     winner = None
+            #     reason = 'stalemate'
+            if winner is not None:
+                payload_game_end = {
+                    'winner': winner,
+                    'reason': reason,
+                    'final_clocks': {'wMs': int(clock_data['wMs']), 'bMs': int(clock_data['bMs'])},
+                }
+                await self.channel_layer.group_send(
+                    self.room_group,
+                    {
+                        'type': 'game.end',
+                        'payload': payload_game_end,
+                    }
+                )
+                del self.__class__.game_clocks[room]
+                return  # No send move.applied if game over
             payload = {
                 'move': move,
                 'fen': 'startpos',  # Actualiza con lógica real de ajedrez
                 'turn': new_turn,
                 'clocks': {'wMs': int(clock_data['wMs']), 'bMs': int(clock_data['bMs'])},
             }
+            # if winner:
+            #     payload['game_over'] = {'winner': winner, 'reason': 'time'}
+            #     # Remove room after game over
+            #     del self.__class__.game_clocks[room]
             await self.channel_layer.group_send(
                 self.room_group,
                 {
@@ -394,6 +438,33 @@ class GameConsumer(AsyncJsonWebsocketConsumer):
             else:
                 # Confirmar al usuario que está listo
                 await self.send_json({'type': 'READY_CONFIRMED'})
+        elif msg_type == 'RESIGN':
+            room = getattr(self, 'room_name', None)
+            if not room or room not in self.__class__.game_clocks:
+                await self.send_json({'type': 'ERROR', 'message': 'not in a game room'})
+                return
+            user = self.scope.get('user')
+            user_id = str(getattr(user, 'id', ''))
+            clock_data = self.__class__.game_clocks[room]
+            # Determinar winner: el oponente gana
+            if user_id == clock_data['white_id']:
+                winner = 'black'
+            else:
+                winner = 'white'
+            payload = {
+                'winner': winner,
+                'reason': 'resignation',
+                'final_clocks': {'wMs': int(clock_data['wMs']), 'bMs': int(clock_data['bMs'])},
+            }
+            await self.channel_layer.group_send(
+                self.room_group,
+                {
+                    'type': 'game.end',
+                    'payload': payload,
+                }
+            )
+            # Limpiar
+            del self.__class__.game_clocks[room]
         elif msg_type == 'RECONNECT':
             token = content.get('token')
             if not token:
@@ -413,6 +484,18 @@ class GameConsumer(AsyncJsonWebsocketConsumer):
                 await self.send_json({'type': 'ERROR', 'message': 'room missing for token'})
                 return
             await self._set_room(room)
+            # Enviar STATE_SYNC si hay un juego activo en el room (temporal, pendiente acuerdo con Person 2/3)
+            if room in self.__class__.game_clocks:
+                clock_data = self.__class__.game_clocks[room]
+                state_payload = {
+                    'fen': 'startpos',  # TODO: Acordar con Person 5 para FEN real desde lógica de ajedrez
+                    'turn': clock_data['active_player'],
+                    'clocks': {'wMs': int(clock_data['wMs']), 'bMs': int(clock_data['bMs'])},
+                    'status': 'PLAYING',
+                    'players': {'white': 'white_username', 'black': 'black_username'},  # TODO: Acordar con Person 2/3 para obtener usernames/IDs de DB
+                    'active_player': clock_data['active_player'],
+                }
+                await self.send_json({'type': 'STATE_SYNC', 'payload': state_payload})
             payload = {
                 'room': room,
                 'user': {
@@ -421,16 +504,27 @@ class GameConsumer(AsyncJsonWebsocketConsumer):
                 },
                 'reconnectToken': token,
             }
+            # Add clocks if game active
+            if room in self.__class__.game_clocks and self.__class__.game_clocks[room]['last_update'] is not None:
+                clock_data = self.__class__.game_clocks[room]
+                payload['clocks'] = {'wMs': int(clock_data['wMs']), 'bMs': int(clock_data['bMs'])}
+                payload['active_player'] = clock_data['active_player']
             await self.send_json({'type': 'PLAYER_RECONNECTED', 'payload': payload})
             room_group = getattr(self, 'room_group', None)
             if room_group:
+                group_payload = {
+                    'sender_channel': self.channel_name,
+                    'room': room,
+                    'user': payload['user'],
+                }
+                if 'clocks' in payload:
+                    group_payload['clocks'] = payload['clocks']
+                    group_payload['active_player'] = payload['active_player']
                 await self.channel_layer.group_send(
                     room_group,
                     {
                         'type': 'player.reconnected',
-                        'sender_channel': self.channel_name,
-                        'room': room,
-                        'user': payload['user'],
+                        'payload': group_payload,
                     }
                 )
         elif msg_type == 'PING':
@@ -441,6 +535,18 @@ class GameConsumer(AsyncJsonWebsocketConsumer):
                 await self.send_json({'type': 'ERROR', 'message': 'room required'})
                 return
             await self._set_room(room)
+            # Enviar STATE_SYNC si hay un juego activo en el room (temporal, pendiente acuerdo con Person 2/3)
+            if room in self.__class__.game_clocks:
+                clock_data = self.__class__.game_clocks[room]
+                payload = {
+                    'fen': 'startpos',  # TODO: Acordar con Person 5 para FEN real desde lógica de ajedrez
+                    'turn': clock_data['active_player'],
+                    'clocks': {'wMs': int(clock_data['wMs']), 'bMs': int(clock_data['bMs'])},
+                    'status': 'PLAYING',
+                    'players': {'white': 'white_username', 'black': 'black_username'},  # TODO: Acordar con Person 2/3 para obtener usernames/IDs de DB
+                    'active_player': clock_data['active_player'],
+                }
+                await self.send_json({'type': 'STATE_SYNC', 'payload': payload})
             await self.send_json({'type': 'ROOM_JOINED', 'room': room})
         else:
             # echo unknown types for debugging
@@ -487,3 +593,6 @@ class GameConsumer(AsyncJsonWebsocketConsumer):
 
     async def move_applied(self, event):
         await self.send_json({'type': 'MOVE_APPLIED', 'payload': event.get('payload')})
+
+    async def game_end(self, event):
+        await self.send_json({'type': 'GAME_END', 'payload': event.get('payload')})

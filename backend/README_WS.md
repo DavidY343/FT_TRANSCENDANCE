@@ -51,6 +51,8 @@ You should receive:
 {"type":"STATE_SYNC","payload":{"fen":"startpos","turn":"w","clocks":{"wMs":300000,"bMs":300000},"status":"PLAYING","players":{}}}
 ```
 
+> **Note**: STATE_SYNC is now sent automatically when joining a room via `ROOM_JOIN` or `RECONNECT` if a game is active, with real state data (FEN, clocks, etc.). `STATE_REQUEST` remains for manual requests.
+
 ### Option B — Auth via AUTH message (browser-friendly)
 
 Connect without headers, then send **first** message:
@@ -207,10 +209,16 @@ Client re-joins a room after refresh (use the token from MATCH_FOUND):
 {"type":"RECONNECT","token":"<token>"}
 ```
 
-Server replies:
+Server replies with current game state if active:
 
 ```json
-{"type":"PLAYER_RECONNECTED","payload":{"room":"demo-room","user":{"id":"...","username":"..."},"reconnectToken":"<token>"}}
+{"type":"PLAYER_RECONNECTED","payload":{"room":"demo-room","user":{"id":"...","username":"..."},"reconnectToken":"<token>","clocks":{"wMs":299000,"bMs":300000},"active_player":"w"}}
+```
+
+And broadcasts to the room (other players receive):
+
+```json
+{"type":"PLAYER_RECONNECTED","payload":{"room":"demo-room","user":{"id":"...","username":"..."}}}
 ```
 
 ### Presence events (optional)
