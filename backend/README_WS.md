@@ -147,7 +147,7 @@ When a second client joins, both receive:
 
 ### Ready confirmation (Sprint 2)
 
-After MATCH_FOUND, the game room is created but waiting for both players to confirm readiness.
+After MATCH_FOUND, the game room is created but waiting for both players to confirm readiness. Colors (white/black) are assigned randomly.
 
 Send:
 
@@ -177,7 +177,7 @@ This starts the clocks for white.
 
 ### Clocks and moves (Sprint 2)
 
-Moves now update server-side clocks and broadcast to the room.
+Moves now update server-side clocks and broadcast to the room. Only the active player can submit moves.
 
 Send:
 
@@ -185,7 +185,13 @@ Send:
 {"type":"MOVE_SUBMIT","move":{"from":"e2","to":"e4"}}
 ```
 
-Server calculates elapsed time, subtracts from active player's clock, switches turn, and replies to both:
+If not your turn:
+
+```json
+{"type":"ERROR","message":"not your turn"}
+```
+
+Otherwise, server calculates elapsed time, subtracts from active player's clock, switches turn, and replies to both:
 
 ```json
 {"type":"MOVE_APPLIED","payload":{"move":{"from":"e2","to":"e4"},"fen":"startpos","turn":"b","clocks":{"wMs":299900,"bMs":300000}}}

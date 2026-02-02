@@ -9,6 +9,7 @@ import time
 import uuid
 from urllib.parse import parse_qs
 import re
+import random
 
 
 User = get_user_model()
@@ -260,15 +261,32 @@ class GameConsumer(AsyncJsonWebsocketConsumer):
                     opponent = queue.pop(0)
                     room = content.get('room') or self._make_room_name(username, opponent.get('username', 'opponent'))
                     await self._set_room(room)
-                    self.__class__.game_clocks[room] = {'wMs': 300000, 'bMs': 300000, 'last_update': None, 'active_player': None, 'ready_players': set()}
+                    # Randomly assign white/black
+                    user_id = str(getattr(user, 'id', ''))
+                    opponent_id = opponent.get('user_id')
+                    colors = ['white', 'black']
+                    random.shuffle(colors)
+                    user_color = colors[0]
+                    opponent_color = colors[1]
+                    self.__class__.game_clocks[room] = {'wMs': 300000, 'bMs': 300000, 'last_update': None, 'active_player': None, 'ready_players': set(), 'white_id': white_id, 'black_id': black_id}
                     token_self = await self._create_reconnect_token(getattr(user, 'id', None), room)
                     token_opp = await self._create_reconnect_token(opponent.get('user_id'), room)
+                    # Determine players payload for self
+                    if user_color == 'white':
+                        white_id = user_id
+                        black_id = opponent_id
+                        players_self = {'white': username, 'black': opponent.get('username', 'opponent')}
+                        white_username = username
+                        black_username = opponent.get('username', 'opponent')
+                    else:
+                        white_id = opponent_id
+                        black_id = user_id
+                        players_self = {'white': opponent.get('username', 'opponent'), 'black': username}
+                        white_username = opponent.get('username', 'opponent')
+                        black_username = username
                     payload = {
                         'room': room,
-                        'players': {
-                            'white': username,
-                            'black': opponent.get('username', 'opponent'),
-                        },
+                        'players': players_self,
                         'clocks': {
                             'wMs': 300000, 
                             'bMs': 300000
@@ -276,16 +294,18 @@ class GameConsumer(AsyncJsonWebsocketConsumer):
                         'reconnectToken': token_self,
                     }
                     await self.send_json({'type': 'MATCH_FOUND', 'payload': payload})
+                    # Determine players payload for opponent
+                    if opponent_color == 'white':
+                        players_opp = {'white': opponent.get('username', 'opponent'), 'black': username}
+                    else:
+                        players_opp = {'white': username, 'black': opponent.get('username', 'opponent')}
                     await self.channel_layer.send(
                         opponent['channel'],
                         {
                             'type': 'match.found',
                             'payload': {
                                 'room': room,
-                                'players': {
-                                    'white': opponent.get('username', 'opponent'),
-                                    'black': username,
-                                },
+                                'players': players_opp,
                                 'reconnectToken': token_opp,
                             }
                         }
@@ -295,10 +315,7 @@ class GameConsumer(AsyncJsonWebsocketConsumer):
                         {
                             'type': 'game.ready',
                             'room': room,
-                            'players': {
-                                'white': username,
-                                'black': opponent.get('username', 'opponent'),
-                            },
+                            'players': {'white': white_username, 'black': black_username},
                         }
                     )
                 else:
@@ -318,6 +335,15 @@ class GameConsumer(AsyncJsonWebsocketConsumer):
             clock_data = self.__class__.game_clocks[room]
             if clock_data['last_update'] is None:
                 await self.send_json({'type': 'ERROR', 'message': 'game not started'})
+                return
+            #if clock_data['wMs'] <= 0 or clock_data['bMs'] <= 0:
+            #    await self.send_json({'type': 'ERROR', 'message': 'game over'})
+            #    return
+            # Check turn using IDs
+            user_id = str(getattr(self.scope.get('user'), 'id', ''))
+            if (clock_data['active_player'] == 'w' and user_id != clock_data['white_id']) or \
+               (clock_data['active_player'] == 'b' and user_id != clock_data['black_id']):
+                await self.send_json({'type': 'ERROR', 'message': 'not your turn'})
                 return
             move = content.get('move') or {'from': 'e2', 'to': 'e4'}
             # Calcular tiempo transcurrido
