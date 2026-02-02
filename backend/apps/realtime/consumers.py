@@ -33,6 +33,7 @@ class GameConsumer(AsyncJsonWebsocketConsumer):
     AUTH_TIMEOUT = 5  # seconds to wait for AUTH message from browsers
     waiting_queue = []
     waiting_lock = asyncio.Lock()
+    game_clocks = {}
     reconnect_tokens = {}
     reconnect_lock = asyncio.Lock()
 
@@ -259,6 +260,7 @@ class GameConsumer(AsyncJsonWebsocketConsumer):
                     opponent = queue.pop(0)
                     room = content.get('room') or self._make_room_name(username, opponent.get('username', 'opponent'))
                     await self._set_room(room)
+                    self.__class__.game_clocks[room] = {'wMs': 300000, 'bMs': 300000, 'last_update': None, 'active_player': None, 'ready_players': set()}
                     token_self = await self._create_reconnect_token(getattr(user, 'id', None), room)
                     token_opp = await self._create_reconnect_token(opponent.get('user_id'), room)
                     payload = {
@@ -266,6 +268,10 @@ class GameConsumer(AsyncJsonWebsocketConsumer):
                         'players': {
                             'white': username,
                             'black': opponent.get('username', 'opponent'),
+                        },
+                        'clocks': {
+                            'wMs': 300000, 
+                            'bMs': 300000
                         },
                         'reconnectToken': token_self,
                     }
@@ -284,6 +290,17 @@ class GameConsumer(AsyncJsonWebsocketConsumer):
                             }
                         }
                     )
+                    await self.channel_layer.group_send(
+                        self.room_group,
+                        {
+                            'type': 'game.ready',
+                            'room': room,
+                            'players': {
+                                'white': username,
+                                'black': opponent.get('username', 'opponent'),
+                            },
+                        }
+                    )
                 else:
                     self.__class__.waiting_queue.append(
                         {
@@ -294,13 +311,63 @@ class GameConsumer(AsyncJsonWebsocketConsumer):
                     )
                     await self.send_json({'type': 'MATCH_QUEUED'})
         elif msg_type == 'MOVE_SUBMIT':
+            room = getattr(self, 'room_name', None)
+            if not room or room not in self.__class__.game_clocks:
+                await self.send_json({'type': 'ERROR', 'message': 'not in a game room'})
+                return
+            clock_data = self.__class__.game_clocks[room]
+            if clock_data['last_update'] is None:
+                await self.send_json({'type': 'ERROR', 'message': 'game not started'})
+                return
             move = content.get('move') or {'from': 'e2', 'to': 'e4'}
+            # Calcular tiempo transcurrido
+            now = time.time()
+            elapsed_ms = (now - clock_data['last_update']) * 1000
+            if clock_data['active_player'] == 'w':
+                clock_data['wMs'] = max(0, clock_data['wMs'] - elapsed_ms)
+                new_turn = 'b'
+            else:
+                clock_data['bMs'] = max(0, clock_data['bMs'] - elapsed_ms)
+                new_turn = 'w'
+            clock_data['active_player'] = new_turn
+            clock_data['last_update'] = now
             payload = {
                 'move': move,
-                'fen': 'startpos',
-                'turn': 'b',
+                'fen': 'startpos',  # Actualiza con lógica real de ajedrez
+                'turn': new_turn,
+                'clocks': {'wMs': int(clock_data['wMs']), 'bMs': int(clock_data['bMs'])},
             }
-            await self.send_json({'type': 'MOVE_APPLIED', 'payload': payload})
+            await self.channel_layer.group_send(
+                self.room_group,
+                {
+                    'type': 'move.applied',
+                    'payload': payload,
+                }
+            )
+        elif msg_type == 'READY':
+            room = getattr(self, 'room_name', None)
+            if not room or room not in self.__class__.game_clocks:
+                await self.send_json({'type': 'ERROR', 'message': 'not in a game room'})
+                return
+            user = self.scope.get('user')
+            user_id = str(getattr(user, 'id', ''))
+            clock_data = self.__class__.game_clocks[room]
+            clock_data['ready_players'].add(user_id)
+            if len(clock_data['ready_players']) == 2:
+                # Ambos listos: iniciar reloj
+                clock_data['last_update'] = time.time()
+                clock_data['active_player'] = 'w'
+                await self.channel_layer.group_send(
+                    self.room_group,
+                    {
+                        'type': 'game.start',
+                        'room': room,
+                        'clocks': {'wMs': clock_data['wMs'], 'bMs': clock_data['bMs']},
+                    }
+                )
+            else:
+                # Confirmar al usuario que está listo
+                await self.send_json({'type': 'READY_CONFIRMED'})
         elif msg_type == 'RECONNECT':
             token = content.get('token')
             if not token:
@@ -377,3 +444,20 @@ class GameConsumer(AsyncJsonWebsocketConsumer):
         if event.get('sender_channel') == self.channel_name:
             return
         await self.send_json({'type': 'PLAYER_RECONNECTED', 'payload': {'room': event.get('room'), 'user': event.get('user')}})
+
+    async def game_ready(self, event):
+        await self.send_json({
+            'type': 'GAME_READY',
+            'room': event['room'],
+            'players': event['players'],
+        })
+
+    async def game_start(self, event):
+        await self.send_json({
+            'type': 'GAME_START',
+            'room': event['room'],
+            'clocks': event['clocks'],
+        })
+
+    async def move_applied(self, event):
+        await self.send_json({'type': 'MOVE_APPLIED', 'payload': event.get('payload')})

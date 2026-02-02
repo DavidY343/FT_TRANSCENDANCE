@@ -1,6 +1,6 @@
-# WebSocket Quickstart (Sprint 1)
+# WebSocket Quickstart (Sprint 2)
 
-This document explains how to run the realtime WebSocket server and test the minimal contract.
+This document explains how to run the realtime WebSocket server and test the minimal contract, including matchmaking, ready confirmation, and server-authoritative clocks.
 
 ## Prerequisites
 
@@ -122,7 +122,7 @@ Submit a mock move:
 Server replies:
 
 ```json
-{"type":"MOVE_APPLIED","payload":{"move":{"from":"e2","to":"e4"},"fen":"startpos","turn":"b"}}
+{"type":"MOVE_APPLIED","payload":{"move":{"from":"e2","to":"e4"},"fen":"startpos","turn":"b","clocks":{"wMs":299900,"bMs":300000}}}
 ```
 
 ### Matchmaking queue (demo)
@@ -144,6 +144,54 @@ When a second client joins, both receive:
 ```json
 {"type":"MATCH_FOUND","payload":{"room":"match_...","players":{"white":"<you>","black":"opponent"},"reconnectToken":"<token>"}}
 ```
+
+### Ready confirmation (Sprint 2)
+
+After MATCH_FOUND, the game room is created but waiting for both players to confirm readiness.
+
+Send:
+
+```json
+{"type":"READY"}
+```
+
+If not both ready yet:
+
+```json
+{"type":"READY_CONFIRMED"}
+```
+
+When both players send READY, both receive:
+
+```json
+{"type":"GAME_READY","room":"match_...","players":{"white":"...","black":"..."}}
+```
+
+Followed by:
+
+```json
+{"type":"GAME_START","room":"match_...","clocks":{"wMs":300000,"bMs":300000}}
+```
+
+This starts the clocks for white.
+
+### Clocks and moves (Sprint 2)
+
+Moves now update server-side clocks and broadcast to the room.
+
+Send:
+
+```json
+{"type":"MOVE_SUBMIT","move":{"from":"e2","to":"e4"}}
+```
+
+Server calculates elapsed time, subtracts from active player's clock, switches turn, and replies to both:
+
+```json
+{"type":"MOVE_APPLIED","payload":{"move":{"from":"e2","to":"e4"},"fen":"startpos","turn":"b","clocks":{"wMs":299900,"bMs":300000}}}
+```
+
+Clocks are server-authoritative but decrement locally in the frontend for smoothness (sync on moves).
 
 ### Reconnect (demo)
 
@@ -175,3 +223,4 @@ When another authenticated client connects or disconnects, you’ll receive:
 
 - In `DEBUG=True`, the middleware also accepts `?token=<ACCESS_TOKEN>` in the querystring (development only).
 - For production, do **not** pass tokens in the querystring.
+- Clocks are in milliseconds (300000 = 5 minutes). Frontend handles local countdown with sync on moves.
