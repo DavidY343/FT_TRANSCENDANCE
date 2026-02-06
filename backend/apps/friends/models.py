@@ -1,7 +1,7 @@
 import uuid
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.conf import settings
+from django.core.exceptions import ValidationError
 
 User = settings.AUTH_USER_MODEL
 
@@ -22,3 +22,10 @@ class Friendship(models.Model):
     class Meta:
         unique_together = ("requester", "addressee")
 
+    def clean(self):
+        if self.requester == self.addressee:
+            raise ValidationError("No puedes enviarte una solicitud a ti mismo.")
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
