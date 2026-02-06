@@ -27,8 +27,11 @@ urlpatterns = [
     path('', home),
     path("admin/", admin.site.urls),
     path("api/auth/", include("apps.authentication.urls")),
-    path("api/", include("apps.core.urls")),
+    path("api/core/", include("apps.core.urls")),
     path('api/game/', include('apps.game.urls')),
+
+    path("api/users/", include("apps.users.urls")),
+    path("api/friendships/", include("apps.friends.urls")),
 
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
