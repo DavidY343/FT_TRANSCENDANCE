@@ -1,3 +1,4 @@
+sudo service postgresql start
 sudo -u postgres psql
 
 
@@ -10,3 +11,49 @@ ALTER ROLE chess_user SET default_transaction_isolation TO 'read committed';
 ALTER ROLE chess_user SET timezone TO 'UTC';
 GRANT ALL PRIVILEGES ON DATABASE chess_db TO chess_user;
 \q
+
+
+
+
+
+curl -X POST http://127.0.0.1:8000/api/auth/register/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "joni", 
+    "email": "joni@gmail.com", 
+    "password": "joni1234" ,
+    "password2": "joni1234"
+  }'
+
+
+
+curl -X POST http://127.0.0.1:8000/api/auth/login/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "joni",
+    "password": "joni1234"
+  }'
+
+
+
+
+curl -X POST http://127.0.0.1:8000/api/game/results/ \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcwNDAyOTM5LCJpYXQiOjE3NzA0MDIwMzksImp0aSI6IjA3ZTkwNmZjOGIyODRhMWM5YTcxMzA4MDNhMmE5OTU0IiwidXNlcl9pZCI6IjM5NTVjNTQ2LWFkZTktNDBjOC04OTI1LTRjMTk4ZDRjNjVhNSJ9.4693P774GKYW7H7MfMP8iVcqX4C79eeCOujAE_pbihw" \
+  -d '{
+    "player_white": "3ce94a66-6ebd-4e7e-9911-8c9a256d3d21",
+    "player_black": "3436368b-7acf-4be2-9a83-9a290a1c7d07",
+    "winner": "3ce94a66-6ebd-4e7e-9911-8c9a256d3d21",
+    "loser": "3436368b-7acf-4be2-9a83-9a290a1c7d07",
+    "result": "CHECKMATE",
+    "vs_ai": false
+  }'
+
+
+
+
+curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcwNDAxNTk4LCJpYXQiOjE3NzA0MDA2OTgsImp0aSI6IjJkN2U5YmE1YmQ3MDRmNDY5Mjg0ZTZiZmJhYWY3M2YyIiwidXNlcl9pZCI6IjM5NTVjNTQ2LWFkZTktNDBjOC04OTI1LTRjMTk4ZDRjNjVhNSJ9.V3b0xmOnP9zBF8mKL89bCS6hMoBX-XffGXu8T_AQfdg" http://127.0.0.1:8000/api/game/results/all/
+
+
+curl -H "Authorization: Bearer <ACCESS_TOKEN>" \
+  http://127.0.0.1:8000/api/game/results/all/
