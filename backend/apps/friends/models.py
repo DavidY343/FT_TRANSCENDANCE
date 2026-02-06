@@ -5,7 +5,6 @@ from django.conf import settings
 
 User = settings.AUTH_USER_MODEL
 
-# Tabla friendships
 class Friendship(models.Model):
     STATUS_CHOICES = [
         ("PENDING", "Pending"),
