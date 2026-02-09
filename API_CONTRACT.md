@@ -136,3 +136,232 @@ Importante:
   "refresh": ["This field is required."]
 }
 ```
+
+# Documentacion de Usuarios y Amistades
+
+## Autenticacion requerida
+
+Todos los endpoints requieren:
+
+```
+Authorization: Bearer {access_token}
+```
+
+## Usuarios
+
+### Endpoints Base
+
+```
+GET /api/users/me/
+GET /api/users/search/?search=
+```
+
+### 1. Me - Perfil del usuario autenticado
+
+**GET** `/api/users/me/`
+
+#### Response (200 OK)
+
+```json
+{
+  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "username": "usuario123",
+  "email": "usuario@ejemplo.com",
+  "first_name": "Juan",
+  "last_name": "Perez",
+  "avatar_url": "https://...",
+  "statistics": {
+    "total_games": 12,
+    "wins": 7,
+    "losses": 3,
+    "draws": 2,
+    "elo_rating": 1200
+  }
+}
+```
+
+### 2. User Search - Buscar usuarios por username
+
+**GET** `/api/users/search/?search={texto}`
+
+#### Query Params
+
+- `search`: texto a buscar en `username` (case-insensitive)
+
+#### Response (200 OK)
+
+Lista de usuarios (maximo 10 resultados), excluye al usuario actual.
+
+```json
+[
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "username": "usuario123",
+    "email": "usuario@ejemplo.com",
+    "first_name": "Juan",
+    "last_name": "Perez",
+    "avatar_url": "https://...",
+    "statistics": {
+      "total_games": 12,
+      "wins": 7,
+      "losses": 3,
+      "draws": 2,
+      "elo_rating": 1200
+    }
+  }
+]
+```
+
+## Amistades
+
+### Endpoints Base
+
+```
+GET    /api/friendships/list/?status=ACCEPTED
+POST   /api/friendships/request/
+POST   /api/friendships/accept/<uuid:pk>/
+DELETE /api/friendships/remove/<uuid:pk>/
+```
+
+### Modelo Friendship
+
+- `id`: UUID
+- `requester`: usuario que envia la solicitud
+- `addressee`: usuario que recibe la solicitud
+- `status`: `PENDING`, `ACCEPTED`, `DECLINED`
+- `created_at`: fecha de creacion
+
+#### Reglas
+
+- No puedes enviarte solicitud a ti mismo.
+- `requester` + `addressee` es unico.
+
+### 1. Friendship List - Listar amistades
+
+**GET** `/api/friendships/list/?status=ACCEPTED`
+
+#### Query Params
+
+- `status`: `PENDING`, `ACCEPTED`, `DECLINED` (por defecto `ACCEPTED`)
+
+#### Response (200 OK)
+
+```json
+[
+  {
+    "id": "c8a5b7c6-1a3b-4a8a-9d9e-1e8b2e123456",
+    "requester": "550e8400-e29b-41d4-a716-446655440000",
+    "addressee": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    "status": "ACCEPTED",
+    "created_at": "2024-01-01T12:00:00Z",
+    "friend_info": {
+      "id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      "username": "amigo",
+      "email": "amigo@ejemplo.com",
+      "first_name": "Ana",
+      "last_name": "Lopez",
+      "avatar_url": "https://...",
+      "statistics": {
+        "total_games": 20,
+        "wins": 10,
+        "losses": 8,
+        "draws": 2,
+        "elo_rating": 1300
+      }
+    }
+  }
+]
+```
+
+### 2. Request Friendship - Enviar solicitud
+
+**POST** `/api/friendships/request/`
+
+#### Request (JSON Body)
+
+```json
+{
+  "addressee": "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+}
+```
+
+#### Response (201 Created)
+
+```json
+{
+  "id": "c8a5b7c6-1a3b-4a8a-9d9e-1e8b2e123456",
+  "requester": "550e8400-e29b-41d4-a716-446655440000",
+  "addressee": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  "status": "PENDING",
+  "created_at": "2024-01-01T12:00:00Z",
+  "friend_info": {
+    "id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    "username": "amigo",
+    "email": "amigo@ejemplo.com",
+    "first_name": "Ana",
+    "last_name": "Lopez",
+    "avatar_url": "https://...",
+    "statistics": {
+      "total_games": 20,
+      "wins": 10,
+      "losses": 8,
+      "draws": 2,
+      "elo_rating": 1300
+    }
+  }
+}
+```
+
+#### Errores posibles
+
+- 400 si el body es invalido.
+- 400 si intentas enviarte solicitud a ti mismo.
+- 400 si ya existe una solicitud igual.
+
+### 3. Accept Friendship - Aceptar solicitud
+
+**POST** `/api/friendships/accept/<uuid:pk>/`
+
+#### Response (200 OK)
+
+```json
+{
+  "message": "Amistad aceptada"
+}
+```
+
+#### Response (404 Not Found)
+
+```json
+{
+  "error": "Peticion no encontrada"
+}
+```
+
+### 4. Remove Friendship - Eliminar amistad
+
+**DELETE** `/api/friendships/remove/<uuid:pk>/`
+
+#### Response (204 No Content)
+
+#### Response (404 Not Found)
+
+```json
+{
+  "error": "No existe esa relacion"
+}
+```
+
+## Serializers (Perfil y Estadisticas)
+
+### ProfileSerializer
+
+Campos:
+
+- `id`, `username`, `email`, `first_name`, `last_name`, `avatar_url`, `statistics`
+
+### GameStatisticsSerializer
+
+Campos:
+
+- `total_games`, `wins`, `losses`, `draws`, `elo_rating`
