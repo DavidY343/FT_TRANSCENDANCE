@@ -1,9 +1,132 @@
 
+## Endpoints Base
+
+```
+POST /api/auth/register/
+POST /api/auth/login/
+POST /api/auth/logout/
+```
+
+## 1. Register - Registrar Usuario
+
+### Request (JSON Body)
+
+```json
+{
+  "username": "string (requerido, unico)",
+  "email": "string (requerido, unico)",
+  "password": "string (requerido, minimo 8 caracteres)",
+  "password2": "string (requerido, debe coincidir con password)",
+  "first_name": "string (opcional)",
+  "last_name": "string (opcional)"
+}
+```
+
+### Validaciones
+
+- `password` y `password2` deben coincidir
+- `username` debe ser unico en el sistema
+- `email` debe ser unico en el sistema
+- `password` pasa validaciones de seguridad de Django
+- Todos los campos requeridos deben estar presentes
+
+### Response (Exito - 201 Created)
+
+```json
+{
+  "username": "usuario123",
+  "email": "usuario@ejemplo.com",
+  "first_name": "Juan",
+  "last_name": "Perez"
+}
+```
+
+### Response (Error - 400 Bad Request)
+
+```json
+{
+  "password": ["Password fields didn't match."]
+}
+```
+
+```json
+{
+  "username": ["A user with that username already exists."]
+}
+```
+
+```json
+{
+  "email": ["A user with that email already exists."]
+}
+```
+
+## 2. Login - Iniciar Sesion
+
+### Request (JSON Body)
+
+```json
+{
+  "username": "string (requerido)",
+  "password": "string (requerido)"
+}
+```
+
+### Response (Exito - 200 OK)
+
+```json
+{
+  "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+  "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+  "user": {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "username": "usuario123",
+    "email": "usuario@ejemplo.com",
+    "first_name": "Juan",
+    "last_name": "Perez"
+  }
+}
+```
+
+### Tokens JWT
+
+- `access`: Token de acceso (corto plazo)
+- `refresh`: Token de refresco (largo plazo)
+- `user`: Informacion basica del usuario (incluye UUID como string)
+
+### Response (Error - 401 Unauthorized)
+
+```json
+{
+  "detail": "Invalid credentials"
+}
+```
+
+## 3. Logout - Cerrar Sesion
+
+### Request (JSON Body)
+
+```json
+{
+  "refresh": "string (requerido)"
+}
+```
+
+### Headers Requeridos
+
+```
+Authorization: Bearer {access_token}
+Content-Type: application/json
+```
+
+### Response (Exito - 200 OK)
+
 ```json
 {
   "message": "Successfully logged out"
 }
 ```
+
 
 ### Responses de Error
 
@@ -365,3 +488,4 @@ Campos:
 Campos:
 
 - `total_games`, `wins`, `losses`, `draws`, `elo_rating`
+
