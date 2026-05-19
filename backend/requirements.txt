@@ -4,3 +4,8 @@ djangorestframework-simplejwt
 psycopg2-binary
 python-decouple
 django-cors-headers
+# Manu
+channels
+channels-redis
+daphne
+websockets
