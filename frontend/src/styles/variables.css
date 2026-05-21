@@ -1,0 +1,20 @@
+:root
+{
+	--bg: #2a2a2a;
+	--bg-soft: #343434;
+	--surface: #3a3a3a;
+	--surface-soft: #424242;
+
+	--text: #f1f1f1;
+	--text-soft: #c7c7c7;
+	--text-muted: #9c9c9c;
+
+	--line: #575757;
+	--line-strong: #6b6b6b;
+
+	--accent: #4faaff;
+	--shadow: rgba(0, 0, 0, 0.24);
+
+	font-family: 'Noto Sans', 'Segoe UI', sans-serif;
+	color: var(--text);
+}

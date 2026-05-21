@@ -1,0 +1,22 @@
+button
+{
+	border: 1px solid #7f7f7f;
+	background: linear-gradient(180deg, #636363 0%, #545454 100%);
+	color: #ffffff;
+	border-radius: 8px;
+	padding: 0.66rem 1rem;
+	min-height: 2.5rem;
+	cursor: pointer;
+	font-size: 0.92rem;
+	font-weight: 700;
+}
+
+button:hover:not(:disabled)
+{
+	background: linear-gradient(180deg, #6d6d6d 0%, #5b5b5b 100%);
+}
+
+button:disabled {
+	opacity: 0.62;
+	cursor: not-allowed;
+}
