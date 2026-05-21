@@ -15,12 +15,7 @@
 
 	padding: 1rem clamp(1rem, 2.8vw, 2rem);
 	border-bottom: 1px solid var(--line);
-	background: linear-gradient
-	(
-		180deg,
-		rgba(56, 56, 56, 0.98),
-		rgba(50, 50, 50, 0.96)
-	);
+	background: var(--bg);
 }
 
 .brand-block

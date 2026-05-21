@@ -9,6 +9,12 @@ a:hover
 	color: var(--accent);
 }
 
+a:focus
+{
+	outline: 2px solid var(--focus);
+	border-color: var(--accent);
+}
+
 .main-nav a
 {
 	border: 1px solid transparent;
