@@ -10,6 +10,8 @@ import GameRoomPage from './pages/GameRoomPage';
 import FriendsPage from './pages/FriendsPage';
 import HistoryPage from './pages/HistoryPage';
 import LeaderboardPage from './pages/LeaderboardPage';
+import Footer from "./components/Footer.jsx"
+import TopBar from './components/TopBar.jsx';
 
 function PrivateRoute({ children })
 {
@@ -25,26 +27,7 @@ export default function App()
 {
 	return (
 		<div className="app-layout">
-			<header className="topbar">
-				<div className="brand-block">
-					<h1 className="brand-title">
-						Chessmate Club
-					</h1>
-					<p className="brand-subtitle">
-						A quiet room for sharp games, stubborn defenses and elegant blunders.
-					</p>
-				</div>
-
-				<nav className="main-nav">
-					<Link to="/login">
-						Login
-					</Link>
-					<Link to="/register">
-						Register
-					</Link>
-				</nav>
-			</header>
-
+			<TopBar/>
 			<main className="app-main">
 				<div className="app-content">
 					<Routes>
@@ -110,15 +93,7 @@ export default function App()
 					</Routes>
 				</div>
 			</main>
-
-			<footer className="app-footer">
-				<Link to="/privacy-policy">
-					Privacy Policy
-				</Link>
-				<Link to="/terms-of-service">
-					Terms of Service
-				</Link>
-			</footer>
+			<Footer/>
 		</div>
 	);
 }
