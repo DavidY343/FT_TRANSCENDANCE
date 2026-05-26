@@ -1,16 +1,18 @@
 /*
 APP MAIN
-	- 
+	- Remaining space between top bar and footer
+	- Contain the main content of the app
 */
 .app-main
 {
 	display: flex;
 	justify-content: center;
-	align-items: flex-start;
-	padding: clamp(1rem, 2vw, 2rem);
+	align-items: center;
+	padding: clamp(3rem, 4vw, 4rem);
 }
 
 .main-content
 {
-	width: 100%;
+	font-size: 42px;
+	width: min(100%, 2400px);
 }

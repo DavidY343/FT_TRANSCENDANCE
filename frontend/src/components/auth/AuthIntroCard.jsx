@@ -1,4 +1,35 @@
-export default function AuthIntroCard()
+export function RegisterIntroCard()
+{
+	return (
+		<article className="card auth-card auth-card-copy">
+			<p className="section-kicker">
+				New Membership
+			</p>
+
+			<h2>
+				Join the club.
+			</h2>
+
+			<p>
+				Set your name on the ledger, claim your table and start playing rapid
+				duels, quiet endgames and reckless attacks against friends or AI.
+			</p>
+
+			<div className="auth-note">
+				<span>
+					Entry standard
+				</span>
+
+				<p>
+					Bring a valid email, a solid alias and enough patience for your first
+					opening mistake.
+				</p>
+			</div>
+		</article>
+	);
+}
+
+export function LoginIntroCard()
 {
 	return (
 		<article className="card auth-card auth-card-copy">
@@ -6,8 +37,8 @@ export default function AuthIntroCard()
 				Members Entrance
 			</p>
 
-			<h2>
-				Return to the board.
+			<h2 className="card-title">
+				Return to the board
 			</h2>
 
 			<p>

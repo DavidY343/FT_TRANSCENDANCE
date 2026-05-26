@@ -1,4 +1,6 @@
-import { Link, Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+
+import { api, clearTokens, getAccessToken } from './api';
 
 import LobbyPage from './pages/LobbyPage';
 import LoginPage from './pages/LoginPage';
@@ -15,19 +17,21 @@ import TopBar from './components/TopBar.jsx';
 
 function PrivateRoute({ children })
 {
-	const token = localStorage.getItem('access_token');
+	const token = getAccessToken();
 
 	if (!token)
 		return <Navigate to="/login" replace />;
 
-	return children;
+	return ( children );
 }
 
 export default function App()
 {
+	const location = useLocation();
+	const isAuthed = Boolean(getAccessToken());
 	return (
 		<div className="app-layout">
-			<TopBar/>
+			<TopBar current={location.pathname} authed={isAuthed} />
 			<main className="app-main">
 				<div className="main-content">
 					<Routes>

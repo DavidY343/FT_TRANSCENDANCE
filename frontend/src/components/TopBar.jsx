@@ -1,4 +1,5 @@
-import { Link, Navigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { clearTokens } from "../api";
 
 function BrandBlock()
 {
@@ -14,26 +15,57 @@ function BrandBlock()
 	);
 }
 
-function TopNav()
+function TopNav(props)
 {
-	return (
-		<nav className="top-nav">
-			<Link to="/login">
-				Login
-			</Link>
-			<Link to="/register">
-				Register
-			</Link>
-		</nav>
-	);
+	const navigate = useNavigate();
+
+	function handleDevLogin()
+	{
+		localStorage.setItem('access_token', 'dev-token');
+		navigate('/lobby');
+	}
+
+	function handleLogout()
+	{
+		clearTokens()
+		navigate('/login');
+	}
+
+	if (props.authed)
+	{
+		return (
+			<nav className="top-nav">
+				<button className="btn nav-btn" onClick={handleLogout}>
+					Logout
+				</button>
+			</nav>
+		);
+	}
+	else
+		return (
+			<nav className="top-nav">
+				{/* Temporary dev login: remove this block when no longer needed. */}
+				{import.meta.env.DEV && (
+					<button className="btn nav-btn-dev" onClick={handleDevLogin}>
+						Dev login
+					</button>
+				)}
+				<Link className="btn nav-btn" to="/login">
+					Login
+				</Link>
+				<Link className="btn nav-btn-link" to="/register">
+					Register
+				</Link>
+			</nav>
+		);
 }
 
-export default function TopBar()
+export default function TopBar(props)
 {
 	return (
 		<header className="topbar">
 			<BrandBlock/>
-			<TopNav/>
+			<TopNav current={props.current} authed={props.authed}/>
 		</header>
 	);
 }

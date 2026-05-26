@@ -19,3 +19,14 @@ APP STRUCTURE
 	display: grid;
 	grid-template-rows: auto minmax(0, 1fr) auto;
 }
+
+.topbar,
+.footer
+{
+	flex-shrink: 0;
+}
+
+input
+{
+	font-size: 42px;
+}

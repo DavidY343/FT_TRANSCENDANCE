@@ -1,5 +1,5 @@
-import AuthIntroCard from "../components/auth/AuthIntroCard";
-import LoginForm from "../components/auth/LoginForm";
+import { LoginIntroCard } from "../components/auth/AuthIntroCard";
+import { LoginForm } from "../components/auth/AuthForm";
 import { useLoginForm } from '../hooks/useLoginForm';
 
 export default function LoginPage()
@@ -8,8 +8,7 @@ export default function LoginPage()
 
 	return (
 		<section className="auth-layout">
-			<AuthIntroCard />
-
+			<LoginIntroCard />
 			<LoginForm
 				email={loginForm.email}
 				setEmail={loginForm.setEmail}

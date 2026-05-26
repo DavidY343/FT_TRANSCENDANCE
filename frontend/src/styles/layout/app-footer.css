@@ -5,8 +5,8 @@
 	align-items: center;
 	gap: 1rem;
 
-	padding: 0.75rem clamp(1rem, 2.8vw, 2rem);
+	padding: 1rem clamp(1rem, 2.8vw, 2rem);
 	border-top: 1px solid var(--line);
 
-	background: #2e2e2e;
+	background: var(--bg-soft);
 }

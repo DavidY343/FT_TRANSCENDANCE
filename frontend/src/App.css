@@ -3,4 +3,9 @@
 
 @import './styles/layout/layout.css';
 
+@import './styles/cards.css';
+
+@import './styles/links.css';
+@import './styles/buttons/button.css';
+
 @import './styles/auth.css';

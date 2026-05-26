@@ -5,6 +5,8 @@
 	--surface: #3a3a3a;
 	--surface-soft: #424242;
 
+	--btn: #8b6f42;
+
 	--text: #f1f1f1;
 	--text-soft: #c7c7c7;
 	--text-muted: #9c9c9c;
@@ -14,7 +16,7 @@
 
 	--accent: #4faaff;
 	--focus: #84b1ff;
-	--shadow: rgba(0, 0, 0, 0.24);
+	--shadow: rgba(0, 0, 0, 0.745);
 
 	font-family: 'Noto Sans', 'Segoe UI', sans-serif;
 	color: var(--text);
