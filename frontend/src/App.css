@@ -1,8 +1,6 @@
 @import './styles/variables.css';
 @import './styles/reset.css';
-@import './styles/links.css';
-@import './styles/buttons.css';
-@import './styles/layout.css';
-@import './styles/cards.css';
+
+@import './styles/layout/layout.css';
+
 @import './styles/auth.css';
-@import './styles/responsive.css';

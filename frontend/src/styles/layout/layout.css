@@ -1,0 +1,21 @@
+@import './app-topbar.css';
+@import './app-main.css';
+@import './app-footer.css';
+
+/*
+APP STRUCTURE
+	- fill the complete viewport
+	- displayed as grid ☰
+		|-TOPBAR-|
+		|- MAIN -|
+		|-FOOTER-|
+	- give each row the size it needs
+*/ 
+
+.app-layout
+{
+	min-height: 100vh;
+	min-width: 100vw;
+	display: grid;
+	grid-template-rows: auto minmax(0, 1fr) auto;
+}

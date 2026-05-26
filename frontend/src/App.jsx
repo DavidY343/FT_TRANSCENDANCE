@@ -29,7 +29,7 @@ export default function App()
 		<div className="app-layout">
 			<TopBar/>
 			<main className="app-main">
-				<div className="app-content">
+				<div className="main-content">
 					<Routes>
 						<Route path="/" element={<Navigate to="/lobby" replace />} />
 						<Route path="/login" element={<LoginPage />} />

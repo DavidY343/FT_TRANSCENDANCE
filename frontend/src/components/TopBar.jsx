@@ -5,7 +5,7 @@ function BrandBlock()
 	return (
 		<div className="brand-block">
 			<h1 className="brand-title">
-				Chessmate Club
+				Checkmate Club
 			</h1>
 			<p className="brand-subtitle">
 				A quiet room for sharp games, stubborn defenses and elegant blunders.
@@ -14,10 +14,10 @@ function BrandBlock()
 	);
 }
 
-function MainNav()
+function TopNav()
 {
 	return (
-		<nav className="main-nav">
+		<nav className="top-nav">
 			<Link to="/login">
 				Login
 			</Link>
@@ -33,7 +33,7 @@ export default function TopBar()
 	return (
 		<header className="topbar">
 			<BrandBlock/>
-			<MainNav/>
+			<TopNav/>
 		</header>
 	);
 }
