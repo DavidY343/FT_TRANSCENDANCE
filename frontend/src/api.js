@@ -1,10 +1,14 @@
+// api.js is responsible for centralizing communication
+// with the backend and managing authentication tokens.
+
+
 import axios from 'axios';
 
 const ACCESS_TOKEN_KEY = 'access_token';
 const REFRESH_TOKEN_KEY = 'refresh_token';
 
 export const api = axios.create({
-	baseURL: 'http://localhost:8080',
+	baseURL: import.meta.env.VITE_API_URL,
 	timeout: 8000
 });
 
@@ -30,6 +34,15 @@ export function clearTokens()
 	localStorage.removeItem(REFRESH_TOKEN_KEY);
 }
 
+api.interceptors.request.use((config) => {
+	const token = getAccessToken();
+
+	if (token)
+		config.headers.Authorization = `Bearer ${token}`;
+
+	return ( config );
+});
+
 export function getApiErrorMessage(error, fallbackMessage)
 {
 	if (error.response && error.response.data && error.response.data.detail)
@@ -38,5 +51,5 @@ export function getApiErrorMessage(error, fallbackMessage)
 	if (error.response && error.response.data && error.response.data.message)
 		return ( error.response.data.message );
 
-	return fallbackMessage;
+	return ( fallbackMessage );
 }
