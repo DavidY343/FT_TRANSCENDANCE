@@ -1,17 +1,18 @@
-.btn 
+/* 
+|-------GENERAL-------|
+*/
+.btn
 {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	font-family: inherit;
 	line-height: 1;
-	text-decoration: none;
 	color: var(--text);
 	background: var(--btn);
-	border-radius: 24px;
+	border-radius: 32px;
 	border: 2px solid var(--shadow);
 	padding: 1rem clamp(1rem, 2.8vw, 2rem);
-	box-shadow: 12px 12px 12px var(--shadow);
 }
 
 .btn:hover
@@ -25,8 +26,29 @@
 	transform: scale(0.97);
 	box-shadow: inset 6px 6px 6px var(--shadow);
 }
+.btn:focus
+{
+	border-color: var(--focus);
+}
+/* 
+|-------SUBMIT--------|
+*/
 
-.nav-btn, .nav-btn-link, .nav-btn-dev
+.submit-btn
+{
+	font-size: large;
+	font-weight: 700;
+	box-shadow: 0 6px 6px var(--shadow);
+	justify-self: right;
+}
+
+/* 
+|-------NAV--------|
+|- Topbar buttons -|
+|- Footer buttons -|
+|------------------|
+*/
+.nav-btn
 {
 	padding: clamp(0.1rem, 0.2vw, 0.2rem);
 	text-align: center;
@@ -37,12 +59,7 @@
 	box-shadow: 6px 6px 6px var(--shadow);
 
 }
-.nav-btn a, .nav-btn-link a, .nav-btn-dev a
+.nav-btn a
 {
 	color: var(--text);
-}
-
-.submit
-{
-	font-size: 42px;
 }

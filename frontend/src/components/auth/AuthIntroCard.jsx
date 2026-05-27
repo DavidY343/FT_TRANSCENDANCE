@@ -1,7 +1,7 @@
 export function RegisterIntroCard()
 {
 	return (
-		<article className="card auth-card auth-card-copy">
+		<article className="card auth-card card-intro">
 			<p className="section-kicker">
 				New Membership
 			</p>
@@ -32,13 +32,13 @@ export function RegisterIntroCard()
 export function LoginIntroCard()
 {
 	return (
-		<article className="card auth-card auth-card-copy">
+		<article className="card auth-card card-intro">
 			<p className="section-kicker">
 				Members Entrance
 			</p>
 
 			<h2 className="card-title">
-				Return to the board
+				Return to the board.
 			</h2>
 
 			<p>

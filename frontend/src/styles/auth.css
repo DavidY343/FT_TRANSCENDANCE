@@ -1,24 +1,127 @@
 .auth-layout
 {
 	display: grid;
-	gap: 4rem;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
-	width: 100%;
-	
+	align-items: stretch;
+	gap: clamp(1rem, 3vw, 2rem);
+	grid-template-columns: minmax(260px, 1fr) minmax(320px, 1fr);
+	width: min(100%, 1200px);
+	margin: 0 auto;
+	padding: clamp(1rem, 3vw, 2rem);
 }
 
-input
-{
-	border-radius: 24px;
-	padding: 1rem clamp(1rem, 2.8vw, 2rem);
-	color: var(--text);
-	background: linear-gradient(var(--bg), var(--bg-soft));
-	box-shadow: inset 12px 12px 12px var(--shadow)
-
-}
-
-.inputs
+.form-container
 {
 	display: grid;
-	gap: 42px;
+	gap: 0.85rem;
+	margin-top: 1.5rem;
+}
+
+.auth-card
+{
+	min-height: 100%;
+}
+
+.card-intro
+{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 2rem;
+	background:
+		linear-gradient(135deg, rgba(139, 111, 66, 0.22), transparent 42%),
+		linear-gradient(145deg, var(--surface), var(--bg-soft));
+}
+
+.card-intro::before
+{
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-top: 4px solid var(--btn);
+	pointer-events: none;
+}
+
+.section-kicker
+{
+	margin: 0 0 0.75rem;
+	color: var(--text-soft);
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.card-title,
+.card-intro h2
+{
+	margin: 0;
+	color: var(--text);
+	font-size: clamp(2rem, 4vw, 2.7rem);
+	line-height: 1.05;
+}
+
+.card-title
+{
+	padding: 4rem 1rem;
+	justify-self: center;
+}
+
+.card-intro p
+{
+	margin: 1rem 0 0;
+	color: var(--text-soft);
+	font-size: 1.5rem;
+	line-height: 1.7;
+}
+
+.auth-note
+{
+	border-left: 3px solid var(--btn);
+	padding: 0.98rem 1rem;
+	background: rgba(0, 0, 0, 0.18);
+}
+
+.auth-note span
+{
+	display: block;
+	color: var(--text);
+	font-weight: 700;
+}
+
+.auth-note p
+{
+	margin-top: 0.35rem;
+	font-size: 1.2rem;
+}
+
+.form-error
+{
+	margin: 1rem 0 0;
+	border-radius: 8px;
+	padding: 0.8rem 1rem;
+	color: #ffd6d6;
+	background: rgba(145, 38, 38, 0.32);
+	border: 1px solid rgba(255, 120, 120, 0.24);
+}
+
+.auth-switch
+{
+	font-size: 1.2rem;
+	margin: 1.25rem 0 0;
+	color: var(--text-soft);
+	text-align: center;
+}
+
+@media (max-width: 760px)
+{
+	.auth-layout
+	{
+		grid-template-columns: 1fr;
+		padding: 1rem;
+	}
+
+	.card-intro
+	{
+		gap: 1.25rem;
+	}
 }

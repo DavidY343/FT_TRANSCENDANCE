@@ -46,14 +46,14 @@ function TopNav(props)
 			<nav className="top-nav">
 				{/* Temporary dev login: remove this block when no longer needed. */}
 				{import.meta.env.DEV && (
-					<button className="btn nav-btn-dev" onClick={handleDevLogin}>
+					<button className="btn nav-btn" onClick={handleDevLogin}>
 						Dev login
 					</button>
 				)}
 				<Link className="btn nav-btn" to="/login">
 					Login
 				</Link>
-				<Link className="btn nav-btn-link" to="/register">
+				<Link className="btn nav-btn" to="/register">
 					Register
 				</Link>
 			</nav>

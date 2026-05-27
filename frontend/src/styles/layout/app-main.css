@@ -6,13 +6,19 @@ APP MAIN
 .app-main
 {
 	display: flex;
+	flex: 1;
 	justify-content: center;
 	align-items: center;
-	padding: clamp(3rem, 4vw, 4rem);
+	
+	overflow-y: auto;
+	min-height: 0;
 }
 
 .main-content
 {
-	font-size: 42px;
-	width: min(100%, 2400px);
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 2rem;
+	width: 100%;
+	margin: 0 auto;
 }

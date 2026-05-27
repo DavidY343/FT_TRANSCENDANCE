@@ -10,15 +10,11 @@ export function RegisterForm({
 {
 	return (
 		<section className="card auth-card auth-card-form">
-			<p className="section-kicker">
-				Register
-			</p>
-
 			<h2 className="card-title">
 				Create account
 			</h2>
 
-			<form className="inputs" onSubmit={onSubmit}>
+			<form className="form-container" onSubmit={onSubmit}>
 				<input
 					value={form.email}
 					onChange={(event) => updateField('email', event.target.value)}
@@ -57,8 +53,8 @@ export function RegisterForm({
 					required
 				/>
 
-				<button type="submit" className="btn submit" disabled={submitting}>
-					{submitting ? 'Creating account...' : 'Create account'}
+				<button className="btn submit-btn" disabled={submitting}>
+					{submitting ? 'Creating account...' : 'Create'}
 				</button>
 			</form>
 
@@ -87,15 +83,11 @@ export function LoginForm({
 {
 	return (
 		<section className="card auth-card auth-card-form">
-			<p className="section-kicker">
-				Login
-			</p>
-
 			<h2 className="card-title">
 				Sign in
 			</h2>
 
-			<form className="inputs" onSubmit={onSubmit}>
+			<form className="form-container" onSubmit={onSubmit}>
 				<input
 					value={email}
 					onChange={(event) => setEmail(event.target.value)}
@@ -112,7 +104,7 @@ export function LoginForm({
 					required
 				/>
 
-				<button type="submit" className="btn submit" disabled={submitting}>
+				<button className="btn submit-btn" disabled={submitting}>
 					{submitting ? 'Signing in...' : 'Sign in'}
 				</button>
 			</form>

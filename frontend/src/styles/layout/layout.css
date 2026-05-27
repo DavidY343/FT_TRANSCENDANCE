@@ -14,19 +14,14 @@ APP STRUCTURE
 
 .app-layout
 {
-	min-height: 100vh;
-	min-width: 100vw;
-	display: grid;
-	grid-template-rows: auto minmax(0, 1fr) auto;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
 }
 
 .topbar,
 .footer
 {
 	flex-shrink: 0;
-}
-
-input
-{
-	font-size: 42px;
 }

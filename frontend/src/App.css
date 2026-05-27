@@ -3,7 +3,8 @@
 
 @import './styles/layout/layout.css';
 
-@import './styles/cards.css';
+@import './styles/cards/cards.css';
+@import './styles/input.css';
 
 @import './styles/links.css';
 @import './styles/buttons/button.css';
