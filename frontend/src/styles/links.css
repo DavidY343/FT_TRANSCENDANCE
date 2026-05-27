@@ -4,4 +4,9 @@ a
 	color: var(--accent);
 }
 
-
+a:focus-visible
+{
+	border-radius: 12px;
+	outline: 2px solid var(--focus);
+	outline-offset: 3px;
+}

@@ -9,9 +9,8 @@
 	box-shadow: 0 24px 60px var(--shadow);
 }
 
-.auth-card, .auth-card-form
+.auth-card, .form-card
 {
 	width: 100%;
-
 }
 

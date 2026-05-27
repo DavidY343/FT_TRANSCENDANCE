@@ -29,6 +29,7 @@
 .btn:focus
 {
 	border-color: var(--focus);
+	outline: none;
 }
 /* 
 |-------SUBMIT--------|
