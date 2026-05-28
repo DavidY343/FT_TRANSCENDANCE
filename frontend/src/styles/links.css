@@ -3,12 +3,6 @@ a
 	text-decoration: none;
 }
 
-a:focus-visible
-{
-	border-radius: 12px;
-	outline: 2px solid var(--focus);
-	outline-offset: 3px;
-}
 
 .footer-link
 {
@@ -24,4 +18,5 @@ a:focus-visible
 .footer-link:focus-visible
 {
 	color: var(--focus);
+	outline: none;
 }
