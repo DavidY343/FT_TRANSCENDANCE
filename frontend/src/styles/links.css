@@ -1,7 +1,6 @@
 a
 {
 	text-decoration: none;
-	color: var(--accent);
 }
 
 a:focus-visible
@@ -9,4 +8,20 @@ a:focus-visible
 	border-radius: 12px;
 	outline: 2px solid var(--focus);
 	outline-offset: 3px;
+}
+
+.footer-link
+{
+	color: grey;
+}
+
+.auth-link
+{
+	color: var(--link-bl);
+}
+
+.auth-link:focus-visible,
+.footer-link:focus-visible
+{
+	color: var(--focus);
 }

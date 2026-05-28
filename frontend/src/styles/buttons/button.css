@@ -9,7 +9,7 @@
 	font-family: inherit;
 	line-height: 1;
 	color: var(--text);
-	background: var(--btn);
+	background: var(--chess-light);
 	border-radius: 32px;
 	border: 2px solid var(--shadow);
 	padding: 1rem clamp(1rem, 2.8vw, 2rem);
@@ -26,7 +26,8 @@
 	transform: scale(0.97);
 	box-shadow: inset 6px 6px 6px var(--shadow);
 }
-.btn:focus
+
+.btn:focus-visible
 {
 	border-color: var(--focus);
 	outline: none;
@@ -53,9 +54,9 @@
 {
 	padding: clamp(0.1rem, 0.2vw, 0.2rem);
 	text-align: center;
-	width: 250px;
+	width: 150px;
 	min-height: 3.25rem;
-	font-size: xx-large;
+	font-size: x-large;
 	white-space: nowrap;
 	box-shadow: 6px 6px 6px var(--shadow);
 

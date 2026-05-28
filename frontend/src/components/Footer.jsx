@@ -4,10 +4,10 @@ export default function Footer()
 {
 	return (
 		<footer className="app-footer">
-				<Link className="btn nav-btn" to="/privacy-policy">
+				<Link className="footer-link" to="/privacy-policy">
 					Privacy Policy
 				</Link>
-				<Link className="btn nav-btn" to="/terms-of-service">
+				<Link className="footer-link" to="/terms-of-service">
 					Terms
 				</Link>
 		</footer>

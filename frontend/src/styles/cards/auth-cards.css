@@ -37,7 +37,7 @@
 	content: "";
 	position: absolute;
 	inset: 0;
-	border-top: 4px solid var(--btn);
+	border-top: 4px solid var(--chess-light);
 	pointer-events: none;
 }
 
@@ -76,9 +76,9 @@
 
 .auth-note
 {
-	border-left: 3px solid var(--btn);
+	border-left: 3px solid var(--chess-light);
 	padding: 0.98rem 1rem;
-	background: rgba(0, 0, 0, 0.18);
+	background: var(--bg);
 }
 
 .auth-note span

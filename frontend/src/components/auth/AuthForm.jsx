@@ -129,7 +129,7 @@ export function LoginForm({
 			)}
 
 			<p className="auth-switch">
-				No account? <Link to="/register">Register</Link>
+				No account? <Link className="auth-link" to="/register">Register</Link>
 			</p>
 		</section>
 	);

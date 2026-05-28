@@ -6,7 +6,7 @@
 	gap: 1rem;
 
 	padding: 1rem clamp(1rem, 2.8vw, 2rem);
-	border-top: 1px solid var(--line);
+	border-top: 1px solid var(--chess-light);
 
-	background: var(--bg-soft);
+	background: var(--surface);
 }
