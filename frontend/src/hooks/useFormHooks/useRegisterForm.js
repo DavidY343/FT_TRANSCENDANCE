@@ -1,26 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api, getApiErrorMessage, setTokens } from '../../api';
-
-function validatePassword(password)
-{
-	if (password.length < 8)
-		return 'Password must be at least 8 characters long.';
-
-	if (!/[a-z]/.test(password))
-		return 'Password must include at least one lowercase letter.';
-
-	if (!/[A-Z]/.test(password))
-		return 'Password must include at least one uppercase letter.';
-
-	if (!/\d/.test(password))
-		return 'Password must include at least one number.';
-
-	if (!/[^A-Za-z0-9]/.test(password))
-		return 'Password must include at least one special character.';
-
-	return '';
-}
+import validatePassword from '../validateHooks/validatePassword';
 
 export function useRegisterForm()
 {
@@ -29,7 +10,7 @@ export function useRegisterForm()
 	const [form, setForm] = useState({
 		email: '',
 		username: '',
-		display_name: '',
+		displayName: '',
 		password: '',
 		confirmPassword: ''
 	});

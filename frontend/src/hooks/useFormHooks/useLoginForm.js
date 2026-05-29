@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api, getApiErrorMessage, setTokens } from '../../api';
 
+import validateEmail from '../validateHooks/validateEmail';
+
 export function useLoginForm()
 {
 	const navigate = useNavigate();
@@ -19,6 +21,20 @@ export function useLoginForm()
 			return;
 
 		setError('');
+
+		let emailError;
+
+		emailError = validateEmail(email);
+
+		if (password.trim().length === 0)
+			setError('Empty field.');
+
+		else if (emailError)
+		{
+			setError(emailError);
+			return;
+		}
+
 		setSubmitting(true);
 
 		try

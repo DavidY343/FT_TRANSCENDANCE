@@ -37,8 +37,8 @@ export function RegisterForm({
 				<label className="lab" htmlFor="register-display-name">Display name</label>
 				<input
 					id="register-display-name"
-					value={form.display_name}
-					onChange={(event) => updateField('display_name', event.target.value)}
+					value={form.displayName}
+					onChange={(event) => updateField('displayName', event.target.value)}
 					placeholder="Display name"
 					required
 				/>
@@ -97,7 +97,7 @@ export function LoginForm({
 				Sign in
 			</h2>
 
-			<form className="form-container" onSubmit={onSubmit}>
+			<form className="form-container" onSubmit={onSubmit} noValidate>
 				<label className="lab" htmlFor="login-email">Email</label>
 				<input
 					id="login-email"
