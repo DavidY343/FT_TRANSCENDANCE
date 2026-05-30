@@ -6,6 +6,7 @@ a
 .footer-link
 {
 	color: grey;
+	transition-duration: 600ms;
 }
 
 .auth-link
@@ -13,6 +14,14 @@ a
 	color: var(--link-bl);
 }
 
+.footer-link:hover
+{
+	transform: scale(1.2);
+}
+.auth-link:hover
+{
+	color: var(--focus);
+}
 .auth-link:focus-visible,
 .footer-link:focus-visible
 {

@@ -21,3 +21,8 @@ input:focus
 {
 	border-color: var(--focus);
 }
+
+input:focus-within
+{
+	transform: scale(1.01);
+}

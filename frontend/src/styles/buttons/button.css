@@ -13,16 +13,21 @@
 	border-radius: 32px;
 	border: 2px solid var(--shadow);
 	padding: 1rem clamp(1rem, 2.8vw, 2rem);
+	box-shadow: 6px 6px 6px var(--shadow);
+	transition: box-shadow 250ms ease, transform 250ms ease;
 }
+
 
 .btn:hover
 {
-	box-shadow: inset 1px 1px 1px var(--shadow);
 	cursor: pointer;
+	transform: translateY(-1.5px);
+	box-shadow: 1px 1px 1px var(--shadow);
 }
 
 .btn:active
 {
+	transition: none;
 	transform: scale(0.97);
 	box-shadow: inset 6px 6px 6px var(--shadow);
 }
@@ -40,7 +45,6 @@
 {
 	font-size: large;
 	font-weight: 700;
-	box-shadow: 0 6px 6px var(--shadow);
 	justify-self: right;
 }
 
@@ -58,7 +62,6 @@
 	min-height: 3.25rem;
 	font-size: x-large;
 	white-space: nowrap;
-	box-shadow: 6px 6px 6px var(--shadow);
 
 }
 .nav-btn a

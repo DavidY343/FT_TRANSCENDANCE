@@ -75,7 +75,7 @@ export function RegisterForm({
 			)}
 
 			<p className="auth-switch">
-				Already have an account? <Link to="/login">Sign in</Link>
+				Already have an account? <Link className='auth-link' to="/login">Sign in</Link>
 			</p>
 		</section>
 	);
