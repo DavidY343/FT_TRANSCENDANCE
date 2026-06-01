@@ -15,6 +15,7 @@ export default function LoginPage()
 				password={loginForm.password}
 				setPassword={loginForm.setPassword}
 				error={loginForm.error}
+				errorField={loginForm.errorField}
 				submitting={loginForm.submitting}
 				onSubmit={loginForm.onSubmit}
 			/>

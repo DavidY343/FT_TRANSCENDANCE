@@ -1,5 +1,7 @@
 export default function validatePassword(password)
 {
+	if (password.trim().length === 0)
+		return ('Please fill out this field: Password');
 	if (password.length < 8)
 		return 'Password must be at least 8 characters long.';
 

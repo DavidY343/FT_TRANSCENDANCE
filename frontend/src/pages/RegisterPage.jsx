@@ -13,6 +13,7 @@ export default function Register()
 				form={registerForm.form}
 				updateField={registerForm.updateField}
 				error={registerForm.error}
+				errorField={registerForm.errorField}
 				submitting={registerForm.submitting}
 				onSubmit={registerForm.onSubmit}
 			/>

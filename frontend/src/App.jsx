@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 
-import { api, clearTokens, getAccessToken } from './api';
+import { getAccessToken } from './api';
 
 import LobbyPage from './pages/LobbyPage';
 import LoginPage from './pages/LoginPage';
@@ -25,6 +25,16 @@ function PrivateRoute({ children })
 	return ( children );
 }
 
+function PublicAuthRoute({ children })
+{
+	const token = getAccessToken();
+
+	if (token)
+		return <Navigate to="/lobby" replace />;
+
+	return ( children );
+}
+
 export default function App()
 {
 	const location = useLocation();
@@ -36,8 +46,22 @@ export default function App()
 				<div className="main-content">
 					<Routes>
 						<Route path="/" element={<Navigate to="/lobby" replace />} />
-						<Route path="/login" element={<LoginPage />} />
-						<Route path="/register" element={<RegisterPage />} />
+						<Route
+							path="/login"
+							element={
+								<PublicAuthRoute>
+									<LoginPage />
+								</PublicAuthRoute>
+							}
+						/>
+						<Route
+							path="/register"
+							element={
+								<PublicAuthRoute>
+									<RegisterPage />
+								</PublicAuthRoute>
+							}
+						/>
 						<Route path="/privacy-policy" element={<PrivacyPage />} />
 						<Route path="/terms-of-service" element={<TermsPage />} />
 

@@ -4,6 +4,7 @@ export function RegisterForm({
 	form,
 	updateField,
 	error,
+	errorField,
 	submitting,
 	onSubmit
 })
@@ -14,9 +15,12 @@ export function RegisterForm({
 				Create account
 			</h2>
 
-			<form className="form-container" onSubmit={onSubmit}>
+			<form className="form-container" onSubmit={onSubmit} noValidate>
 				<label className="lab" htmlFor="register-email">Email</label>
 				<input
+					className={errorField === 'email' ? 'input-error' : ''}
+					aria-describedby={error ? 'register-form-error' : undefined}
+					aria-invalid={errorField === 'email'}
 					id="register-email"
 					value={form.email}
 					onChange={(event) => updateField('email', event.target.value)}
@@ -27,6 +31,9 @@ export function RegisterForm({
 
 				<label className="lab" htmlFor="register-username">Username</label>
 				<input
+					className={errorField === 'username' ? 'input-error' : ''}
+					aria-describedby={error ? 'register-form-error' : undefined}
+					aria-invalid={errorField === 'username'}
 					id="register-username"
 					value={form.username}
 					onChange={(event) => updateField('username', event.target.value)}
@@ -36,6 +43,9 @@ export function RegisterForm({
 
 				<label className="lab" htmlFor="register-display-name">Display name</label>
 				<input
+					className={errorField === 'displayName' ? 'input-error' : ''}
+					aria-describedby={error ? 'register-form-error' : undefined}
+					aria-invalid={errorField === 'displayName'}
 					id="register-display-name"
 					value={form.displayName}
 					onChange={(event) => updateField('displayName', event.target.value)}
@@ -45,7 +55,10 @@ export function RegisterForm({
 
 				<label className="lab" htmlFor="register-password">Password</label>
 				<input
-					id="register-passwor"
+					className={errorField === 'password' ? 'input-error' : ''}
+					aria-describedby={error ? 'register-form-error' : undefined}
+					aria-invalid={errorField === 'password'}
+					id="register-password"
 					value={form.password}
 					onChange={(event) => updateField('password', event.target.value)}
 					type="password"
@@ -55,6 +68,9 @@ export function RegisterForm({
 
 				<label className="lab" htmlFor="register-confirm-password">Confirm password</label>
 				<input
+					className={errorField === 'confirmPassword' ? 'input-error' : ''}
+					aria-describedby={error ? 'register-form-error' : undefined}
+					aria-invalid={errorField === 'confirmPassword'}
 					id="register-confirm-password"
 					value={form.confirmPassword}
 					onChange={(event) => updateField('confirmPassword', event.target.value)}
@@ -69,7 +85,7 @@ export function RegisterForm({
 			</form>
 
 			{error && (
-				<p className="form-error">
+				<p className="form-error" id="register-form-error" aria-live="polite">
 					{error}
 				</p>
 			)}
@@ -87,6 +103,7 @@ export function LoginForm({
 	password,
 	setPassword,
 	error,
+	errorField,
 	submitting,
 	onSubmit
 })
@@ -100,6 +117,9 @@ export function LoginForm({
 			<form className="form-container" onSubmit={onSubmit} noValidate>
 				<label className="lab" htmlFor="login-email">Email</label>
 				<input
+					className={errorField === 'email' ? 'input-error' : ''}
+					aria-describedby={error ? 'login-form-error' : undefined}
+					aria-invalid={errorField === 'email'}
 					id="login-email"
 					value={email}
 					onChange={(event) => setEmail(event.target.value)}
@@ -109,6 +129,9 @@ export function LoginForm({
 				/>
 				<label className="lab" htmlFor="login-password">Password</label>
 				<input
+					className={errorField === 'password' ? 'input-error' : ''}
+					aria-describedby={error ? 'login-form-error' : undefined}
+					aria-invalid={errorField === 'password'}
 					id="login-password"
 					value={password}
 					onChange={(event) => setPassword(event.target.value)}
@@ -123,7 +146,7 @@ export function LoginForm({
 			</form>
 
 			{error && (
-				<p className="form-error">
+				<p className="form-error" id="login-form-error" aria-live="polite">
 					{error}
 				</p>
 			)}

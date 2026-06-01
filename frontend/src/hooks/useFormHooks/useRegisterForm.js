@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { api, getApiErrorMessage, setTokens } from '../../api';
-import validatePassword from '../validateHooks/validatePassword';
+import { api, getAuthErrorMessage, setTokens } from '../../api';
+import validateRegisterForm from '../validateHooks/validateForm/validateRegisterForm';
 
 export function useRegisterForm()
 {
@@ -16,10 +16,20 @@ export function useRegisterForm()
 	});
 
 	const [error, setError] = useState('');
+	const [errorField, setErrorField] = useState('');
 	const [submitting, setSubmitting] = useState(false);
 
 	function updateField(field, value)
 	{
+		if (!errorField)
+			setError('');
+
+		if (errorField === field)
+		{
+			setErrorField('');
+			setError('');
+		}
+
 		setForm({
 			...form,
 			[field]: value
@@ -28,7 +38,8 @@ export function useRegisterForm()
 
 	async function onSubmit(event)
 	{
-		let passwordError;
+		let trimmedForm;
+		let validationError;
 
 		event.preventDefault();
 
@@ -36,26 +47,30 @@ export function useRegisterForm()
 			return;
 
 		setError('');
+		setErrorField('');
 
-		passwordError = validatePassword(form.password);
+		trimmedForm = {
+			...form,
+			email: form.email.trim(),
+			username: form.username.trim(),
+			displayName: form.displayName.trim()
+		};
 
-		if (passwordError)
+		validationError = validateRegisterForm(trimmedForm);
+
+		if (validationError)
 		{
-			setError(passwordError);
+			setError(validationError.message);
+			setErrorField(validationError.field);
 			return;
 		}
 
-		if (form.password !== form.confirmPassword)
-		{
-			setError('Passwords do not match.');
-			return;
-		}
 
 		setSubmitting(true);
 
 		try
 		{
-			const { confirmPassword, ...registerPayload } = form;
+			const { confirmPassword, ...registerPayload } = trimmedForm;
 			const response = await api.post('/auth/register', registerPayload);
 			const data = response.data;
 
@@ -64,7 +79,8 @@ export function useRegisterForm()
 		}
 		catch (err)
 		{
-			setError(getApiErrorMessage(err, 'Register failed'));
+			setErrorField('');
+			setError(getAuthErrorMessage(err, 'Register failed'));
 		}
 		finally
 		{
@@ -75,6 +91,7 @@ export function useRegisterForm()
 	return {
 		form,
 		error,
+		errorField,
 		submitting,
 		updateField,
 		onSubmit

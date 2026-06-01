@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { api, getApiErrorMessage, setTokens } from '../../api';
+import { api, getAuthErrorMessage, setTokens } from '../../api';
 
 import validateEmail from '../validateHooks/validateEmail';
 
@@ -11,7 +11,36 @@ export function useLoginForm()
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
+	const [errorField, setErrorField] = useState('');
 	const [submitting, setSubmitting] = useState(false);
+
+	function updateEmail(value)
+	{
+		if (!errorField)
+			setError('');
+
+		if (errorField === 'email')
+		{
+			setErrorField('');
+			setError('');
+		}
+
+		setEmail(value);
+	}
+
+	function updatePassword(value)
+	{
+		if (!errorField)
+			setError('');
+
+		if (errorField === 'password')
+		{
+			setErrorField('');
+			setError('');
+		}
+
+		setPassword(value);
+	}
 
 	async function onSubmit(event)
 	{
@@ -21,17 +50,24 @@ export function useLoginForm()
 			return;
 
 		setError('');
+		setErrorField('');
 
+		const trimmedEmail = email.trim();
 		let emailError;
 
-		emailError = validateEmail(email);
+		emailError = validateEmail(trimmedEmail);
 
-		if (password.trim().length === 0)
-			setError('Empty field.');
-
-		else if (emailError)
+		if (emailError)
 		{
 			setError(emailError);
+			setErrorField('email');
+			return;
+		}
+
+		if (password.trim().length === 0)
+		{
+			setError('Please fill out this field: Password');
+			setErrorField('password');
 			return;
 		}
 
@@ -40,7 +76,7 @@ export function useLoginForm()
 		try
 		{
 			const response = await api.post('/auth/login', {
-				email: email,
+				email: trimmedEmail,
 				password: password
 			});
 
@@ -51,20 +87,8 @@ export function useLoginForm()
 		}
 		catch (err)
 		{
-			if (err.code === 'ECONNABORTED')
-			{
-				setError('Login timeout. Please try again.');
-			}
-			else if (!err.response)
-			{
-				setError(
-					'Cannot reach server. Check that Docker is running and localhost:8080 is available.'
-				);
-			}
-			else
-			{
-				setError(getApiErrorMessage(err, 'Login failed'));
-			}
+			setErrorField('');
+			setError(getAuthErrorMessage(err, 'Login failed'));
 		}
 		finally
 		{
@@ -74,10 +98,11 @@ export function useLoginForm()
 
 	return {
 		email,
-		setEmail,
+		setEmail: updateEmail,
 		password,
-		setPassword,
+		setPassword: updatePassword,
 		error,
+		errorField,
 		submitting,
 		onSubmit
 	};

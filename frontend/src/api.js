@@ -53,3 +53,16 @@ export function getApiErrorMessage(error, fallbackMessage)
 
 	return ( fallbackMessage );
 }
+
+export function getAuthErrorMessage(error, fallbackMessage)
+{
+	if (error.code === 'ECONNABORTED')
+		return ('Request timeout. Please try again.');
+
+	if (!error.response)
+		return (
+			'Cannot reach server. Check that Docker is running and localhost:8080 is available.'
+		);
+
+	return ( getApiErrorMessage(error, fallbackMessage) );
+}
