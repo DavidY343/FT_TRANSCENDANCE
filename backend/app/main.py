@@ -139,20 +139,6 @@ def _apply_elo(db, game: Game, result: str) -> None:
     else:
         score_white = 0.5
 
-    # AI games rate only the human player against a virtual fixed rating.
-    if _is_ai_mode(game) and game.black_id is None:
-        ai_rating = 1200
-        level = _ai_level(game)
-        if level == "easy":
-            ai_rating = 1050
-        elif level == "hard":
-            ai_rating = 1400
-
-        expected_white = _expected_score(white.elo, ai_rating)
-        white.elo = max(100, int(round(white.elo + k_factor * (score_white - expected_white))))
-        db.add(white)
-        return
-
     if game.black_id is None:
         return
 
