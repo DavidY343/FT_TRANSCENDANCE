@@ -33,6 +33,13 @@ def create_vs_ai_game(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
+    active_game = db.query(Game).filter(
+        ((Game.white_id == current_user.id) | (Game.black_id == current_user.id)),
+        Game.status != "finished"
+    ).first()
+    if active_game:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="You already have an active game in progress")
+
     game = Game(mode=f"ai:{payload.difficulty}:{payload.time_minutes}", white_id=current_user.id, black_id=None, status="playing")
     db.add(game)
     db.commit()
