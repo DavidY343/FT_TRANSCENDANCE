@@ -6,7 +6,7 @@ import { validateUsername } from '../validateUsername';
 
 export default function validateRegisterForm(form)
 {
-	const { email, username, displayName, password, confirmPassword } = form;
+	const { email, username, display_name, password, confirm_password } = form;
 
 	
 	const emailError = validateEmail(email.trim());
@@ -25,12 +25,12 @@ export default function validateRegisterForm(form)
 			field: 'username'
 		};
 
-	const displayNameError = validateDisplayName(displayName.trim());
+	const display_nameError = validateDisplayName(display_name.trim());
 
-	if (displayNameError)
+	if (display_nameError)
 		return {
-			message: displayNameError,
-			field: 'displayName'
+			message: display_nameError,
+			field: 'display_name'
 		};
 
 	const passwordError = validatePassword(password);
@@ -41,12 +41,12 @@ export default function validateRegisterForm(form)
 			field: 'password'
 		};
 
-	const confirmPasswordError = validateConfirmPassword(password, confirmPassword);
+	const confirm_passwordError = validateConfirmPassword(password, confirm_password);
 	
-	if (confirmPasswordError)
+	if (confirm_passwordError)
 		return {
-			message: confirmPasswordError,
-			field: 'confirmPassword'
+			message: confirm_passwordError,
+			field: 'confirm_password'
 		};
 
 	return null;

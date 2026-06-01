@@ -10,9 +10,9 @@ export function useRegisterForm()
 	const [form, setForm] = useState({
 		email: '',
 		username: '',
-		displayName: '',
+		display_name: '',
 		password: '',
-		confirmPassword: ''
+		confirm_password: ''
 	});
 
 	const [error, setError] = useState('');
@@ -53,7 +53,7 @@ export function useRegisterForm()
 			...form,
 			email: form.email.trim(),
 			username: form.username.trim(),
-			displayName: form.displayName.trim()
+			display_name: form.display_name.trim()
 		};
 
 		validationError = validateRegisterForm(trimmedForm);
@@ -70,7 +70,7 @@ export function useRegisterForm()
 
 		try
 		{
-			const { confirmPassword, ...registerPayload } = trimmedForm;
+			const { confirm_password, ...registerPayload } = trimmedForm;
 			const response = await api.post('/auth/register', registerPayload);
 			const data = response.data;
 

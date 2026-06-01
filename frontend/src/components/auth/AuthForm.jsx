@@ -43,12 +43,12 @@ export function RegisterForm({
 
 				<label className="lab" htmlFor="register-display-name">Display name</label>
 				<input
-					className={errorField === 'displayName' ? 'input-error' : ''}
+					className={errorField === 'display_name' ? 'input-error' : ''}
 					aria-describedby={error ? 'register-form-error' : undefined}
-					aria-invalid={errorField === 'displayName'}
+					aria-invalid={errorField === 'display_name'}
 					id="register-display-name"
-					value={form.displayName}
-					onChange={(event) => updateField('displayName', event.target.value)}
+					value={form.display_name}
+					onChange={(event) => updateField('display_name', event.target.value)}
 					placeholder="Display name"
 					required
 				/>
@@ -68,12 +68,12 @@ export function RegisterForm({
 
 				<label className="lab" htmlFor="register-confirm-password">Confirm password</label>
 				<input
-					className={errorField === 'confirmPassword' ? 'input-error' : ''}
+					className={errorField === 'confirm_password' ? 'input-error' : ''}
 					aria-describedby={error ? 'register-form-error' : undefined}
-					aria-invalid={errorField === 'confirmPassword'}
+					aria-invalid={errorField === 'confirm_password'}
 					id="register-confirm-password"
-					value={form.confirmPassword}
-					onChange={(event) => updateField('confirmPassword', event.target.value)}
+					value={form.confirm_password}
+					onChange={(event) => updateField('confirm_password', event.target.value)}
 					type="password"
 					placeholder="Confirm password"
 					required

@@ -21,13 +21,14 @@ function TopNav(props)
 
 	function handleDevLogin()
 	{
-		localStorage.setItem('access_token', 'dev-token');
+		sessionStorage.setItem('dev_auth', 'true');
 		navigate('/lobby');
 	}
 
 	function handleLogout()
 	{
-		clearTokens()
+		clearTokens();
+		sessionStorage.removeItem('dev_auth');
 		navigate('/login');
 	}
 

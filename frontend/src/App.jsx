@@ -15,11 +15,17 @@ import LeaderboardPage from './pages/LeaderboardPage';
 import Footer from "./components/Footer.jsx"
 import TopBar from './components/TopBar.jsx';
 
+function isDevAuthed()
+{
+	return (
+		import.meta.env.DEV
+		&& sessionStorage.getItem('dev_auth') === 'true'
+	);
+}
+
 function PrivateRoute({ children })
 {
-	const token = getAccessToken();
-
-	if (!token)
+	if (!getAccessToken() && !isDevAuthed())
 		return <Navigate to="/login" replace />;
 
 	return ( children );
@@ -27,9 +33,7 @@ function PrivateRoute({ children })
 
 function PublicAuthRoute({ children })
 {
-	const token = getAccessToken();
-
-	if (token)
+	if (getAccessToken() || isDevAuthed())
 		return <Navigate to="/lobby" replace />;
 
 	return ( children );
@@ -38,7 +42,7 @@ function PublicAuthRoute({ children })
 export default function App()
 {
 	const location = useLocation();
-	const isAuthed = Boolean(getAccessToken());
+	const isAuthed = Boolean(getAccessToken()) || isDevAuthed();
 	return (
 		<div className="app-layout">
 			<TopBar current={location.pathname} authed={isAuthed} />
