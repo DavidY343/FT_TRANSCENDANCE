@@ -1,4 +1,5 @@
-input
+input,
+select
 {
 	width: 100%;
 	border: 1px solid var(--line);
@@ -31,4 +32,16 @@ input.input-error
 input:focus-within
 {
 	transform: scale(1.01);
+}
+
+
+select,
+select option
+{
+	color: var(--text);
+	background-color: var(--bg);
+}
+select option:checked
+{
+	background-color: var(--selected);
 }

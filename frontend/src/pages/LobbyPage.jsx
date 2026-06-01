@@ -1,4 +1,47 @@
+import { ActiveGameCard } from '../components/lobby/ActiveGameCard';
+import { AiGameCard } from '../components/lobby/AiGameCard';
+import { LobbyHero } from '../components/lobby/LobbyHero';
+import { MatchmakingCard } from '../components/lobby/MatchmakingCard';
+import { useLobby } from '../hooks/useLobby';
+
+
 export default function LobbyPage()
-{	
-	return (<h1>Lobby</h1>);
+{
+	const lobby = useLobby();
+
+	return (
+		<section className="lobby-layout">
+			<LobbyHero
+				status={lobby.status}
+				position={lobby.position}
+				timeMinutes={lobby.timeMinutes}
+				error={lobby.error}
+			/>
+
+			<div className="lobby-actions-grid">
+				{lobby.activeGameId && (
+					<ActiveGameCard
+						activeGameId={lobby.activeGameId}
+						onResume={lobby.resumeActiveGame}
+					/>
+				)}
+
+				<MatchmakingCard
+					status={lobby.status}
+					timeMinutes={lobby.timeMinutes}
+					setTimeMinutes={lobby.setTimeMinutes}
+					onJoin={lobby.joinQueue}
+					onLeave={lobby.leaveQueue}
+				/>
+
+				<AiGameCard
+					difficulty={lobby.difficulty}
+					setDifficulty={lobby.setDifficulty}
+					timeMinutes={lobby.timeMinutes}
+					setTimeMinutes={lobby.setTimeMinutes}
+					onPlay={lobby.playVsAi}
+				/>
+			</div>
+		</section>
+	);
 }
