@@ -11,17 +11,38 @@ from app.schemas import CreateAIGameRequest
 router = APIRouter(prefix="/games", tags=["games"])
 
 
+def _time_minutes_from_mode(mode: str) -> int:
+    if mode.startswith("ai:"):
+        parts = mode.split(":")
+        if len(parts) >= 3 and parts[2].isdigit():
+            value = int(parts[2])
+            if value in {5, 10, 30}:
+                return value
+        return 10
+
+    if mode.startswith("1v1:"):
+        _, _, minutes = mode.partition(":")
+        if minutes.isdigit() and int(minutes) in {5, 10, 30}:
+            return int(minutes)
+    return 10
+
+
 @router.post("/vs-ai")
 def create_vs_ai_game(
     payload: CreateAIGameRequest,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    game = Game(mode=f"ai:{payload.difficulty}", white_id=current_user.id, black_id=None, status="playing")
+    game = Game(mode=f"ai:{payload.difficulty}:{payload.time_minutes}", white_id=current_user.id, black_id=None, status="playing")
     db.add(game)
     db.commit()
     db.refresh(game)
-    return {"game_id": game.id, "mode": game.mode, "difficulty": payload.difficulty}
+    return {
+        "game_id": game.id,
+        "mode": game.mode,
+        "difficulty": payload.difficulty,
+        "time_minutes": payload.time_minutes,
+    }
 
 
 @router.get("/history")
@@ -69,7 +90,8 @@ def game_history(db: Session = Depends(get_db), current_user: User = Depends(get
         is_white = game.white_id == current_user.id
         opponent_id = game.black_id if is_white else game.white_id
         if game.mode.startswith("ai:") and opponent_id is None:
-            _, _, difficulty = game.mode.partition(":")
+            parts = game.mode.split(":")
+            difficulty = parts[1] if len(parts) >= 2 else "medium"
             opponent = {"id": None, "username": "ai", "display_name": f"AI ({difficulty or 'medium'})"}
         else:
             opponent = _player_info(opponent_id)
@@ -137,5 +159,15 @@ def get_game_state(game_id: int, db: Session = Depends(get_db), current_user: Us
     if not allowed:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not allowed")
 
-    room = realtime_manager.get_or_create_room(game.id, game.white_id, game.black_id, game.final_fen)
+    initial_minutes = _time_minutes_from_mode(game.mode)
+    room = realtime_manager.get_or_create_room(
+        game.id,
+        game.white_id,
+        game.black_id,
+        game.final_fen,
+        initial_ms=initial_minutes * 60 * 1000,
+        time_control_minutes=initial_minutes,
+        is_ai=game.mode.startswith("ai:"),
+        finished=game.status == "finished",
+    )
     return room.to_payload()

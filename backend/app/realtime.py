@@ -16,8 +16,12 @@ class RoomState:
     white_id: int | None
     black_id: int | None
     board: chess.Board = field(default_factory=chess.Board)
-    white_ms: int = 5 * 60 * 1000
-    black_ms: int = 5 * 60 * 1000
+    white_ms: int = 10 * 60 * 1000
+    black_ms: int = 10 * 60 * 1000
+    time_control_minutes: int = 10
+    is_ai: bool = False
+    finished: bool = False
+    chat_messages: list[dict] = field(default_factory=list)
     last_clock_ts: datetime = field(default_factory=datetime.utcnow)
     clock_started: bool = False
     clock_task: asyncio.Task | None = None
@@ -29,12 +33,15 @@ class RoomState:
             "game_id": self.game_id,
             "fen": self.board.fen(),
             "turn": "w" if self.board.turn == chess.WHITE else "b",
-            "status": "finished" if self.board.is_game_over(claim_draw=True) else "playing",
+            "status": "finished" if self.finished or self.board.is_game_over(claim_draw=True) else "playing",
             "last_move": self.board.peek().uci() if self.board.move_stack else None,
             "move_count": len(self.board.move_stack),
             "legal_moves": [move.uci() for move in self.board.legal_moves],
             "players": {"white_id": self.white_id, "black_id": self.black_id},
             "clocks": {"white_ms": self.white_ms, "black_ms": self.black_ms},
+            "time_control_minutes": self.time_control_minutes,
+            "is_ai": self.is_ai,
+            "chat_messages": self.chat_messages,
         }
 
 
@@ -78,13 +85,37 @@ class RealtimeManager:
     def is_user_connected(self, user_id: int) -> bool:
         return self._user_connections.get(user_id, 0) > 0
 
-    def get_or_create_room(self, game_id: int, white_id: int | None, black_id: int | None, fen: str | None) -> RoomState:
+    def get_or_create_room(
+        self,
+        game_id: int,
+        white_id: int | None,
+        black_id: int | None,
+        fen: str | None,
+        *,
+        initial_ms: int = 10 * 60 * 1000,
+        time_control_minutes: int = 10,
+        is_ai: bool = False,
+        finished: bool = False,
+    ) -> RoomState:
         room = self._rooms.get(game_id)
         if room:
+            room.time_control_minutes = time_control_minutes
+            room.is_ai = is_ai
+            room.finished = finished or room.finished
             return room
 
         board = chess.Board(fen) if fen else chess.Board()
-        room = RoomState(game_id=game_id, white_id=white_id, black_id=black_id, board=board)
+        room = RoomState(
+            game_id=game_id,
+            white_id=white_id,
+            black_id=black_id,
+            board=board,
+            white_ms=initial_ms,
+            black_ms=initial_ms,
+            time_control_minutes=time_control_minutes,
+            is_ai=is_ai,
+            finished=finished,
+        )
         self._rooms[game_id] = room
         return room
 

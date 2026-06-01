@@ -1,4 +1,7 @@
-from pydantic import BaseModel, EmailStr, Field
+import re
+from datetime import datetime
+
+from pydantic import BaseModel, EmailStr, Field, field_validator
 
 
 class RegisterRequest(BaseModel):
@@ -6,6 +9,22 @@ class RegisterRequest(BaseModel):
     username: str = Field(min_length=3, max_length=80)
     password: str = Field(min_length=8, max_length=128)
     display_name: str = Field(min_length=2, max_length=120)
+
+    @field_validator("password")
+    @classmethod
+    def validate_password_policy(cls, value: str) -> str:
+        # Typical web password policy: min length + lower + upper + digit + symbol.
+        if len(value) < 8:
+            raise ValueError("Password must be at least 8 characters long")
+        if not re.search(r"[a-z]", value):
+            raise ValueError("Password must include at least one lowercase letter")
+        if not re.search(r"[A-Z]", value):
+            raise ValueError("Password must include at least one uppercase letter")
+        if not re.search(r"\d", value):
+            raise ValueError("Password must include at least one number")
+        if not re.search(r"[^A-Za-z0-9]", value):
+            raise ValueError("Password must include at least one special character")
+        return value
 
 
 class LoginRequest(BaseModel):
@@ -50,9 +69,38 @@ class UserSearchOut(BaseModel):
     online: bool
 
 
+class FriendRequestOut(BaseModel):
+    id: int
+    requester_id: int
+    addressee_id: int
+    status: str
+    created_at: datetime
+    requester: UserSearchOut | None = None
+    addressee: UserSearchOut | None = None
+
+
 class RefreshRequest(BaseModel):
     refresh_token: str
 
 
 class CreateAIGameRequest(BaseModel):
     difficulty: str = Field(default="medium", pattern="^(easy|medium|hard)$")
+    time_minutes: int = Field(default=10)
+
+    @field_validator("time_minutes")
+    @classmethod
+    def validate_ai_time_control(cls, value: int) -> int:
+        if value not in {5, 10, 30}:
+            raise ValueError("time_minutes must be one of: 5, 10, 30")
+        return value
+
+
+class MatchmakingJoinRequest(BaseModel):
+    time_minutes: int = Field(default=10)
+
+    @field_validator("time_minutes")
+    @classmethod
+    def validate_matchmaking_time_control(cls, value: int) -> int:
+        if value not in {5, 10, 30}:
+            raise ValueError("time_minutes must be one of: 5, 10, 30")
+        return value

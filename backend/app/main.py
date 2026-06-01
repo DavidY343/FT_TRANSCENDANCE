@@ -1,5 +1,6 @@
 import asyncio
 import math
+from time import perf_counter
 from datetime import datetime
 
 import chess
@@ -58,8 +59,33 @@ def _is_ai_mode(game: Game) -> bool:
 def _ai_level(game: Game) -> str:
     if not _is_ai_mode(game):
         return "medium"
-    _, _, level = game.mode.partition(":")
-    return level or "medium"
+    parts = game.mode.split(":")
+    if len(parts) >= 2 and parts[1]:
+        return parts[1]
+    return "medium"
+
+
+def _ai_level_from_mode(mode: str) -> str:
+    parts = mode.split(":")
+    if len(parts) >= 2 and parts[1]:
+        return parts[1]
+    return "medium"
+
+
+def _time_minutes_from_mode(mode: str) -> int:
+    if mode.startswith("ai:"):
+        parts = mode.split(":")
+        if len(parts) >= 3 and parts[2].isdigit():
+            value = int(parts[2])
+            if value in {5, 10, 30}:
+                return value
+        return 10
+
+    if mode.startswith("1v1:"):
+        _, _, minutes = mode.partition(":")
+        if minutes.isdigit() and int(minutes) in {5, 10, 30}:
+            return int(minutes)
+    return 10
 
 
 def _game_result_from_board(board: chess.Board) -> tuple[str, str]:
@@ -95,6 +121,9 @@ def _expected_score(rating_a: int, rating_b: int) -> float:
 
 
 def _apply_elo(db, game: Game, result: str) -> None:
+    if _is_ai_mode(game):
+        return
+
     if game.white_id is None:
         return
 
@@ -142,6 +171,7 @@ def _apply_elo(db, game: Game, result: str) -> None:
 
 
 def _finish_game(db, game: Game, room, result: str, reason: str) -> dict:
+    room.finished = True
     game.status = "finished"
     game.result = result
     game.ended_at = datetime.utcnow()
@@ -150,7 +180,31 @@ def _finish_game(db, game: Game, room, result: str, reason: str) -> dict:
     _apply_elo(db, game, result)
     db.add(game)
     db.commit()
-    return {"type": "GAME_OVER", "reason": reason, "result": result, "state": room.to_payload()}
+
+    winner = None
+    if result == "white_win" and game.white_id is not None:
+        white = db.get(User, game.white_id)
+        winner = {
+            "id": game.white_id,
+            "username": white.username if white else "unknown",
+        }
+    elif result == "black_win":
+        if game.black_id is None and _is_ai_mode(game):
+            winner = {"id": None, "username": "ai"}
+        elif game.black_id is not None:
+            black = db.get(User, game.black_id)
+            winner = {
+                "id": game.black_id,
+                "username": black.username if black else "unknown",
+            }
+
+    return {
+        "type": "GAME_OVER",
+        "reason": reason,
+        "result": result,
+        "winner": winner,
+        "state": room.to_payload(),
+    }
 
 
 async def _clock_loop(game_id: int):
@@ -164,6 +218,8 @@ async def _clock_loop(game_id: int):
         try:
             game = db.get(Game, game_id)
             if game is None or game.status == "finished":
+                if room:
+                    room.finished = True
                 return
 
             now = datetime.utcnow()
@@ -178,6 +234,9 @@ async def _clock_loop(game_id: int):
             else:
                 room.black_ms = max(0, room.black_ms - elapsed_ms)
 
+            if room.finished:
+                return
+
             await realtime_manager.broadcast(game_id, {"type": "CLOCK_TICK", "clocks": room.to_payload()["clocks"]})
 
             if room.white_ms <= 0 or room.black_ms <= 0:
@@ -186,6 +245,9 @@ async def _clock_loop(game_id: int):
                 await realtime_manager.broadcast(game_id, {"type": "STATE_SYNC", "state": room.to_payload()})
                 await realtime_manager.broadcast(game_id, game_over_payload)
                 return
+        except Exception:
+            # Prevent unhandled task exceptions from crashing noisy rooms during transient DB pressure.
+            return
         finally:
             try:
                 db.close()
@@ -237,9 +299,9 @@ async def websocket_game(game_id: int, websocket: WebSocket, token: str | None =
         await websocket.close(code=1008, reason="Invalid token")
         return
 
-    db = SessionLocal()
+    init_db = SessionLocal()
     try:
-        game = db.get(Game, game_id)
+        game = init_db.get(Game, game_id)
         if not game:
             await websocket.close(code=1008, reason="Game not found")
             return
@@ -252,10 +314,33 @@ async def websocket_game(game_id: int, websocket: WebSocket, token: str | None =
             await websocket.close(code=1008, reason="Not allowed")
             return
 
+        white_id = game.white_id
+        black_id = game.black_id
+        game_mode = game.mode
+        game_finished = game.status == "finished"
+        final_fen = game.final_fen
+    finally:
+        try:
+            init_db.close()
+        except Exception:
+            pass
+
+    try:
+
         was_reconnecting = await realtime_manager.connect(game_id, user_id, websocket)
         set_online(user_id)
 
-        room = realtime_manager.get_or_create_room(game.id, game.white_id, game.black_id, game.final_fen)
+        minutes = _time_minutes_from_mode(game_mode)
+        room = realtime_manager.get_or_create_room(
+            game_id,
+            white_id,
+            black_id,
+            final_fen,
+            initial_ms=minutes * 60 * 1000,
+            time_control_minutes=minutes,
+            is_ai=bool(game_mode and game_mode.startswith("ai:")),
+            finished=game_finished,
+        )
         room.last_clock_ts = datetime.utcnow()
 
         if room.clock_task is None or room.clock_task.done():
@@ -275,7 +360,12 @@ async def websocket_game(game_id: int, websocket: WebSocket, token: str | None =
             )
 
         while True:
-            incoming = await websocket.receive_json()
+            try:
+                incoming = await websocket.receive_json()
+            except RuntimeError:
+                # Starlette can raise RuntimeError on abrupt disconnects before WebSocketDisconnect.
+                break
+
             event_type = incoming.get("type")
 
             if event_type == "STATE_SYNC_REQ":
@@ -283,20 +373,61 @@ async def websocket_game(game_id: int, websocket: WebSocket, token: str | None =
                 continue
 
             if event_type == "RESIGN":
-                if game.status == "finished":
-                    continue
+                event_db = SessionLocal()
+                try:
+                    game = event_db.get(Game, game_id)
+                    if not game or game.status == "finished" or room.finished:
+                        room.finished = True
+                        continue
 
-                if user_id == game.white_id:
-                    result = "black_win"
-                else:
-                    result = "white_win"
-                game_over_payload = _finish_game(db, game, room, result, "resign")
+                    if user_id == game.white_id:
+                        result = "black_win"
+                    else:
+                        result = "white_win"
+                    game_over_payload = _finish_game(event_db, game, room, result, "resign")
+                finally:
+                    try:
+                        event_db.close()
+                    except Exception:
+                        pass
+
                 await realtime_manager.broadcast(game_id, {"type": "STATE_SYNC", "state": room.to_payload()})
                 await realtime_manager.broadcast(game_id, game_over_payload)
                 continue
 
+            if event_type == "CHAT_SEND":
+                if room.is_ai:
+                    await realtime_manager.send_personal(
+                        websocket,
+                        {
+                            "type": "ERROR",
+                            "message": "Chat is only available in human vs human games",
+                        },
+                    )
+                    continue
+
+                text = str(incoming.get("message", "")).strip()
+                if not text:
+                    await realtime_manager.send_personal(websocket, {"type": "ERROR", "message": "Empty message"})
+                    continue
+                text = text[:500]
+                message = {
+                    "user_id": user_id,
+                    "message": text,
+                    "at": datetime.utcnow().isoformat() + "Z",
+                }
+                room.chat_messages.append(message)
+                if len(room.chat_messages) > 100:
+                    room.chat_messages = room.chat_messages[-100:]
+                await realtime_manager.broadcast(game_id, {"type": "CHAT_MESSAGE", "payload": message})
+                continue
+
             if event_type != "MOVE_SUBMIT":
                 await realtime_manager.send_personal(websocket, {"type": "ERROR", "message": "Unsupported event type"})
+                continue
+
+            if room.finished:
+                await realtime_manager.send_personal(websocket, {"type": "MOVE_REJECTED", "reason": "Game finished"})
                 continue
 
             move_uci = str(incoming.get("move", "")).strip().lower()
@@ -313,7 +444,7 @@ async def websocket_game(game_id: int, websocket: WebSocket, token: str | None =
                 await realtime_manager.send_personal(websocket, {"type": "MOVE_REJECTED", "reason": "Missing move"})
                 continue
 
-            turn_user = game.white_id if room.board.turn == chess.WHITE else game.black_id
+            turn_user = room.white_id if room.board.turn == chess.WHITE else room.black_id
             if turn_user != user_id:
                 await realtime_manager.send_personal(websocket, {"type": "MOVE_REJECTED", "reason": "Not your turn"})
                 continue
@@ -330,25 +461,86 @@ async def websocket_game(game_id: int, websocket: WebSocket, token: str | None =
 
             room.board.push(move)
             room.last_clock_ts = datetime.utcnow()
-            game.status = "playing"
-            game.final_fen = room.board.fen()
-            game.move_count = len(room.board.move_stack)
+            next_fen = room.board.fen()
+            next_move_count = len(room.board.move_stack)
 
-            if _is_ai_mode(game) and game.status != "finished" and room.board.turn == chess.BLACK:
-                ai_move = ai_for_level(_ai_level(game)).choose_move(room.board)
+            should_sync_before_ai = room.is_ai and not room.finished and room.board.turn == chess.BLACK
+            if should_sync_before_ai:
+                await realtime_manager.broadcast(
+                    game_id,
+                    {
+                        "type": "STATE_SYNC",
+                        "state": room.to_payload(),
+                    },
+                )
+
+            if should_sync_before_ai:
+                think_start = perf_counter()
+                ai_move = ai_for_level(_ai_level_from_mode(game_mode)).choose_move(room.board)
+                think_elapsed_ms = int((perf_counter() - think_start) * 1000)
+
+                if think_elapsed_ms > 0:
+                    room.black_ms = max(0, room.black_ms - think_elapsed_ms)
+
+                room.last_clock_ts = datetime.utcnow()
+
+                if room.black_ms <= 0:
+                    game_over_payload = None
+                    event_db = SessionLocal()
+                    try:
+                        game = event_db.get(Game, game_id)
+                        if game and game.status != "finished":
+                            game_over_payload = _finish_game(event_db, game, room, "white_win", "timeout")
+                    finally:
+                        try:
+                            event_db.close()
+                        except Exception:
+                            pass
+
+                    await realtime_manager.broadcast(
+                        game_id,
+                        {
+                            "type": "STATE_SYNC",
+                            "state": room.to_payload(),
+                        },
+                    )
+                    if game_over_payload:
+                        await realtime_manager.broadcast(game_id, game_over_payload)
+                    continue
+
                 if ai_move is not None:
                     room.board.push(ai_move)
                     room.last_clock_ts = datetime.utcnow()
-                    game.final_fen = room.board.fen()
-                    game.move_count = len(room.board.move_stack)
+                    next_fen = room.board.fen()
+                    next_move_count = len(room.board.move_stack)
 
             game_over_payload = None
-            if room.board.is_game_over(claim_draw=True):
-                result, reason = _game_result_from_board(room.board)
-                game_over_payload = _finish_game(db, game, room, result, reason)
-            else:
-                db.add(game)
-                db.commit()
+            event_db = SessionLocal()
+            try:
+                game = event_db.get(Game, game_id)
+                if not game or game.status == "finished":
+                    room.finished = True
+                    await realtime_manager.send_personal(
+                        websocket,
+                        {"type": "MOVE_REJECTED", "reason": "Game finished"},
+                    )
+                    continue
+
+                game.status = "playing"
+                game.final_fen = next_fen
+                game.move_count = next_move_count
+
+                if room.board.is_game_over(claim_draw=True):
+                    result, reason = _game_result_from_board(room.board)
+                    game_over_payload = _finish_game(event_db, game, room, result, reason)
+                else:
+                    event_db.add(game)
+                    event_db.commit()
+            finally:
+                try:
+                    event_db.close()
+                except Exception:
+                    pass
 
             await realtime_manager.broadcast(
                 game_id,
@@ -362,6 +554,9 @@ async def websocket_game(game_id: int, websocket: WebSocket, token: str | None =
                 await realtime_manager.broadcast(game_id, game_over_payload)
 
     except WebSocketDisconnect:
+        pass
+    except RuntimeError:
+        # Defensive: runtime disconnect race can bypass WebSocketDisconnect.
         pass
     finally:
         offline = await realtime_manager.disconnect(game_id, user_id)
@@ -381,7 +576,4 @@ async def websocket_game(game_id: int, websocket: WebSocket, token: str | None =
             if room:
                 room.disconnect_tasks[user_id] = asyncio.create_task(_forfeit_if_not_reconnected(game_id, user_id))
 
-        try:
-            db.close()
-        except Exception:
-            pass
+        pass

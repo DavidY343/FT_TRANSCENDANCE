@@ -10,53 +10,67 @@ from sqlalchemy.orm import Session
 from app.db import get_db
 from app.deps import get_current_user
 from app.models import Game, User
+from app.schemas import MatchmakingJoinRequest
 
 
 router = APIRouter(prefix="/matchmaking", tags=["matchmaking"])
 
-_queue: deque[int] = deque()
+_queues: dict[int, deque[int]] = {5: deque(), 10: deque(), 30: deque()}
 _pending_matches: dict[int, int] = {}
 _lock = Lock()
 
 
-def _remove_from_queue(user_id: int) -> None:
-    global _queue
-    _queue = deque(uid for uid in _queue if uid != user_id)
+def _remove_from_all_queues(user_id: int) -> None:
+    for key in _queues:
+        _queues[key] = deque(uid for uid in _queues[key] if uid != user_id)
 
 
 @router.post("/join")
-def join_queue(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+def join_queue(
+    payload: MatchmakingJoinRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    queue = _queues[payload.time_minutes]
     with _lock:
         matched_game_id = _pending_matches.pop(current_user.id, None)
         if matched_game_id:
             return {"status": "matched", "game_id": matched_game_id}
 
-        if current_user.id in _queue:
-            position = list(_queue).index(current_user.id) + 1
-            return {"status": "waiting", "position": position}
+        for minutes, q in _queues.items():
+            if current_user.id in q:
+                position = list(q).index(current_user.id) + 1
+                if minutes == payload.time_minutes:
+                    return {
+                        "status": "waiting",
+                        "position": position,
+                        "time_minutes": minutes,
+                    }
+                _remove_from_all_queues(current_user.id)
+                break
 
-        if _queue:
-            opponent_id = _queue.popleft()
+        if queue:
+            opponent_id = queue.popleft()
             players = [current_user.id, opponent_id]
             shuffle(players)
             white_id, black_id = players
 
-            game = Game(mode="1v1", white_id=white_id, black_id=black_id, status="playing")
+            game = Game(mode=f"1v1:{payload.time_minutes}", white_id=white_id, black_id=black_id, status="playing")
             db.add(game)
             db.commit()
             db.refresh(game)
 
             _pending_matches[opponent_id] = game.id
-            return {"status": "matched", "game_id": game.id}
+            return {"status": "matched", "game_id": game.id, "time_minutes": payload.time_minutes}
 
-        _queue.append(current_user.id)
-        return {"status": "waiting", "position": len(_queue)}
+        queue.append(current_user.id)
+        return {"status": "waiting", "position": len(queue), "time_minutes": payload.time_minutes}
 
 
 @router.delete("/leave")
 def leave_queue(current_user: User = Depends(get_current_user)):
     with _lock:
-        _remove_from_queue(current_user.id)
+        _remove_from_all_queues(current_user.id)
         _pending_matches.pop(current_user.id, None)
     return {"status": "left"}
 
@@ -68,7 +82,12 @@ def queue_status(current_user: User = Depends(get_current_user)):
         if matched_game_id:
             return {"status": "matched", "game_id": matched_game_id}
 
-        if current_user.id in _queue:
-            return {"status": "waiting", "position": list(_queue).index(current_user.id) + 1}
+        for minutes, q in _queues.items():
+            if current_user.id in q:
+                return {
+                    "status": "waiting",
+                    "position": list(q).index(current_user.id) + 1,
+                    "time_minutes": minutes,
+                }
 
     return {"status": "idle"}
