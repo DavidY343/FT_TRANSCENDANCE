@@ -37,7 +37,7 @@ export function useGameBoard({ wsRef, setError, canInteractBoard, myColor, legal
 
 		legalTargets.forEach((square) => {
 			styles[square] = {
-				background: 'rgba(47, 139, 87, 0.55)',
+				background: 'radial-gradient(circle, rgba(47, 139, 87, 0.65) 25%, transparent 50%)',
 			};
 		});
 

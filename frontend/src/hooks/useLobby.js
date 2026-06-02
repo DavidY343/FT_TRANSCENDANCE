@@ -26,13 +26,40 @@ export function useLobby()
 		}
 	}
 
+	async function recoverActiveGame()
+	{
+		const response = await api.get('/games/history');
+		const activeGame = response.data?.find((game) => (
+			game.status !== 'finished'
+			|| game.result_for_me === 'in_progress'
+		));
+
+		if (!activeGame)
+		{
+			sessionStorage.removeItem('active_game_id');
+			setActiveGameId(null);
+			return null;
+		}
+
+		sessionStorage.setItem('active_game_id', String(activeGame.id));
+		setActiveGameId(activeGame.id);
+		return activeGame.id;
+	}
+
 	async function loadActiveGame()
 	{
 		const stored = sessionStorage.getItem('active_game_id');
 
 		if (!stored)
 		{
-			setActiveGameId(null);
+			try
+			{
+				await recoverActiveGame();
+			}
+			catch (_err)
+			{
+				setActiveGameId(null);
+			}
 			return;
 		}
 
@@ -52,7 +79,14 @@ export function useLobby()
 		catch (_err)
 		{
 			sessionStorage.removeItem('active_game_id');
-			setActiveGameId(null);
+			try
+			{
+				await recoverActiveGame();
+			}
+			catch (_recoverErr)
+			{
+				setActiveGameId(null);
+			}
 		}
 	}
 
@@ -105,7 +139,23 @@ export function useLobby()
 		}
 		catch (err)
 		{
-			setError(getApiErrorMessage(err, 'Unable to join queue'));
+			const message = getApiErrorMessage(err, 'Unable to join queue');
+
+			if (message === 'You already have an active game in progress')
+			{
+				try
+				{
+					await recoverActiveGame();
+					setError('You already have an active game. Resume or resign it first.');
+				}
+				catch (_recoverErr)
+				{
+					setError(message);
+				}
+				return;
+			}
+
+			setError(message);
 		}
 	}
 
@@ -144,7 +194,23 @@ export function useLobby()
 		}
 		catch (err)
 		{
-			setError(getApiErrorMessage(err, 'Unable to start AI game'));
+			const message = getApiErrorMessage(err, 'Unable to start AI game');
+
+			if (message === 'You already have an active game in progress')
+			{
+				try
+				{
+					await recoverActiveGame();
+					setError('You already have an active game. Resume or resign it first.');
+				}
+				catch (_recoverErr)
+				{
+					setError(message);
+				}
+				return;
+			}
+
+			setError(message);
 		}
 	}
 
