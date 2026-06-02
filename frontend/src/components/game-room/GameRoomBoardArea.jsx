@@ -18,6 +18,9 @@ export function GameRoomBoardArea({room})
 			<GameBoard
 				fen={state?.fen}
 				orientation={room?.myColor || 'white'}
+				onPieceDragBegin={room?.beginDragPiece}
+				onPieceDragEnd={room?.endDragPiece}
+				onPieceDrop={room?.dropPiece}
 				onPieceClick={room?.selectPiece}
 				onSquareClick={room?.selectTarget}
 				squareStyles={room?.squareStyles}

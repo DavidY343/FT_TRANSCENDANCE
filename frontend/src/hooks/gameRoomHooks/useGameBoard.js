@@ -12,9 +12,22 @@ function isOwnPiece(piece, myColor)
 	return (piece[0] === 'b');
 }
 
-export function useGameBoard({ wsRef, setError, canInteractBoard, myColor, legalMoves = [] })
+export function useGameBoard({
+	wsRef,
+	setError,
+	canInteractBoard,
+	myColor,
+	legalMoves = [],
+})
 {
 	const [selectedSquare, setSelectedSquare] = useState(null);
+
+	function isLegalMove(from, to, promotion = '')
+	{
+		const move = `${from}${to}${promotion}`.toLowerCase();
+
+		return legalMoves.includes(move);
+	}
 
 	const legalTargets = useMemo(() => {
 		if (!selectedSquare)
@@ -87,11 +100,50 @@ export function useGameBoard({ wsRef, setError, canInteractBoard, myColor, legal
 		setSelectedSquare(null);
 	}
 
+	function beginDragPiece(piece, square)
+	{
+		selectPiece(piece, square);
+	}
+
+	function endDragPiece()
+	{
+		window.setTimeout(() => {
+			setSelectedSquare(null);
+		}, 0);
+	}
+
+	function dropPiece(from, to, piece)
+	{
+		if (!canInteractBoard)
+		{
+			setSelectedSquare(null);
+			return (false);
+		}
+
+		if (!isOwnPiece(piece, myColor))
+		{
+			setSelectedSquare(null);
+			return (false);
+		}
+
+		if (!isLegalMove(from, to))
+		{
+			setSelectedSquare(null);
+			return (false);
+		}
+
+		setSelectedSquare(null);
+		return submitMove(from, to, '');
+	}
+
 	return {
 		selectedSquare,
 		squareStyles,
 		selectPiece,
+		beginDragPiece,
+		endDragPiece,
 		selectTarget,
+		dropPiece,
 		submitMove,
 	};
 }

@@ -50,6 +50,9 @@ export function useGameRoom(gameId)
 		selectedSquare: board.selectedSquare,
 		selectPiece: board.selectPiece,
 		selectTarget: board.selectTarget,
+		beginDragPiece: board.beginDragPiece,
+		endDragPiece: board.endDragPiece,
+		dropPiece: board.dropPiece,
 		submitMove: board.submitMove,
 		squareStyles: board.squareStyles,
 

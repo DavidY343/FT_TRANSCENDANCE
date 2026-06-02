@@ -5,6 +5,8 @@ export function GameBoard({
 	orientation = 'white',
 	onPieceDrop,
 	onPieceClick,
+	onPieceDragBegin,
+	onPieceDragEnd,
 	onSquareClick,
 	squareStyles = {},
 	canMove = false,
@@ -15,6 +17,8 @@ export function GameBoard({
 			<Chessboard
 				position={fen || 'start'}
 				boardOrientation={orientation}
+				onPieceDragBegin={onPieceDragBegin}
+				onPieceDragEnd={onPieceDragEnd}
 				onPieceDrop={onPieceDrop}
 				onPieceClick={onPieceClick}
 				onSquareClick={onSquareClick}
