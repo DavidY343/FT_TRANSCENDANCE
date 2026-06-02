@@ -4,7 +4,7 @@ export function GameRoomClocks({ clocks, turn, players })
 {
 	return (
 		<div className="clocks-banner">
-			<article className={`clock ${turn === 'w' ? 'clock-active' : ''}`}>
+			<article className={`clock clock-white ${turn === 'w' ? 'clock-active' : ''}`}>
 				<span>
 					{players?.white || 'White'}
 				</span>
@@ -13,7 +13,7 @@ export function GameRoomClocks({ clocks, turn, players })
 				</strong>
 			</article>
 
-			<article className={`clock ${turn === 'b' ? 'clock-active' : ''}`}>
+			<article className={`clock clock-black ${turn === 'b' ? 'clock-active' : ''}`}>
 				<span>
 					{players?.black || 'Black'}
 				</span>

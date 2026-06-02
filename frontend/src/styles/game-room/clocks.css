@@ -1,23 +1,16 @@
 
 .clock
 {
-	padding: 0.75rem 0.85rem;
-	border-radius: 8px;
-	border: 1px solid var(--line-strong, #6b6b6b);
-	background: var(--surface-soft, #424242);
-}
-
-.clock--active
-{
-	border-color: var(--accent, #88b04b);
-	box-shadow: 0 0 0 1px rgba(136, 176, 75, 0.38) inset;
+	border: 1px solid var(--chess-light);
+	border-radius: 12px;
+	padding: 0.98rem 1rem;
+	box-shadow: 0 0 12px var(--shadow);
 }
 
 .clock span
 {
 	display: block;
 	margin-bottom: 0.25rem;
-	color: var(--text-muted);
 	font-size: 0.72rem;
 	text-transform: uppercase;
 	letter-spacing: 0.12em;
@@ -26,6 +19,46 @@
 .clock strong
 {
 	display: block;
-	color: #ffffff;
 	font-size: clamp(1.25rem, 2vw, 1.7rem);
+}
+
+.clock-white
+{
+	background: rgba(255, 255, 255, 0.35) ;
+}
+.clock-white span,
+.clock-white strong
+{
+	color: rgba(0, 0, 0, 0.35);
+}
+
+.clock-white.clock-active
+{
+	background: white;
+}
+
+.clock-white.clock-active span,
+.clock-white.clock-active strong
+{
+	color: black;
+}
+
+
+.clock-black
+{
+	background: rgba(0, 0, 0, 0.35) ;
+}
+.clock-black span,
+.clock-black strong
+{
+	color: rgba(255, 255, 255, 0.35);
+}
+.clock-black.clock-active
+{
+	background: black;
+}
+.clock-black.clock-active span,
+.clock-black.clock-active strong
+{
+	color: white;
 }
