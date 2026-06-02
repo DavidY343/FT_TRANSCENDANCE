@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { api, getApiErrorMessage } from '../api';
+import { api, getAccessToken, getApiErrorMessage, getGameSocketUrl } from '../api';
+import { GAME_ROOM_EVENTS } from '../gameRoomContract';
 
 export function useLobby()
 {
@@ -14,6 +15,7 @@ export function useLobby()
 	const [timeMinutes, setTimeMinutes] = useState(10);
 	const [error, setError] = useState('');
 	const [activeGameId, setActiveGameId] = useState(null);
+	const [resigning, setResigning] = useState(false);
 
 	function clearPolling()
 	{
@@ -152,6 +154,83 @@ export function useLobby()
 			navigate(`/games/${activeGameId}`);
 	}
 
+	function sendResign(gameId)
+	{
+		return new Promise((resolve, reject) => {
+			const token = getAccessToken();
+
+			if (!token)
+			{
+				reject(new Error('You need to log in again before resigning.'));
+				return;
+			}
+
+			const ws = new WebSocket(
+				`${getGameSocketUrl(gameId)}?token=${encodeURIComponent(token)}`
+			);
+			const timeoutId = window.setTimeout(() => {
+				ws.close();
+				reject(new Error('Unable to confirm resignation. Please try again.'));
+			}, 5000);
+
+			ws.addEventListener('open', () => {
+				ws.send(JSON.stringify({ type: GAME_ROOM_EVENTS.RESIGN }));
+			});
+
+			ws.addEventListener('message', (event) => {
+				try
+				{
+					const payload = JSON.parse(event.data);
+
+					if (payload.type === GAME_ROOM_EVENTS.GAME_OVER)
+					{
+						window.clearTimeout(timeoutId);
+						ws.close();
+						resolve();
+					}
+				}
+				catch (_err)
+				{
+					window.clearTimeout(timeoutId);
+					ws.close();
+					reject(new Error('Unable to read server response.'));
+				}
+			});
+
+			ws.addEventListener('error', () => {
+				window.clearTimeout(timeoutId);
+				reject(new Error('Unable to connect to the game room.'));
+			});
+		});
+	}
+
+	async function resignActiveGame()
+	{
+		if (!activeGameId || resigning)
+			return;
+
+		if (!window.confirm('Resign this game? Your opponent will win.'))
+			return;
+
+		setError('');
+		setResigning(true);
+
+		try
+		{
+			await sendResign(activeGameId);
+			sessionStorage.removeItem('active_game_id');
+			setActiveGameId(null);
+		}
+		catch (err)
+		{
+			setError(err.message || 'Unable to resign game');
+		}
+		finally
+		{
+			setResigning(false);
+		}
+	}
+
 	useEffect(() => {
 		loadActiveGame();
 
@@ -167,9 +246,11 @@ export function useLobby()
 		setTimeMinutes,
 		error,
 		activeGameId,
+		resigning,
 		joinQueue,
 		leaveQueue,
 		playVsAi,
-		resumeActiveGame
+		resumeActiveGame,
+		resignActiveGame
 	};
 }

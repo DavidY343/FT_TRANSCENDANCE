@@ -23,6 +23,8 @@ export default function LobbyPage()
 					<ActiveGameCard
 						activeGameId={lobby.activeGameId}
 						onResume={lobby.resumeActiveGame}
+						onResign={lobby.resignActiveGame}
+						resigning={lobby.resigning}
 					/>
 				)}
 

@@ -1,4 +1,9 @@
-export function ActiveGameCard({ activeGameId, onResume })
+export function ActiveGameCard({
+	activeGameId,
+	onResume,
+	onResign,
+	resigning
+})
 {
 	return (
 		<article className="card lobby-action-card">
@@ -16,6 +21,14 @@ export function ActiveGameCard({ activeGameId, onResume })
 			<div className="lobby-card-actions">
 				<button className="btn" type="button" onClick={onResume}>
 					Resume game #{activeGameId}
+				</button>
+				<button
+					className="btn"
+					type="button"
+					onClick={onResign}
+					disabled={resigning}
+				>
+					{resigning ? 'Resigning...' : `Resign game #${activeGameId}`}
 				</button>
 			</div>
 		</article>

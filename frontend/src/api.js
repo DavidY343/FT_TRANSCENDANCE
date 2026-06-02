@@ -46,6 +46,20 @@ export function getAccessToken()
 	return ( readToken(ACCESS_TOKEN_KEY) );
 }
 
+export function getGameSocketUrl(gameId)
+{
+	const apiUrl = new URL(API_BASE, window.location.origin);
+	const wsProtocol = apiUrl.protocol === 'https:' ? 'wss:' : 'ws:';
+	const basePath = apiUrl.pathname
+		.replace(/\/api\/v\d+\/?$/, '')
+		.replace(/\/api\/?$/, '')
+		.replace(/\/$/, '');
+
+	return (
+		`${wsProtocol}//${apiUrl.host}${basePath}/ws/${gameId}`
+	);
+}
+
 export function getRefreshToken()
 {
 	return ( readToken(REFRESH_TOKEN_KEY) );

@@ -1,0 +1,9 @@
+.game-board
+{
+	border: 1px solid var(--btn);
+	width: min(100%, 640px);
+}
+.game-board > div
+{
+	width: 100%;
+}
