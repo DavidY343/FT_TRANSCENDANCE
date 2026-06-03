@@ -1,11 +1,12 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSocket } from './useSocket';
 import { useInitialState } from './useInitialState';
-import { useGameBoard } from './useGameBoard';
+import { useGameBoard } from './gameBoardHooks/useGameBoard';
 import { getPlayerColor, isMyTurn } from './gameRoomUtils';
 
 export function useGameRoom(gameId)
 {
+	const [moveError, setMoveError] = useState('');
 
 	const {
 		state,
@@ -24,6 +25,7 @@ export function useGameRoom(gameId)
 		gameId,
 		setState,
 		setError,
+		setMoveError,
 	});
 
 
@@ -37,6 +39,17 @@ export function useGameRoom(gameId)
 		myColor,
 		legalMoves: state?.legal_moves || [],
 	});
+
+	useEffect(() => {
+		if (!moveError)
+			return undefined;
+
+		const timeoutId = window.setTimeout(() => {
+			setMoveError('');
+		}, 2500);
+
+		return () => window.clearTimeout(timeoutId);
+	}, [moveError]);
 
 	return {
 		state,
@@ -55,10 +68,14 @@ export function useGameRoom(gameId)
 		dropPiece: board.dropPiece,
 		submitMove: board.submitMove,
 		squareStyles: board.squareStyles,
+		pendingPromotion: board.pendingPromotion,
+		confirmPromotion: board.confirmPromotion,
+		cancelPromotion: board.cancelPromotion,
 
 		canInteractBoard,
 		loading,
 		error,
+		moveError,
 		setError,
 		reload,
 	};

@@ -1,6 +1,7 @@
 import { GameRoomBoardArea } from './GameRoomBoardArea';
 import { GameRoomChatCard } from './GameRoomChatCard';
 import { GameRoomInfoCard } from './GameRoomInfoCard';
+import { GameRoomErrorToast } from './GameRoomErrorToast';
 
 export function GameRoomLayout({ gameId, room })
 {
@@ -9,6 +10,7 @@ export function GameRoomLayout({ gameId, room })
 			<GameRoomInfoCard gameId={gameId} room={room}/>
 			<GameRoomBoardArea room={room}/>
 			<GameRoomChatCard />
+			<GameRoomErrorToast error={room?.moveError} />
 		</section>
 	)
 }

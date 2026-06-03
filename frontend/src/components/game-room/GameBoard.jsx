@@ -7,9 +7,13 @@ export function GameBoard({
 	onPieceClick,
 	onPieceDragBegin,
 	onPieceDragEnd,
+	onPromotionPieceSelect,
+	showPromotionDialog = false,
+	promotionToSquare = null,
 	onSquareClick,
 	squareStyles = {},
 	canMove = false,
+	error,
 })
 {
 	return (
@@ -21,6 +25,10 @@ export function GameBoard({
 				onPieceDragEnd={onPieceDragEnd}
 				onPieceDrop={onPieceDrop}
 				onPieceClick={onPieceClick}
+				onPromotionPieceSelect={onPromotionPieceSelect}
+				onPromotionCheck={() => false}
+				showPromotionDialog={showPromotionDialog}
+				promotionToSquare={promotionToSquare}
 				onSquareClick={onSquareClick}
 				customSquareStyles={squareStyles}
 				arePiecesDraggable={canMove}

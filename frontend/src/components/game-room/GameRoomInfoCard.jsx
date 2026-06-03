@@ -20,6 +20,7 @@ export function GameRoomInfoCard({ gameId, room })
 			<div className="game-room-moves-strip">
 				Last moves
 			</div>
+
 		</aside>
 	);
 }

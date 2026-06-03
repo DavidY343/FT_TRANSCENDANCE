@@ -1,0 +1,17 @@
+.game-room-error-toast
+{
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	z-index: 90;
+	transform: translate(-50%, -50%);
+	max-width: min(420px, calc(100vw - 2rem));
+	padding: 0.85rem 1rem;
+	border-radius: 8px;
+	border: 1px solid rgba(230, 106, 86, 0.55);
+	background: rgba(204, 10, 10, 0.96);
+	color: #ffd8d1;
+	font-weight: 700;
+	text-align: center;
+	box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}

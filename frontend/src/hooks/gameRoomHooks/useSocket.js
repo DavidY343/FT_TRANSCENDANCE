@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { getWsUrl } from './gameRoomUtils';
 
-export function useSocket({ gameId, setState, setError })
+export function useSocket({ gameId, setState, setError, setMoveError })
 {
 	const wsRef = useRef(null);
 	const reconnectTimerRef = useRef(null);
@@ -63,7 +63,13 @@ export function useSocket({ gameId, setState, setError })
 					return;
 				}
 
-				if (payload.type === 'MOVE_REJECTED' || payload.type === 'ERROR')
+				if (payload.type === 'MOVE_REJECTED')
+				{
+					setMoveError(payload.reason || 'Invalid move');
+					return;
+				}
+
+				if (payload.type === 'ERROR')
 				{
 					setError(payload.reason || payload.message || 'WebSocket error');
 				}
@@ -96,7 +102,7 @@ export function useSocket({ gameId, setState, setError })
 			if (wsRef.current)
 				wsRef.current.close();
 		};
-	}, [gameId, setError, setState]);
+	}, [gameId, setError, setMoveError, setState]);
 
 	return {
 		wsRef,

@@ -22,6 +22,9 @@ export function GameRoomBoardArea({room})
 				onPieceDragEnd={room?.endDragPiece}
 				onPieceDrop={room?.dropPiece}
 				onPieceClick={room?.selectPiece}
+				onPromotionPieceSelect={room?.confirmPromotion}
+				showPromotionDialog={Boolean(room?.pendingPromotion)}
+				promotionToSquare={room?.pendingPromotion?.to || null}
 				onSquareClick={room?.selectTarget}
 				squareStyles={room?.squareStyles}
 				canMove={room?.canInteractBoard}
