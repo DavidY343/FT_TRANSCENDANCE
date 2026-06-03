@@ -1,9 +1,28 @@
-.game-board
+.board-card
 {
 	border: 1px solid var(--btn);
 	width: min(100%, 640px);
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 30px;
 }
-.game-board > div
+
+.board-card > div
 {
 	width: 100%;
+}
+
+.chessboard
+{
+	border: 16px solid var(--chess-dark);
+}
+
+
+.game-room-actions
+{
+	display: flex;
+	justify-content: center;
+	gap:120px;
 }

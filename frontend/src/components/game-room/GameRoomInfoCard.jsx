@@ -1,5 +1,4 @@
 import { GameStatus } from "./GameStatus";
-import { GameRoomActions } from "./GameRoomActions";
 
 export function GameRoomInfoCard({ gameId, room })
 {
@@ -12,17 +11,11 @@ export function GameRoomInfoCard({ gameId, room })
 			</h2>
 
 			<GameStatus room={room}/>
-			<GameRoomActions room={room}/>
 
 			<div className="game-room-info-row">
-				<span>Duration</span>
+				<span>Duration: </span>
 				<strong>{state?.time_control_minutes || '-'} min</strong>
 			</div>
-
-			<div className="game-room-moves-strip">
-				Last moves
-			</div>
-
 		</aside>
 	);
 }

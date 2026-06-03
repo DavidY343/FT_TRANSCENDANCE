@@ -9,6 +9,12 @@ export function GameRoomActions({ room })
 			>
 				Resign
 			</button>
+			<button
+				type="button"
+				className="btn"
+			>
+				Draw
+			</button>
 		</div>
 	);
 }

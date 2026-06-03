@@ -23,11 +23,35 @@
 
 .clocks-banner
 {
-	width: min(100%, 520px);
+	width: min(100%, 640px);
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: 0.75rem;
 }
+
+
+.moves-strip
+{
+	border-left: 3px solid var(--chess-light);
+	padding: 0.9rem 1rem;
+	display: flex;
+	background: var(--bg);
+}
+
+.moves-strip span
+{
+	display: block;
+	color: var(--text-muted);
+	font-size: 0.8rem;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.moves-strip strong
+{
+
+}
+
 
 @media (max-width: 1100px)
 {

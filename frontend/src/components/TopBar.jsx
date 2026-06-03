@@ -42,7 +42,8 @@ function TopNav(props)
 			</nav>
 		);
 	}
-	else
+
+	else 
 		return (
 			<nav className="top-nav">
 				{/* Temporary dev login: remove this block when no longer needed. */}

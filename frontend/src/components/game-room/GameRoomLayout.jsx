@@ -1,4 +1,4 @@
-import { GameRoomBoardArea } from './GameRoomBoardArea';
+import { GameRoomBoardArea } from './board-zone/GameRoomBoardArea';
 import { GameRoomChatCard } from './GameRoomChatCard';
 import { GameRoomInfoCard } from './GameRoomInfoCard';
 import { GameRoomErrorToast } from './GameRoomErrorToast';
