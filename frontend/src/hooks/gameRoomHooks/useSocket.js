@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { getWsUrl } from './gameRoomUtils';
 
-export function useSocket({ gameId, setState, setError, setMoveError })
+export function useSocket({ gameId, setState, setError, setMoveError, setGameOver })
 {
 	const wsRef = useRef(null);
 	const reconnectTimerRef = useRef(null);
@@ -69,6 +69,16 @@ export function useSocket({ gameId, setState, setError, setMoveError })
 					return;
 				}
 
+				if (payload.type === 'GAME_OVER')
+				{
+					if (payload.state)
+						setState(payload.state);
+
+					setGameOver(payload);
+					sessionStorage.removeItem('active_game_id');
+					return;
+				}
+
 				if (payload.type === 'ERROR')
 				{
 					setError(payload.reason || payload.message || 'WebSocket error');
@@ -102,7 +112,7 @@ export function useSocket({ gameId, setState, setError, setMoveError })
 			if (wsRef.current)
 				wsRef.current.close();
 		};
-	}, [gameId, setError, setMoveError, setState]);
+	}, [gameId, setError, setGameOver, setMoveError, setState]);
 
 	return {
 		wsRef,

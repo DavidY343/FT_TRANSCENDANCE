@@ -1,4 +1,5 @@
 import { GameStatus } from "./GameStatus";
+import { GameRoomActions } from "./GameRoomActions";
 
 export function GameRoomInfoCard({ gameId, room })
 {
@@ -11,6 +12,7 @@ export function GameRoomInfoCard({ gameId, room })
 			</h2>
 
 			<GameStatus room={room}/>
+			<GameRoomActions room={room}/>
 
 			<div className="game-room-info-row">
 				<span>Duration</span>

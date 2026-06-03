@@ -2,11 +2,19 @@ import { useEffect, useMemo, useState } from 'react';
 import { useSocket } from './useSocket';
 import { useInitialState } from './useInitialState';
 import { useGameBoard } from './gameBoardHooks/useGameBoard';
-import { getPlayerColor, isMyTurn } from './gameRoomUtils';
+import {
+	getKingSquareFromFen,
+	getLoserColor,
+	getPlayerColor,
+	isMyTurn,
+} from './gameRoomUtils';
+import { useGameActions } from './gameBoardHooks/useGameActions';
+
 
 export function useGameRoom(gameId)
 {
 	const [moveError, setMoveError] = useState('');
+	const [gameOver, setGameOver] = useState(null);
 
 	const {
 		state,
@@ -26,11 +34,38 @@ export function useGameRoom(gameId)
 		setState,
 		setError,
 		setMoveError,
+		setGameOver,
 	});
 
+	const actions = useGameActions({
+		wsRef,
+		setError,
+	});
 
 	const myColor = useMemo(() => getPlayerColor(state, me), [state, me]);
 	const canInteractBoard = useMemo(() => isMyTurn(state, myColor), [state, myColor]);
+	const loserColor = useMemo(() => getLoserColor(gameOver), [gameOver]);
+	const loserKingSquare = useMemo(() => (
+		getKingSquareFromFen(state?.fen, loserColor)
+	), [loserColor, state?.fen]);
+	const gameResult = useMemo(() => {
+		if (!gameOver || !me)
+			return (null);
+
+		if (gameOver.result === 'white_win')
+			return (myColor === 'white' ? 'win' : 'lost');
+
+		if (gameOver.result === 'black_win')
+			return (myColor === 'black' ? 'win' : 'lost');
+
+		if (!gameOver.winner)
+			return ('draw');
+
+		if (gameOver.winner.id === me.id)
+			return ('win');
+
+		return ('lost');
+	}, [gameOver, me, myColor]);
 
 	const board = useGameBoard({
 		wsRef,
@@ -38,6 +73,7 @@ export function useGameRoom(gameId)
 		canInteractBoard,
 		myColor,
 		legalMoves: state?.legal_moves || [],
+		loserKingSquare,
 	});
 
 	useEffect(() => {
@@ -76,7 +112,15 @@ export function useGameRoom(gameId)
 		loading,
 		error,
 		moveError,
+		gameOver,
+		gameResult,
+		loserKingSquare,
 		setError,
 		reload,
+
+		confirmAction: actions.confirmAction,
+		requestResign: actions.requestResign,
+		cancelAction: actions.cancelAction,
+		confirmResign: actions.confirmResign,
 	};
 }

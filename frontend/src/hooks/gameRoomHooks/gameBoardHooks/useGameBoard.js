@@ -11,6 +11,7 @@ export function useGameBoard({
 	canInteractBoard,
 	myColor,
 	legalMoves = [],
+	loserKingSquare,
 })
 {
 	const [selectedSquare, setSelectedSquare] = useState(null);
@@ -23,8 +24,9 @@ export function useGameBoard({
 		buildSquareStyles({
 			selectedSquare,
 			legalTargets,
+			loserKingSquare,
 		})
-	), [legalTargets, selectedSquare]);
+	), [legalTargets, loserKingSquare, selectedSquare]);
 
 	function submitMove(from, to, promotion = '')
 	{

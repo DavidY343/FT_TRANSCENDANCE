@@ -2,6 +2,8 @@ import { GameRoomBoardArea } from './GameRoomBoardArea';
 import { GameRoomChatCard } from './GameRoomChatCard';
 import { GameRoomInfoCard } from './GameRoomInfoCard';
 import { GameRoomErrorToast } from './GameRoomErrorToast';
+import { GameRoomConfirmModal } from './GameRoomConfirmModal';
+import { GameRoomResultModal } from './GameRoomResultModal';
 
 export function GameRoomLayout({ gameId, room })
 {
@@ -11,6 +13,8 @@ export function GameRoomLayout({ gameId, room })
 			<GameRoomBoardArea room={room}/>
 			<GameRoomChatCard />
 			<GameRoomErrorToast error={room?.moveError} />
+			<GameRoomConfirmModal room={room} />
+			<GameRoomResultModal room={room} />
 		</section>
 	)
 }

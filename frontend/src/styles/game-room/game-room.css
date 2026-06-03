@@ -1,5 +1,7 @@
 @import './board.css';
 @import './clocks.css';
+@import './confirm.css';
+@import './result.css';
 @import './game-error.css';
 
 .game-room

@@ -1,0 +1,55 @@
+.result-backdrop
+{
+	position: fixed;
+	inset: 0;
+	z-index: 40;
+	display: grid;
+	place-items: center;
+	padding: 1rem;
+}
+
+.result-backdrop-win
+{
+	background: rgb(22 163 74 / 0.35);
+}
+
+.result-backdrop-lost
+{
+	background: rgb(220 38 38 / 0.35);
+}
+
+.result-backdrop-draw
+{
+	background: rgb(100 116 139 / 0.35);
+}
+
+.result-card
+{
+	width: min(100%, 380px);
+	padding: 2rem;
+	border-radius: 8px;
+	text-align: center;
+	background: var(--bg);
+	box-shadow: 0 24px 80px rgb(15 23 42 / 0.28);
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1rem;
+}
+
+.result-title
+{
+	margin: 0;
+	font-size: 2.4rem;
+	font-weight: 800;
+	letter-spacing: 0;
+}
+.result-title-win
+{
+	color: green;
+}
+.result-title-lost
+{
+	color: red;
+}
