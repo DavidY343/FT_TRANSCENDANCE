@@ -35,6 +35,7 @@
 	border-left: 3px solid var(--chess-light);
 	padding: 0.9rem 1rem;
 	display: flex;
+	gap: 4px;
 	background: var(--bg);
 }
 
