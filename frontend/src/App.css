@@ -15,3 +15,5 @@
 @import './styles/lobby.css';
 
 @import './styles/game-room/game-room.css';
+
+@import './styles/responsive.css';

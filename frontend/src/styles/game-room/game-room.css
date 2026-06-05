@@ -54,19 +54,3 @@
 
 }
 
-
-@media (max-width: 1100px)
-{
-	.game-room
-	{
-		grid-template-columns: 1fr;
-	}
-
-	.game-board-area,
-	.game-room__board,
-	.clocks-banner
-	{
-		width: min(100%, 520px);
-		justify-self: center;
-	}
-}

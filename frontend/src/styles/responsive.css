@@ -1,0 +1,150 @@
+/* Layout */
+@media (max-width: 768px)
+{
+	.app-layout
+	{
+		min-height: 100dvh;
+		justify-content: center;
+		text-align: center;
+	}
+
+	.app-main
+	{
+		overflow-y: auto;
+		padding-inline: 1rem;
+		padding-block: 1rem;
+	}
+}
+
+/* Topbar */
+@media (max-width: 768px)
+{
+	.brand-title
+	{
+		align-self: center;
+	}
+
+	.brand-subtitle
+	{
+		display: none;
+	}
+}
+
+/* Footer */
+@media (max-width: 768px)
+{
+	.app-footer
+	{
+		text-align: center;
+		justify-content: space-between;
+		padding-inline: 8rem;
+	}
+}
+
+/* Auth */
+@media (max-width: 760px)
+{
+	.auth-layout
+	{
+		grid-template-columns: 1fr;
+		padding: 1rem;
+	}
+
+	.intro-card
+	{
+		gap: 1.25rem;
+	}
+}
+
+/* Lobby */
+@media (max-width: 760px)
+{
+	.lobby-status-strip
+	{
+		grid-template-columns: 1fr;
+	}
+}
+
+/* Game Room */
+@media (max-width: 1100px)
+{
+	.game-room
+	{
+		grid-template-columns: 1fr;
+		justify-items: center;
+	}
+
+	.intro-card,
+	.game-board-area,
+	.game-chat-card
+	{
+		width: min(100%, 520px);
+		justify-self: center;
+	}
+
+	.game-room__board,
+	.clocks-banner
+	{
+		width: min(100%, 520px);
+		justify-self: center;
+	}
+}
+
+/* Game Room Chat */
+@media (max-width: 760px)
+{
+	.game-chat-card
+	{
+		width: min(100%, 560px);
+		height: clamp(420px, 68dvh, 620px);
+		max-height: none;
+		padding: 1rem;
+	}
+
+	.chat-table
+	{
+		gap: 0.75rem;
+	}
+
+	.chat-messages
+	{
+		padding: 0.7rem;
+		gap: 0.55rem;
+	}
+
+	.chat-message
+	{
+		max-width: 92%;
+		padding: 0.55rem 0.65rem;
+		text-align: left;
+	}
+
+	.chat-form
+	{
+		gap: 0.4rem;
+	}
+
+	.chat-form .btn
+	{
+		padding-inline: 1rem;
+	}
+}
+
+@media (max-width: 420px)
+{
+	.game-chat-card
+	{
+		height: clamp(440px, 72dvh, 620px);
+	}
+
+	.chat-form
+	{
+		flex-direction: column;
+	}
+
+	.chat-input,
+	.chat-form .btn
+	{
+		width: 100%;
+	}
+}

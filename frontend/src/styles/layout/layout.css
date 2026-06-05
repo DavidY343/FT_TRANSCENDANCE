@@ -11,13 +11,11 @@ APP STRUCTURE
 		|-FOOTER-|
 	- give each row the size it needs
 */ 
-
 .app-layout
 {
-	height: 100vh;
+	min-height: 100dvh;
 	display: flex;
 	flex-direction: column;
-	overflow: hidden;
 }
 
 .topbar,

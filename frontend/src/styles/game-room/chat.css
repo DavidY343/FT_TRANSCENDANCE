@@ -9,6 +9,11 @@
 	width: 400px;
 }
 
+.game-chat-card .card-title
+{
+	flex: 0 0 auto;
+}
+
 .chat-table
 {
 	min-height: 0;
@@ -86,6 +91,7 @@
 
 .chat-form
 {
+	flex: 0 0 auto;
 	display: flex;
 	gap: 0.5rem;
 }
@@ -95,20 +101,3 @@
 	min-width: 0;
 	flex: 1;
 }
-
-@media (max-width: 1100px)
-{
-	.game-room
-	{
-		grid-template-columns: 1fr;
-		justify-items: center;
-	}
-
-	.intro-card,
-	.game-board-area,
-	.game-chat-card
-	{
-		width: min(100%, 520px);
-		justify-self: center;
-	}
-} 
