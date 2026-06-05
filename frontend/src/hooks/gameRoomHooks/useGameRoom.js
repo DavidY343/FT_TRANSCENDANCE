@@ -9,7 +9,7 @@ import {
 	isMyTurn,
 } from './gameRoomUtils';
 import { useGameActions } from './gameBoardHooks/useGameActions';
-
+import { useChat } from './useChat';
 
 export function useGameRoom(gameId)
 {
@@ -36,6 +36,8 @@ export function useGameRoom(gameId)
 		setMoveError,
 		setGameOver,
 	});
+
+	const chat = useChat({ wsRef, setError });
 
 	const actions = useGameActions({
 		wsRef,
@@ -117,6 +119,11 @@ export function useGameRoom(gameId)
 		loserKingSquare,
 		setError,
 		reload,
+
+		chatMessages: state?.chat_messages || [],
+		chatMessage: chat.chatMessage,
+		setChatMessage: chat.setChatMessage,
+		submitChatMessage: chat.submitChatMessage,
 
 		confirmAction: actions.confirmAction,
 		requestResign: actions.requestResign,

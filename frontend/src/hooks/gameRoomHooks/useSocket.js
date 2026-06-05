@@ -42,6 +42,23 @@ export function useSocket({ gameId, setState, setError, setMoveError, setGameOve
 				{
 					return;
 				}
+				
+				if (payload.type === 'CHAT_MESSAGE')
+				{
+					setState((prev) => {
+						if (!prev)
+							return prev;
+
+						return {
+							...prev,
+							chat_messages: [
+								...(prev.chat_messages || []),
+								payload.payload,
+							],
+						};
+					});
+					return;
+				}
 
 				if (payload.type === 'STATE_SYNC')
 				{

@@ -33,6 +33,9 @@ services:
       - ./backend/uploads:/app/uploads
 
   frontend:
+    volumes:
+    - ./frontend:/app
+    - /app/node_modules
     build:
       context: ./frontend
     container_name: chess-frontend

@@ -11,7 +11,7 @@ export function GameRoomLayout({ gameId, room })
 		<section className="game-room">
 			<GameRoomInfoCard gameId={gameId} room={room}/>
 			<GameRoomBoardArea room={room}/>
-			<GameRoomChatCard />
+			<GameRoomChatCard room={room} />
 			<GameRoomErrorToast error={room?.moveError} />
 			<GameRoomConfirmModal room={room} />
 			<GameRoomResultModal room={room} />
