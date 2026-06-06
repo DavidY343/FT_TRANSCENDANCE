@@ -305,6 +305,18 @@ async def websocket_game(game_id: int, websocket: WebSocket, token: str | None =
         game_mode = game.mode
         game_finished = game.status == "finished"
         final_fen = game.final_fen
+
+        white_user = init_db.get(User, white_id) if white_id else None
+        black_user = init_db.get(User, black_id) if black_id else None
+
+        def _player_info(u: User | None):
+            return {"id": u.id, "username": u.username, "display_name": u.display_name} if u else None
+
+        white_info = _player_info(white_user)
+        black_info = _player_info(black_user)
+        if _is_ai_mode(game) and black_id is None:
+            difficulty = _ai_level_from_mode(game_mode)
+            black_info = {"id": None, "username": "ai", "display_name": f"AI ({difficulty.capitalize()})"}
     finally:
         try:
             init_db.close()
@@ -322,6 +334,8 @@ async def websocket_game(game_id: int, websocket: WebSocket, token: str | None =
             white_id,
             black_id,
             final_fen,
+            white_info=white_info,
+            black_info=black_info,
             initial_ms=minutes * 60 * 1000,
             time_control_minutes=minutes,
             is_ai=bool(game_mode and game_mode.startswith("ai:")),

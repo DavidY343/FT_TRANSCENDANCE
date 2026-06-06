@@ -140,6 +140,20 @@ def get_game(game_id: int, db: Session = Depends(get_db), current_user: User = D
     if not allowed:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not allowed")
 
+    white_user = db.get(User, game.white_id) if game.white_id else None
+    black_user = db.get(User, game.black_id) if game.black_id else None
+
+    def _player_info(u: User | None):
+        return {"id": u.id, "username": u.username, "display_name": u.display_name} if u else None
+
+    white_info = _player_info(white_user)
+    black_info = _player_info(black_user)
+
+    if game.mode.startswith("ai:") and game.black_id is None:
+        parts = game.mode.split(":")
+        difficulty = parts[1] if len(parts) >= 2 else "medium"
+        black_info = {"id": None, "username": "ai", "display_name": f"AI ({difficulty.capitalize()})"}
+
     return {
         "id": game.id,
         "mode": game.mode,
@@ -147,6 +161,8 @@ def get_game(game_id: int, db: Session = Depends(get_db), current_user: User = D
         "result": game.result,
         "white_id": game.white_id,
         "black_id": game.black_id,
+        "white": white_info,
+        "black": black_info,
         "final_fen": game.final_fen,
         "move_count": game.move_count,
         "started_at": game.started_at,
@@ -167,11 +183,28 @@ def get_game_state(game_id: int, db: Session = Depends(get_db), current_user: Us
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not allowed")
 
     initial_minutes = _time_minutes_from_mode(game.mode)
+
+    white_user = db.get(User, game.white_id) if game.white_id else None
+    black_user = db.get(User, game.black_id) if game.black_id else None
+
+    def _player_info(u: User | None):
+        return {"id": u.id, "username": u.username, "display_name": u.display_name} if u else None
+
+    white_info = _player_info(white_user)
+    black_info = _player_info(black_user)
+
+    if game.mode.startswith("ai:") and game.black_id is None:
+        parts = game.mode.split(":")
+        difficulty = parts[1] if len(parts) >= 2 else "medium"
+        black_info = {"id": None, "username": "ai", "display_name": f"AI ({difficulty.capitalize()})"}
+
     room = realtime_manager.get_or_create_room(
         game.id,
         game.white_id,
         game.black_id,
         game.final_fen,
+        white_info=white_info,
+        black_info=black_info,
         initial_ms=initial_minutes * 60 * 1000,
         time_control_minutes=initial_minutes,
         is_ai=game.mode.startswith("ai:"),
