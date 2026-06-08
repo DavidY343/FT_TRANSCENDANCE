@@ -12,6 +12,7 @@
 .game-chat-card .card-title
 {
 	flex: 0 0 auto;
+	text-align: center;
 }
 
 .chat-table
