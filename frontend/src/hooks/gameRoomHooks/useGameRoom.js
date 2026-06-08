@@ -46,10 +46,16 @@ export function useGameRoom(gameId)
 
 	const myColor = useMemo(() => getPlayerColor(state, me), [state, me]);
 	const canInteractBoard = useMemo(() => isMyTurn(state, myColor), [state, myColor]);
+
 	const loserColor = useMemo(() => getLoserColor(gameOver), [gameOver]);
 	const loserKingSquare = useMemo(() => (
 		getKingSquareFromFen(state?.fen, loserColor)
 	), [loserColor, state?.fen]);
+
+	const checkedColor = state?.turn === 'w' ? 'white' : 'black';
+	const isMyKingInCheck = state?.is_check && checkedColor === myColor;
+	const checkedKingSquare = isMyKingInCheck ? getKingSquareFromFen(state?.fen, myColor) : null;
+
 	const gameResult = useMemo(() => {
 		if (!gameOver || !me)
 			return (null);
@@ -75,6 +81,7 @@ export function useGameRoom(gameId)
 		canInteractBoard,
 		myColor,
 		legalMoves: state?.legal_moves || [],
+		checkedKingSquare,
 		loserKingSquare,
 	});
 

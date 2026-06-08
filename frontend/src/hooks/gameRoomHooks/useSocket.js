@@ -43,6 +43,38 @@ export function useSocket({ gameId, setState, setError, setMoveError, setGameOve
 					return;
 				}
 				
+				if (payload.type === 'PRESENCE')
+				{
+					setState((prev) => {
+						if (!prev)
+							return prev;
+
+						return {
+							...prev,
+							presence:
+							{
+								...(prev.presence || {}),
+								[payload.user_id]: payload.online,
+							},
+						};
+					});
+					return;
+				}
+
+				if (payload.type === 'DISCONNECT_GRACE')
+				{
+					setState((prev) => {
+						if (!prev)
+							return prev;
+
+						return {
+							...prev,
+							disconnect_grace: payload.active ? payload : null,
+						};
+					});
+					return;
+				}
+
 				if (payload.type === 'CHAT_MESSAGE')
 				{
 					setState((prev) => {
@@ -62,7 +94,11 @@ export function useSocket({ gameId, setState, setError, setMoveError, setGameOve
 
 				if (payload.type === 'STATE_SYNC')
 				{
-					setState(payload.state);
+					setState((prev) => ({
+						...payload.state,
+						presence: prev?.presence || {},
+						disconnect_grace: prev?.disconnect_grace || null,
+					}));
 					return;
 				}
 

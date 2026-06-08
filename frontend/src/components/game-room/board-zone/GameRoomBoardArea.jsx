@@ -12,18 +12,18 @@ export function GameRoomBoardArea({ room })
 				clocks={state?.clocks}
 				turn={state?.turn}
 				players={{
-					white: state?.players?.white_id ? `Player #${state.players.white_id}` : `White`,
-					black: state?.players?.black_id ? `Player #${state.players.black_id}` : `Black`,
+					white: state?.players?.white?.display_name || state?.players?.white?.username || 'White',
+					black: state?.players?.black?.display_name || state?.players?.black?.username || 'Black',
 				}}
 			/>
 
 			<section className="card board-card">
 				<div className="moves-strip">
 					<span>
-						Last moves | 
+						Move
 					</span>
 					<strong>
-						movement
+						{state?.last_move || 'Opening position'}
 					</strong>
 				</div>
 

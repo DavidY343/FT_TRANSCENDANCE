@@ -11,6 +11,7 @@ export function useGameBoard({
 	canInteractBoard,
 	myColor,
 	legalMoves = [],
+	checkedKingSquare,
 	loserKingSquare,
 })
 {
@@ -24,9 +25,10 @@ export function useGameBoard({
 		buildSquareStyles({
 			selectedSquare,
 			legalTargets,
+			checkedKingSquare,
 			loserKingSquare,
 		})
-	), [legalTargets, loserKingSquare, selectedSquare]);
+	), [checkedKingSquare, legalTargets, loserKingSquare, selectedSquare]);
 
 	function submitMove(from, to, promotion = '')
 	{

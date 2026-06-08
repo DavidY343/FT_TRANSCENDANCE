@@ -1,4 +1,4 @@
-export function buildSquareStyles({ selectedSquare, legalTargets, loserKingSquare })
+export function buildSquareStyles({ selectedSquare, legalTargets, checkedKingSquare, loserKingSquare })
 {
 	const styles = {};
 
@@ -8,6 +8,11 @@ export function buildSquareStyles({ selectedSquare, legalTargets, loserKingSquar
 			background: 'rgba(255, 218, 77, 0.6)',
 		};
 	}
+
+	if (checkedKingSquare)
+		styles[checkedKingSquare] = {
+			background: 'rgb(239, 123, 123)',
+		};
 
 	legalTargets.forEach((square) => {
 		styles[square] = {
@@ -19,7 +24,7 @@ export function buildSquareStyles({ selectedSquare, legalTargets, loserKingSquar
 	{
 		styles[loserKingSquare] = {
 			...styles[loserKingSquare],
-			boxShadow: 'inset 0 0 0 4px #dc2626',
+			boxShadow: 'inset 0 0 0 32px rgb(255, 0, 0)',
 		};
 	}
 

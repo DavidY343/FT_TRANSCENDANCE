@@ -1,12 +1,13 @@
 .board-card
 {
-	border: 1px solid var(--btn);
-	width: min(100%, 640px);
+	border: 1px solid rgb(255 255 255 / 0.08);
+	width: 100%;
 	align-items: center;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	gap: 30px;
+	gap: 0.85rem;
+	background: linear-gradient(145deg, rgb(52 52 52 / 0.98), rgb(35 35 35 / 0.98));
 }
 
 .board-card > div
@@ -16,7 +17,14 @@
 
 .chessboard
 {
-	border: 16px solid var(--chess-dark);
+	width: 100%;
+	aspect-ratio: 1;
+	border: 12px solid var(--chess-dark);
+	border-radius: 10px;
+	overflow: hidden;
+	box-shadow:
+		0 22px 42px rgb(0 0 0 / 0.42),
+		inset 0 0 0 1px rgb(255 255 255 / 0.08);
 }
 
 
@@ -24,5 +32,11 @@
 {
 	display: flex;
 	justify-content: center;
-	gap:120px;
+	gap: 0.75rem;
+	width: 100%;
+}
+
+.game-room-actions .btn
+{
+	min-width: 120px;
 }

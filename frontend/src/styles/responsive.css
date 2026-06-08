@@ -125,21 +125,27 @@
 	{
 		grid-template-columns: 1fr;
 		justify-items: center;
+		padding: 0.75rem;
 	}
 
 	.intro-card,
 	.game-board-area,
 	.game-chat-card
 	{
-		width: min(100%, 520px);
+		width: min(100%, 720px);
 		justify-self: center;
 	}
 
 	.game-room__board,
 	.clocks-banner
 	{
-		width: min(100%, 520px);
+		width: min(100%, 720px);
 		justify-self: center;
+	}
+
+	.game-info-card
+	{
+		position: static;
 	}
 }
 
@@ -149,9 +155,29 @@
 	.game-chat-card
 	{
 		width: min(100%, 560px);
-		height: clamp(420px, 68dvh, 620px);
+		height: clamp(360px, 62dvh, 560px);
 		max-height: none;
 		padding: 1rem;
+	}
+
+	.board-card
+	{
+		padding: 0.7rem;
+	}
+
+	.chessboard
+	{
+		border-width: 8px;
+	}
+
+	.clocks-banner
+	{
+		grid-template-columns: 1fr;
+	}
+
+	.game-room-actions
+	{
+		gap: 0.5rem;
 	}
 
 	.chat-table
@@ -187,7 +213,19 @@
 {
 	.game-chat-card
 	{
-		height: clamp(440px, 72dvh, 620px);
+		height: clamp(360px, 62dvh, 540px);
+	}
+
+	.moves-strip,
+	.game-room-actions
+	{
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.moves-strip
+	{
+		text-align: left;
 	}
 
 	.chat-form
