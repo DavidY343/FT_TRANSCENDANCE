@@ -15,6 +15,8 @@ class RoomState:
     game_id: int
     white_id: int | None
     black_id: int | None
+    white_info: dict | None = None
+    black_info: dict | None = None
     board: chess.Board = field(default_factory=chess.Board)
     white_ms: int = 10 * 60 * 1000
     black_ms: int = 10 * 60 * 1000
@@ -36,8 +38,14 @@ class RoomState:
             "status": "finished" if self.finished or self.board.is_game_over(claim_draw=True) else "playing",
             "last_move": self.board.peek().uci() if self.board.move_stack else None,
             "move_count": len(self.board.move_stack),
+            "is_check": self.board.is_check(),
             "legal_moves": [move.uci() for move in self.board.legal_moves],
-            "players": {"white_id": self.white_id, "black_id": self.black_id},
+            "players": {
+                "white_id": self.white_id,
+                "black_id": self.black_id,
+                "white": self.white_info,
+                "black": self.black_info,
+            },
             "clocks": {"white_ms": self.white_ms, "black_ms": self.black_ms},
             "time_control_minutes": self.time_control_minutes,
             "is_ai": self.is_ai,
@@ -92,6 +100,8 @@ class RealtimeManager:
         black_id: int | None,
         fen: str | None,
         *,
+        white_info: dict | None = None,
+        black_info: dict | None = None,
         initial_ms: int = 10 * 60 * 1000,
         time_control_minutes: int = 10,
         is_ai: bool = False,
@@ -102,6 +112,10 @@ class RealtimeManager:
             room.time_control_minutes = time_control_minutes
             room.is_ai = is_ai
             room.finished = finished or room.finished
+            if white_info:
+                room.white_info = white_info
+            if black_info:
+                room.black_info = black_info
             return room
 
         board = chess.Board(fen) if fen else chess.Board()
@@ -109,6 +123,8 @@ class RealtimeManager:
             game_id=game_id,
             white_id=white_id,
             black_id=black_id,
+            white_info=white_info,
+            black_info=black_info,
             board=board,
             white_ms=initial_ms,
             black_ms=initial_ms,
