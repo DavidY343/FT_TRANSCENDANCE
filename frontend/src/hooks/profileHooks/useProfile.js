@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { useData } from './useData';
 import { useEdit } from './useEdit';
 import { useAvatar } from './useAvatar';
@@ -15,6 +17,29 @@ export function useProfile()
 		setError: data.setError,
 		setSuccess: edit.setSuccess,
 	});
+
+	useEffect(() => {
+		if (!data.error)
+			return undefined;
+
+		const timeoutId = window.setTimeout(() => {
+			data.setError('');
+		}, 1500);
+
+		return () => window.clearTimeout(timeoutId);
+	}, [data.error, data.setError]);
+
+	useEffect(() => {
+		if (!edit.success)
+			return undefined;
+
+		const timeoutId = window.setTimeout(() => {
+			edit.setSuccess('');
+		}, 1500);
+
+		return () => window.clearTimeout(timeoutId);
+	}, [edit.success, edit.setSuccess]);
+
 	return {
 		user: data.user,
 		loading: data.loading,

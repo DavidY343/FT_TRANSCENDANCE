@@ -95,6 +95,7 @@
 	.profile-avatar
 	{
 		width: 150px;
+		min-width: 150px;
 	}
 
 	.profile-name,

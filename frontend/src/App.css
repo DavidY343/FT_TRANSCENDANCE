@@ -10,6 +10,7 @@
 
 @import './styles/links.css';
 @import './styles/buttons/button.css';
+@import './styles/buttons/menu.css';
 
 @import './styles/auth.css';
 @import './styles/lobby.css';

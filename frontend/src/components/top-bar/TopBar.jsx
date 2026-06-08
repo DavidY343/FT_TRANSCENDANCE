@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom"
-import { clearTokens } from "../api";
+import { clearTokens } from "../../api";
+import { MenuDisplay } from "./MenuDisplay";
 
 function BrandBlock()
 {
@@ -36,6 +37,7 @@ function TopNav(props)
 	{
 		return (
 			<nav className="top-nav">
+				<MenuDisplay current={props.current}/>
 				<button className="btn nav-btn" onClick={handleLogout}>
 					Logout
 				</button>

@@ -46,12 +46,14 @@
 	justify-items: center;
 	align-content: start;
 	gap: 1.25rem;
+	min-width: 0;
 }
 
 .profile-right
 {
 	display: grid;
 	align-content: center;
+	min-width: 0;
 }
 
 .profile-summary
@@ -59,14 +61,19 @@
 	display: grid;
 	justify-items: center;
 	gap: 1.25rem;
+	width: 100%;
+	min-width: 0;
+	text-align: center;
 }
 
 .profile-avatar
 {
-	width: min(100%, 240px);
+	width: clamp(150px, 18vw, 220px);
+	min-width: clamp(150px, 18vw, 220px);
 	aspect-ratio: 1;
 	display: grid;
 	place-items: center;
+	flex: 0 0 auto;
 	border-radius: 50%;
 	overflow: hidden;
 	background: var(--chess-light);
@@ -88,8 +95,11 @@
 {
 	margin: 0;
 	color: var(--text);
-	font-size: clamp(1.8rem, 4vw, 3rem);
+	font-size: clamp(1.45rem, 3vw, 2.35rem);
+	line-height: 1.08;
 	text-align: center;
+	overflow-wrap: anywhere;
+	word-break: break-word;
 }
 
 .profile-username,
@@ -98,6 +108,7 @@
 	margin: 0.35rem 0 0;
 	color: var(--text-soft);
 	text-align: center;
+	overflow-wrap: anywhere;
 }
 
 .profile-edit-form

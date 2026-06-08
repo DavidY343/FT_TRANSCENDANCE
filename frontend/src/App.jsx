@@ -13,7 +13,7 @@ import FriendsPage from './pages/FriendsPage';
 import HistoryPage from './pages/HistoryPage';
 import LeaderboardPage from './pages/LeaderboardPage';
 import Footer from "./components/Footer.jsx"
-import TopBar from './components/TopBar.jsx';
+import TopBar from './components/top-bar/TopBar.jsx';
 
 function isDevAuthed()
 {
