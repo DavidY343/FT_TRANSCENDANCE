@@ -1,6 +1,6 @@
-import { RegisterForm } from "../components/auth/AuthForm";
-import { RegisterIntroCard } from "../components/auth/AuthIntroCard";
-import { useRegisterForm } from '../hooks/useFormHooks/useRegisterForm';
+import { RegisterForm } from "./components/AuthForm";
+import { RegisterIntroCard } from "./components/AuthIntroCard";
+import { useRegisterForm } from './hooks/useFormHooks/useRegisterForm';
 
 export default function Register()
 {

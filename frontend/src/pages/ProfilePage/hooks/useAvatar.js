@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { getApiErrorMessage } from '../../api';
+import { getApiErrorMessage } from '../../../api';
 import { uploadProfileAvatar } from './profileApi';
 
 export function useAvatar({ setUser, setError, setSuccess })

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import { getApiErrorMessage } from '../../api';
-import { validateDisplayName } from '../validateHooks/validateDisplayName';
+import { getApiErrorMessage } from '../../../api';
+import { validateDisplayName } from '../../AuthPages/hooks/validateHooks/validateDisplayName';
 import { updateProfile } from './profileApi';
 
 export function useEdit({ user, setUser, setError })

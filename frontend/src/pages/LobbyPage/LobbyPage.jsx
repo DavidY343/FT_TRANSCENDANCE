@@ -1,8 +1,8 @@
-import { ActiveGameCard } from '../components/lobby/ActiveGameCard';
-import { AiGameCard } from '../components/lobby/AiGameCard';
-import { LobbyHero } from '../components/lobby/LobbyHero';
-import { MatchmakingCard } from '../components/lobby/MatchmakingCard';
-import { useLobby } from '../hooks/useLobby';
+import { ActiveGameCard } from './components/ActiveGameCard';
+import { AiGameCard } from './components/AiGameCard';
+import { LobbyHero } from './components/LobbyHero';
+import { MatchmakingCard } from './components/MatchmakingCard';
+import { useLobby } from './hooks/useLobby';
 
 
 export default function LobbyPage()

@@ -1,6 +1,6 @@
-import { LoginIntroCard } from "../components/auth/AuthIntroCard";
-import { LoginForm } from "../components/auth/AuthForm";
-import { useLoginForm } from '../hooks/useFormHooks/useLoginForm';
+import { LoginIntroCard } from "./components/AuthIntroCard";
+import { LoginForm } from "./components/AuthForm";
+import { useLoginForm } from './hooks/useFormHooks/useLoginForm';
 
 export default function LoginPage()
 {

@@ -2,13 +2,13 @@ import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 
 import { getAccessToken } from './api';
 
-import LobbyPage from './pages/LobbyPage';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
+import LobbyPage from './pages/LobbyPage/LobbyPage.jsx';
+import LoginPage from './pages/AuthPages/LoginPage';
+import RegisterPage from './pages/AuthPages/RegisterPage';
 import PrivacyPage from './pages/PrivacyPage';
 import TermsPage from './pages/TermsPage';
-import ProfilePage from './pages/ProfilePage';
-import GameRoomPage from './pages/GameRoomPage';
+import ProfilePage from './pages/ProfilePage/ProfilePage.jsx';
+import GameRoomPage from './pages/GameRoom/GameRoomPage.jsx';
 import FriendsPage from './pages/FriendsPage/FriendsPage';
 import HistoryPage from './pages/HistoryPage';
 import LeaderboardPage from './pages/LeaderboardPage';

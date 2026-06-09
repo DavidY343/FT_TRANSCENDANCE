@@ -1,7 +1,7 @@
 import { useData } from './useData';
 import { useEdit } from './useEdit';
 import { useAvatar } from './useAvatar';
-import { useTimedMessage } from '../useTimedMessage';
+import { useTimedMessage } from '../../../hooks/useTimedMessage';
 
 export function useProfile()
 {

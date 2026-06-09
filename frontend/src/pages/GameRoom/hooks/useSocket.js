@@ -1,6 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { getWsUrl } from './gameRoomUtils';
+import { getAccessToken, getGameSocketUrl } from '../../../api';
+
+function buildSocketUrl(gameId)
+{
+	const token = getAccessToken();
+
+	return (`${getGameSocketUrl(gameId)}?token=${encodeURIComponent(token)}`);
+}
 
 export function useSocket({ gameId, setState, setError, setMoveError, setGameOver })
 {
@@ -23,7 +30,7 @@ export function useSocket({ gameId, setState, setError, setMoveError, setGameOve
 
 			setWsStatus('connecting');
 
-			const ws = new WebSocket(getWsUrl(gameId));
+			const ws = new WebSocket(buildSocketUrl(gameId));
 			wsRef.current = ws;
 
 			ws.onopen = () => {

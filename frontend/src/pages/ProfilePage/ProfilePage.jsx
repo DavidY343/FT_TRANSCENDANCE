@@ -1,7 +1,7 @@
-import { useProfile } from '../hooks/profileHooks/useProfile';
-import { ProfileSummary } from '../components/profile/ProfileSummary';
-import { ProfileEditForm } from '../components/profile/ProfileEditForm';
-import { ProfileAvatarForm } from '../components/profile/ProfileAvatarForm';
+import { useProfile } from './hooks/useProfile';
+import { ProfileSummary } from './components/ProfileSummary';
+import { ProfileEditForm } from './components/ProfileEditForm';
+import { ProfileAvatarForm } from './components/ProfileAvatarForm';
 
 export default function ProfilePage()
 {

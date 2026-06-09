@@ -1,5 +1,3 @@
-import { getAccessToken } from '../../api';
-
 export function isMyTurn(state, myColor)
 {
 	if (!state || state.status === 'finished')
@@ -12,14 +10,6 @@ export function isMyTurn(state, myColor)
 		return (true);
 
 	return (false);
-}
-
-export function getWsUrl(gameId)
-{
-	const token = getAccessToken();
-	const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-
-	return (`${protocol}//${window.location.host}/ws/${gameId}?token=${encodeURIComponent(token)}`);
 }
 
 export function getPlayerColor(state, me)

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { api, getAuthErrorMessage, setTokens } from '../../api';
+import { api, getAuthErrorMessage, setTokens } from '../../../../api';
 import validateRegisterForm from '../validateHooks/validateForm/validateRegisterForm';
 
 export function useRegisterForm()

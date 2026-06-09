@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { api, getAccessToken, getApiErrorMessage, getGameSocketUrl } from '../api';
-import { GAME_ROOM_EVENTS } from '../gameRoomContract';
+import { api, getAccessToken, getApiErrorMessage, getGameSocketUrl } from '../../../api';
+import { GAME_ROOM_EVENTS } from '../../../gameRoomContract';
 
 export function useLobby()
 {

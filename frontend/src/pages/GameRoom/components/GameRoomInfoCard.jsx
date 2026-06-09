@@ -12,35 +12,37 @@ export function GameRoomInfoCard({ gameId, room })
 		state?.disconnect_grace?.active
 		&& state.disconnect_grace.user_id === opponentId
 	);
-
 	let opponentLabel;
+
 	if (opponentDisconnectGrace || opponentOnline === false)
 		opponentLabel = 'Offline';
 	else if (opponentOnline === true)
 		opponentLabel = 'Online';
+	else if (opponentId == undefined)
+		opponentLabel = 'Playing vs AI';
 	else
 		opponentLabel = 'Checking...';
 
 	return (
-		<aside className="card intro-card game-info-card">
+		<aside className="card intro-card">
 			<h2 className="card-title">
 				Game Room #{gameId}
 			</h2>
 
 			<GameStatus room={room}/>
 
-			<div className="game-room-info-row">
+			<div className="info-note">
 				<span>Duration: </span>
-				<strong>{state?.time_control_minutes || '-'} min</strong>
+				<p>{state?.time_control_minutes || '-'} min</p>
 			</div>
-			<div className="game-room-info-row">
+			<div className="info-note">
 				<span>Opponent: </span>
-				<strong>{opponentLabel}</strong>
+				<p> {opponentLabel} </p>
 			</div>
 			{opponentDisconnectGrace && (
 				<div className="game-room-info-row">
 					<span>Forfeit in: </span>
-					<strong>{state.disconnect_grace.seconds}s</strong>
+					<p>{state.disconnect_grace.seconds}s</p>
 				</div>
 			)}
 		</aside>

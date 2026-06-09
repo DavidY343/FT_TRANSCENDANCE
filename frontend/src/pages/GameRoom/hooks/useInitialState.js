@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { api, getApiErrorMessage } from '../../api';
+import { api, getApiErrorMessage } from '../../../api';
 
 export function useInitialState(gameId)
 {

@@ -1,4 +1,4 @@
-import { formatClock } from '../../../hooks/gameRoomHooks/gameRoomUtils';
+import { formatClock } from '../../hooks/gameRoomUtils';
 
 export function GameRoomClocks({ clocks, turn, players })
 {

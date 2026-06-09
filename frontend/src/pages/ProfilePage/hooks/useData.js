@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { getApiErrorMessage } from '../../api';
+import { getApiErrorMessage } from '../../../api';
 import { fetchProfile } from './profileApi';
 
 export function useData()
