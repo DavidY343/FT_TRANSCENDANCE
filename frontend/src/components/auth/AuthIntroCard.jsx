@@ -15,7 +15,7 @@ export function RegisterIntroCard()
 				duels, quiet endgames and reckless attacks against friends or AI.
 			</p>
 
-			<div className="auth-note">
+			<div className="info-note">
 				<span>
 					Entry standard
 				</span>
@@ -37,7 +37,7 @@ export function LoginIntroCard()
 				Members Entrance
 			</p>
 
-			<h2 className="form-title">
+			<h2 className="intro-title">
 				Return to the board.
 			</h2>
 
@@ -46,7 +46,7 @@ export function LoginIntroCard()
 				into a room that looks like it has been waiting for you all evening...
 			</p>
 
-			<div className="auth-note">
+			<div className="info-note">
 				<span>
 					House note
 				</span>

@@ -9,7 +9,7 @@ import PrivacyPage from './pages/PrivacyPage';
 import TermsPage from './pages/TermsPage';
 import ProfilePage from './pages/ProfilePage';
 import GameRoomPage from './pages/GameRoomPage';
-import FriendsPage from './pages/FriendsPage';
+import FriendsPage from './pages/FriendsPage/FriendsPage';
 import HistoryPage from './pages/HistoryPage';
 import LeaderboardPage from './pages/LeaderboardPage';
 import Footer from "./components/Footer.jsx"

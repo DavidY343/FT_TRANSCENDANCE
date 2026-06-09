@@ -11,7 +11,7 @@ export function RegisterForm({
 {
 	return (
 		<section className="card auth-card form-card">
-			<h2 className="form-title">
+			<h2 className="panel-title panel-title-large">
 				Create account
 			</h2>
 
@@ -110,7 +110,7 @@ export function LoginForm({
 {
 	return (
 		<section className="card auth-card form-card">
-			<h2 className="form-title">
+			<h2 className="panel-title panel-title-large">
 				Sign in
 			</h2>
 

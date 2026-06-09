@@ -9,8 +9,22 @@
 	box-shadow: 0 24px 60px var(--shadow);
 }
 
-.auth-card, .form-card
+.auth-card, .form-card, .panel-card
 {
 	width: 100%;
 }
 
+.panel-title
+{
+	margin: 0;
+	color: var(--text);
+	font-size: clamp(1.4rem, 2vw, 1.9rem);
+	line-height: 1.1;
+}
+
+.panel-title-large
+{
+	font-size: clamp(2rem, 4vw, 2.7rem);
+	padding: 4rem 1rem;
+	justify-self: center;
+}

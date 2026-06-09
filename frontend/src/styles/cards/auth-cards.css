@@ -1,7 +1,6 @@
 /* 
-	AUTH CARDS
-	It refers to the auth pages cards
-	"intro-card" and "form-card" are "auth-cards"
+	CARDS
+	Shared intro and form card styles.
  */
 
 
@@ -51,19 +50,12 @@
 	text-transform: uppercase;
 }
 
-.form-title,
 .intro-title
 {
 	margin: 0;
 	color: var(--text);
 	font-size: clamp(2rem, 4vw, 2.7rem);
 	line-height: 1.05;
-}
-
-.form-title
-{
-	padding: 4rem 1rem;
-	justify-self: center;
 }
 
 .intro-card p
@@ -74,21 +66,21 @@
 	line-height: 1.7;
 }
 
-.auth-note
+.info-note
 {
 	border-left: 3px solid var(--chess-light);
 	padding: 0.98rem 1rem;
 	background: var(--bg);
 }
 
-.auth-note span
+.info-note span
 {
 	display: block;
 	color: var(--text);
 	font-weight: 700;
 }
 
-.auth-note p
+.info-note p
 {
 	margin-top: 0.35rem;
 	font-size: 1.2rem;
