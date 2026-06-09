@@ -19,14 +19,20 @@
 /* Topbar */
 @media (max-width: 768px)
 {
-	.brand-title
+	.topbar
 	{
-		align-self: center;
+		justify-content: space-between;
 	}
 
 	.brand-subtitle
 	{
 		display: none;
+	}
+
+	.top-nav
+	{
+		display: flex;
+		flex-direction: column;
 	}
 }
 
@@ -37,7 +43,7 @@
 	{
 		text-align: center;
 		justify-content: space-between;
-		padding-inline: 8rem;
+		padding-inline: 4rem;
 	}
 }
 
@@ -52,8 +58,9 @@
 
 	.intro-card
 	{
-		gap: 1.25rem;
+		display: none;
 	}
+
 }
 
 /* Lobby */

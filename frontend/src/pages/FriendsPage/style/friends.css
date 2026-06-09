@@ -4,8 +4,8 @@
 	display: grid;
 	align-items: stretch;
 	gap: clamp(0.85rem, 1.5vw, 1.25rem);
-	grid-template-columns: repeat(4, minmax(0, 1fr));
-	width: min(100%, 2240px);
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	width: min(100%, 1660px);
 	margin: 0 auto;
 	padding: clamp(0.75rem, 1.5vw, 1.25rem);
 }
