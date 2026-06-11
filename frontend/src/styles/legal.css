@@ -1,0 +1,86 @@
+.legal-page
+{
+	grid-column: 1 / -1;
+	width: 100%;
+	min-height: min(620px, 72dvh);
+	padding: clamp(1rem, 3vw, 2rem);
+	display: grid;
+	place-items: center;
+}
+
+.legal-card
+{
+	width: min(100%, 840px);
+	min-height: 0;
+	gap: clamp(1.5rem, 4vw, 2.75rem);
+	text-align: center;
+}
+
+.legal-header
+{
+	display: grid;
+	justify-items: center;
+	gap: 0.65rem;
+}
+
+.legal-header .section-kicker,
+.legal-header .intro-title
+{
+	margin: 0;
+}
+
+.legal-grid
+{
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 1rem;
+}
+
+.legal-item
+{
+	display: grid;
+	align-content: start;
+	gap: 0.7rem;
+	min-width: 0;
+	border: 1px solid rgba(139, 115, 76, 0.45);
+	border-radius: 8px;
+	padding: clamp(1rem, 3vw, 1.35rem);
+	background: rgba(42, 42, 42, 0.42);
+	text-align: left;
+}
+
+.legal-item h2
+{
+	margin: 0;
+	color: var(--text);
+	font-size: clamp(1.15rem, 2vw, 1.35rem);
+	line-height: 1.2;
+}
+
+.legal-card .legal-item p
+{
+	margin: 0;
+	color: var(--text-soft);
+	font-size: 1rem;
+	line-height: 1.65;
+}
+
+@media (max-width: 760px)
+{
+	.legal-page
+	{
+		min-height: auto;
+		padding: 1rem;
+	}
+
+	.legal-card
+	{
+		width: min(100%, 560px);
+		padding: 1.25rem;
+	}
+
+	.legal-grid
+	{
+		grid-template-columns: 1fr;
+	}
+}

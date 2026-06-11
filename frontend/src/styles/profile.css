@@ -5,16 +5,16 @@
 	margin: 0 auto;
 	padding: clamp(1rem, 3vw, 2rem);
 	display: grid;
-	justify-items: center;
+	place-items: center;
 }
 
 .profile-card
 {
-	width: min(100%, 920px);
+	width: min(100%, 940px);
 	display: grid;
-	grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
-	align-items: stretch;
-	gap: clamp(1.5rem, 4vw, 3rem);
+	grid-template-columns: minmax(240px, 320px) minmax(0, 1fr);
+	align-items: center;
+	gap: clamp(1.25rem, 4vw, 2.75rem);
 }
 
 .profile-card .section-kicker,
@@ -26,12 +26,15 @@
 .profile-card .section-kicker
 {
 	margin: 0;
+	text-align: center;
 }
 
 .profile-card .card-title
 {
 	margin: 0;
-	text-align: left;
+	text-align: center;
+	font-size: clamp(2rem, 4vw, 2.7rem);
+	line-height: 1.05;
 }
 
 .profile-card .form-error,
@@ -47,13 +50,22 @@
 	align-content: start;
 	gap: 1.25rem;
 	min-width: 0;
+	border: 1px solid rgba(139, 115, 76, 0.4);
+	border-radius: 8px;
+	padding: clamp(1rem, 3vw, 1.4rem);
+	background: rgba(42, 42, 42, 0.32);
 }
 
 .profile-right
 {
 	display: grid;
-	align-content: center;
+	align-content: start;
+	justify-items: center;
 	min-width: 0;
+	border: 1px solid rgba(139, 115, 76, 0.4);
+	border-radius: 8px;
+	padding: clamp(1rem, 3vw, 1.4rem);
+	background: rgba(42, 42, 42, 0.32);
 }
 
 .profile-summary
@@ -116,7 +128,12 @@
 	width: min(100%, 620px);
 	justify-self: center;
 	display: grid;
-	gap: 1.15rem;
+	gap: 1rem;
+}
+
+.profile-edit-form input
+{
+	text-align: center;
 }
 
 .profile-edit-form .submit-btn
@@ -139,6 +156,7 @@
 	flex-wrap: wrap;
 	justify-content: center;
 	gap: 1rem;
+	width: 100%;
 }
 
 .profile-avatar-input

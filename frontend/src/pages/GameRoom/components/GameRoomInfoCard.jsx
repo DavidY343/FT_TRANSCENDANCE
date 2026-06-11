@@ -31,14 +31,17 @@ export function GameRoomInfoCard({ gameId, room })
 
 			<GameStatus room={room}/>
 
-			<div className="info-note">
-				<span>Duration: </span>
-				<p>{state?.time_control_minutes || '-'} min</p>
+			<div className="game-room-info-notes">
+				<div className="info-note">
+					<span>Duration: </span>
+					<p>{state?.time_control_minutes || '-'} min</p>
+				</div>
+				<div className="info-note">
+					<span>Opponent: </span>
+					<p> {opponentLabel} </p>
+				</div>
 			</div>
-			<div className="info-note">
-				<span>Opponent: </span>
-				<p> {opponentLabel} </p>
-			</div>
+
 			{opponentDisconnectGrace && (
 				<div className="game-room-info-row">
 					<span>Forfeit in: </span>

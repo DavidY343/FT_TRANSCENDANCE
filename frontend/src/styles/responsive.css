@@ -56,7 +56,7 @@
 		padding: 1rem;
 	}
 
-	.intro-card
+	.auth-layout .intro-card
 	{
 		display: none;
 	}
@@ -83,8 +83,9 @@
 	.profile-card
 	{
 		width: min(100%, 560px);
-		padding: 1rem;
+		padding: 1.25rem;
 		grid-template-columns: 1fr;
+		gap: 1rem;
 	}
 
 	.profile-card .card-title
@@ -118,6 +119,7 @@
 	.profile-right
 	{
 		grid-column: 1;
+		width: 100%;
 	}
 
 	.profile-avatar-form
@@ -155,6 +157,12 @@
 	{
 		position: static;
 	}
+
+	.game-room-info-notes
+	{
+		width: min(100%, 720px);
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
 }
 
 /* Game Room Chat */
@@ -180,7 +188,42 @@
 
 	.clocks-banner
 	{
-		grid-template-columns: 1fr;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 0.5rem;
+	}
+
+	.clock
+	{
+		min-width: 0;
+		padding: 0.58rem 0.65rem;
+		border-radius: 10px;
+	}
+
+	.clock span
+	{
+		margin-bottom: 0.18rem;
+		font-size: 0.66rem;
+	}
+
+	.clock strong
+	{
+		font-size: clamp(1.05rem, 6vw, 1.35rem);
+	}
+
+	.game-room-info-notes
+	{
+		gap: 0.5rem;
+	}
+
+	.game-room-info-notes .info-note
+	{
+		padding: 0.65rem 0.7rem;
+	}
+
+	.game-room-info-notes .info-note p
+	{
+		font-size: 0.9rem;
+		line-height: 1.35;
 	}
 
 	.game-room-actions

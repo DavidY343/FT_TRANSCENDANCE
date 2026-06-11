@@ -77,3 +77,15 @@
 	top: 0.75rem;
 	width: 100%;
 }
+
+.game-room-info-notes
+{
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 0.75rem;
+}
+
+.game-room-info-notes .info-note
+{
+	min-width: 0;
+}
