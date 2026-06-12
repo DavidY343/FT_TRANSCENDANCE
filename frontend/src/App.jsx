@@ -23,10 +23,60 @@ export default function App() {
   const isAuthed = Boolean(getAccessToken());
   const isAuthRoute = location.pathname === '/login' || location.pathname === '/register';
 
+  // ── Global presence heartbeat ──────────────────────────────────────────────
+  // Keep a /ws/presence socket open for the entire authenticated session so
+  // the backend can track online status independently of any game WebSocket.
   useEffect(() => {
-    if (!isAuthed) {
-      return undefined;
+    if (!isAuthed) return undefined;
+
+    const token = getAccessToken();
+    if (!token) return undefined;
+
+    const wsBase = (import.meta.env.VITE_WS_BASE_URL || window.location.origin)
+      .replace(/^http/, 'ws');
+
+    let ws = null;
+    let heartbeatId = null;
+    let reconnectId = null;
+    let stopped = false;
+
+    function connect() {
+      if (stopped) return;
+      ws = new WebSocket(`${wsBase}/ws/presence?token=${encodeURIComponent(token)}`);
+
+      ws.onopen = () => {
+        // Send a ping every 30 s to keep proxies from closing idle connections.
+        heartbeatId = setInterval(() => {
+          if (ws && ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify({ type: 'ping' }));
+          }
+        }, 30_000);
+      };
+
+      ws.onclose = () => {
+        clearInterval(heartbeatId);
+        // Auto-reconnect after 3 s unless the hook is being torn down.
+        if (!stopped) {
+          reconnectId = setTimeout(connect, 3_000);
+        }
+      };
+
+      ws.onerror = () => ws.close();
     }
+
+    connect();
+
+    return () => {
+      stopped = true;
+      clearInterval(heartbeatId);
+      clearTimeout(reconnectId);
+      if (ws) ws.close();
+    };
+  }, [isAuthed]);
+
+  // ── Matchmaking poll ────────────────────────────────────────────────────────
+  useEffect(() => {
+    if (!isAuthed) return undefined;
 
     let cancelled = false;
 

@@ -48,6 +48,43 @@ app.include_router(matchmaking.router, prefix="/api/v1")
 app.mount("/uploads", StaticFiles(directory="/app/uploads"), name="uploads")
 
 
+@app.websocket("/ws/presence")
+async def websocket_presence(websocket: WebSocket, token: str | None = Query(default=None)):
+    """
+    Global presence heartbeat.
+    The frontend opens this socket as soon as the user is authenticated and
+    keeps it open for the entire session. No game logic happens here – it
+    only drives set_online / set_offline so the Friends list reflects the
+    real app-level presence rather than just in-game presence.
+    """
+    if not token:
+        await websocket.close(code=1008, reason="Missing token")
+        return
+
+    try:
+        payload = decode_token(token)
+        user_id = int(payload.get("sub", "0"))
+        if payload.get("type") != "access" or user_id <= 0:
+            raise ValueError("Invalid access token")
+    except Exception:
+        await websocket.close(code=1008, reason="Invalid token")
+        return
+
+    await websocket.accept()
+    set_online(user_id)
+    try:
+        while True:
+            try:
+                # Keep the socket alive; client may send {"type":"ping"} or
+                # just hold the connection open. Any receive error means the
+                # browser navigated away / closed the tab.
+                await websocket.receive_text()
+            except (WebSocketDisconnect, RuntimeError):
+                break
+    finally:
+        set_offline(user_id)
+
+
 DISCONNECT_GRACE_SECONDS = 30
 CLOCK_TICK_SECONDS = 1.0
 
@@ -574,6 +611,7 @@ async def websocket_game(game_id: int, websocket: WebSocket, token: str | None =
             )
             room = realtime_manager.get_room(game_id)
             if room:
+                room.disconnect_started_at[user_id] = datetime.utcnow()
                 room.disconnect_tasks[user_id] = asyncio.create_task(_forfeit_if_not_reconnected(game_id, user_id))
 
         pass
