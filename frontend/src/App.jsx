@@ -13,7 +13,7 @@ import ProfilePage from './pages/ProfilePage/ProfilePage.jsx';
 import GameRoomPage from './pages/GameRoom/GameRoomPage.jsx';
 import FriendsPage from './pages/FriendsPage/FriendsPage';
 import HistoryPage from './pages/HistoryPage/HistoryPage';
-import LeaderboardPage from './pages/LeaderboardPage';
+import LeaderboardPage from './pages/LeaderboardPage/LeaderboardPage';
 import Footer from "./components/Footer.jsx"
 import TopBar from './components/top-bar/TopBar.jsx';
 

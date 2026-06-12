@@ -17,12 +17,14 @@ export default function GameRoomPage()
 
 	return (
 		<section className="game-room">
-			<GameRoomInfoCard gameId={gameId} room={room}/>
+			<div className="game-info-column">
+				<GameRoomInfoCard gameId={gameId} room={room} />
+				<DisconnectGraceModal room={room} />
+			</div>
 			<BoardArea room={room}/>
 			<ChatCard room={room} />
 			<ErrorToast error={room?.moveError} />
 			<ConfirmModal room={room} />
-			<DisconnectGraceModal room={room} />
 			<ResultModal room={room} />
 		</section>
 	);

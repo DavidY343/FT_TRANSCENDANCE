@@ -15,11 +15,14 @@ export function useRoom(gameId)
 {
 	const [moveError, setMoveError] = useState('');
 	const [gameOver, setGameOver] = useState(null);
+	const [stableOpponentGrace, setStableOpponentGrace] = useState(null);
+	const [graceTick, setGraceTick] = useState(Date.now());
 
 	const {
 		state,
 		setState,
 		me,
+		initialGame,
 		loading,
 		error,
 		setError,
@@ -45,7 +48,81 @@ export function useRoom(gameId)
 	});
 
 	const myColor = useMemo(() => getPlayerColor(state, me), [state, me]);
-	const canInteractBoard = useMemo(() => isMyTurn(state, myColor), [state, myColor]);
+
+	const opponentGraceActive = useMemo(() => (
+		Boolean(stableOpponentGrace)
+		&& stableOpponentGrace.endsAt > graceTick
+	), [graceTick, stableOpponentGrace]);
+
+	const canInteractBoard = useMemo(() => (
+		isMyTurn(state, myColor)
+	), [myColor, state]);
+
+	useEffect(() => {
+		const disconnectGrace = state?.disconnect_grace;
+
+		if (
+			!disconnectGrace?.active
+			|| !me
+			|| disconnectGrace.user_id === me.id
+		)
+			return;
+
+		const seconds = Math.max(0, Number(disconnectGrace.seconds) || 0);
+
+		setStableOpponentGrace({
+			...disconnectGrace,
+			endsAt: Date.now() + (seconds * 1000),
+			showAfter: Date.now() + 5000,
+		});
+	}, [
+		me,
+		state?.disconnect_grace?.active,
+		state?.disconnect_grace?.seconds,
+		state?.disconnect_grace?.user_id,
+	]);
+
+	useEffect(() => {
+		if (!stableOpponentGrace)
+			return undefined;
+
+		if (state?.presence?.[stableOpponentGrace.user_id] === true)
+		{
+			setStableOpponentGrace(null);
+			return undefined;
+		}
+
+		if (gameOver || stableOpponentGrace.endsAt <= Date.now())
+		{
+			setStableOpponentGrace(null);
+			return undefined;
+		}
+
+		const intervalId = window.setInterval(() => {
+			setGraceTick(Date.now());
+		}, 250);
+
+		return () => window.clearInterval(intervalId);
+	}, [gameOver, stableOpponentGrace, state?.presence]);
+
+	useEffect(() => {
+		if (
+			gameOver
+			|| !initialGame
+			|| initialGame.status !== 'finished'
+			|| !initialGame.result
+		)
+			return;
+
+		const winner = initialGame.result === 'white_win'
+			? initialGame.white
+			: initialGame.black;
+
+		setGameOver({
+			result: initialGame.result,
+			winner: initialGame.result === 'draw' ? null : winner,
+		});
+	}, [gameOver, initialGame]);
 
 	const loserColor = useMemo(() => getLoserColor(gameOver), [gameOver]);
 	const loserKingSquare = useMemo(() => (
@@ -123,6 +200,7 @@ export function useRoom(gameId)
 		moveError,
 		gameOver,
 		gameResult,
+		disconnectGrace: stableOpponentGrace,
 		loserKingSquare,
 		setError,
 		reload,

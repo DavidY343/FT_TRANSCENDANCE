@@ -4,6 +4,7 @@ export function useDisconnectGraceCountdown(disconnectGrace, meId, gameResult)
 {
 	const [visibleGrace, setVisibleGrace] = useState(null);
 	const [deadlineMs, setDeadlineMs] = useState(null);
+	const [showAfterMs, setShowAfterMs] = useState(null);
 	const [secondsLeft, setSecondsLeft] = useState(0);
 
 	useEffect(() => {
@@ -11,6 +12,7 @@ export function useDisconnectGraceCountdown(disconnectGrace, meId, gameResult)
 		{
 			setVisibleGrace(null);
 			setDeadlineMs(null);
+			setShowAfterMs(null);
 			setSecondsLeft(0);
 			return undefined;
 		}
@@ -25,6 +27,7 @@ export function useDisconnectGraceCountdown(disconnectGrace, meId, gameResult)
 			const timeoutId = window.setTimeout(() => {
 				setVisibleGrace(null);
 				setDeadlineMs(null);
+				setShowAfterMs(null);
 				setSecondsLeft(0);
 			}, 1200);
 
@@ -35,6 +38,7 @@ export function useDisconnectGraceCountdown(disconnectGrace, meId, gameResult)
 
 		setVisibleGrace(disconnectGrace);
 		setDeadlineMs(Date.now() + (nextSeconds * 1000));
+		setShowAfterMs(disconnectGrace.showAfter || Date.now());
 		setSecondsLeft(nextSeconds);
 		return undefined;
 	}, [
@@ -63,7 +67,10 @@ export function useDisconnectGraceCountdown(disconnectGrace, meId, gameResult)
 	}, [deadlineMs, visibleGrace]);
 
 	return {
-		showGrace: Boolean(visibleGrace && secondsLeft > 0),
+		showGrace: Boolean(
+			visibleGrace
+			&& (!showAfterMs || Date.now() >= showAfterMs)
+		),
 		secondsLeft,
 	};
 }

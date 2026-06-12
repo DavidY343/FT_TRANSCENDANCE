@@ -2,7 +2,7 @@ import { useDisconnectGraceCountdown } from '../hooks/useDisconnectGraceCountdow
 
 export function DisconnectGraceModal({ room })
 {
-	const disconnectGrace = room?.state?.disconnect_grace;
+	const disconnectGrace = room?.disconnectGrace;
 	const { showGrace, secondsLeft } = useDisconnectGraceCountdown(
 		disconnectGrace,
 		room?.me?.id,
@@ -13,20 +13,18 @@ export function DisconnectGraceModal({ room })
 		return (null);
 
 	return (
-		<div className="result-backdrop disconnect-grace-backdrop">
-			<div className="card result-card disconnect-grace-card">
-				<p className="section-kicker">
-					Opponent disconnected
-				</p>
+		<div className="card result-card disconnect-grace-card">
+			<p className="section-kicker">
+				Opponent disconnected
+			</p>
 
-				<h2 className="disconnect-grace-title">
-					{secondsLeft}s
-				</h2>
+			<h2 className="disconnect-grace-title">
+				{secondsLeft}s
+			</h2>
 
-				<p className="disconnect-grace-copy">
-					Forfeit countdown
-				</p>
-			</div>
+			<p className="disconnect-grace-copy">
+				{secondsLeft > 0 ? 'Forfeit countdown' : 'Resolving result'}
+			</p>
 		</div>
 	);
 }

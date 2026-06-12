@@ -14,14 +14,12 @@ export function GameRoomInfoCard({ gameId, room })
 	);
 	let opponentLabel;
 
+	if (opponentId == undefined)
+		opponentLabel = 'Playing vs AI';
 	if (opponentDisconnectGrace || opponentOnline === false)
 		opponentLabel = 'Offline';
-	else if (opponentOnline === true)
-		opponentLabel = 'Online';
-	else if (opponentId == undefined)
-		opponentLabel = 'Playing vs AI';
 	else
-		opponentLabel = 'Checking...';
+		opponentLabel = 'Online';
 
 	return (
 		<aside className="card intro-card">

@@ -90,3 +90,19 @@
 {
 	min-width: 0;
 }
+
+.game-info-column
+{
+	position: sticky;
+	top: 0.75rem;
+	display: grid;
+	gap: 0.75rem;
+	min-width: 0;
+	width: 100%;
+}
+
+.game-info-column > .card
+{
+	width: 100%;
+	min-width: 0;
+}

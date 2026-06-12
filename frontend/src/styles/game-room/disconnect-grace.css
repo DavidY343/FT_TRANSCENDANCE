@@ -1,17 +1,12 @@
-.disconnect-grace-backdrop
-{
-	background: rgb(0 0 0 / 0.42);
-}
-
 .disconnect-grace-card
 {
-	border-color: rgba(248, 113, 113, 0.38);
+	border-color: #d9fecac6;
 }
 
 .disconnect-grace-title
 {
 	margin: 0;
-	color: #fecaca;
+	color: #d9feca;
 	font-size: clamp(3rem, 12vw, 5rem);
 	font-weight: 900;
 	line-height: 1;
