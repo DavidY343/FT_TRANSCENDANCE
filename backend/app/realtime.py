@@ -28,9 +28,21 @@ class RoomState:
     clock_started: bool = False
     clock_task: asyncio.Task | None = None
     disconnect_tasks: dict[int, asyncio.Task] = field(default_factory=dict)
+    disconnect_started_at: dict[int, datetime] = field(default_factory=dict)
     created_at: datetime = field(default_factory=datetime.utcnow)
 
-    def to_payload(self) -> dict:
+    def _active_disconnect_grace(self, grace_seconds: int) -> dict | None:
+        """Return the active disconnect_grace entry, or None if none is active."""
+        for user_id, task in self.disconnect_tasks.items():
+            if not task.done():
+                started = self.disconnect_started_at.get(user_id)
+                if started is not None:
+                    elapsed = max(0.0, (datetime.utcnow() - started).total_seconds())
+                    remaining = max(0, int(grace_seconds - elapsed))
+                    return {"user_id": user_id, "active": True, "seconds": remaining}
+        return None
+
+    def to_payload(self, grace_seconds: int = 30) -> dict:
         return {
             "game_id": self.game_id,
             "fen": self.board.fen(),
@@ -50,6 +62,7 @@ class RoomState:
             "time_control_minutes": self.time_control_minutes,
             "is_ai": self.is_ai,
             "chat_messages": self.chat_messages,
+            "disconnect_grace": self._active_disconnect_grace(grace_seconds),
         }
 
 
@@ -72,6 +85,7 @@ class RealtimeManager:
                 if not room.disconnect_tasks[user_id].done():
                     room.disconnect_tasks[user_id].cancel()
                 room.disconnect_tasks.pop(user_id, None)
+                room.disconnect_started_at.pop(user_id, None)
                 was_reconnecting = True
 
         return was_reconnecting
