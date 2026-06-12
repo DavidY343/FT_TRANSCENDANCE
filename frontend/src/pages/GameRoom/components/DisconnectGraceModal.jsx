@@ -1,12 +1,15 @@
+import { useDisconnectGraceCountdown } from '../hooks/useDisconnectGraceCountdown';
+
 export function DisconnectGraceModal({ room })
 {
 	const disconnectGrace = room?.state?.disconnect_grace;
-	const showModal = Boolean(
-		disconnectGrace?.active
-		&& disconnectGrace.user_id !== room?.me?.id
+	const { showGrace, secondsLeft } = useDisconnectGraceCountdown(
+		disconnectGrace,
+		room?.me?.id,
+		room?.gameResult,
 	);
 
-	if (!showModal)
+	if (!showGrace)
 		return (null);
 
 	return (
@@ -17,7 +20,7 @@ export function DisconnectGraceModal({ room })
 				</p>
 
 				<h2 className="disconnect-grace-title">
-					{disconnectGrace.seconds ?? '-'}s
+					{secondsLeft}s
 				</h2>
 
 				<p className="disconnect-grace-copy">

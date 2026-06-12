@@ -2,11 +2,13 @@ import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 
 import { getAccessToken } from './api';
 
+import { usePresenceHeartbeat } from './hooks/usePresenceHeartbeat';
+
 import LobbyPage from './pages/LobbyPage/LobbyPage.jsx';
 import LoginPage from './pages/AuthPages/LoginPage';
 import RegisterPage from './pages/AuthPages/RegisterPage';
-import PrivacyPage from './pages/PrivacyPage';
-import TermsPage from './pages/TermsPage';
+import PrivacyPage from './pages/LegalPages/PrivacyPage';
+import TermsPage from './pages/LegalPages/TermsPage';
 import ProfilePage from './pages/ProfilePage/ProfilePage.jsx';
 import GameRoomPage from './pages/GameRoom/GameRoomPage.jsx';
 import FriendsPage from './pages/FriendsPage/FriendsPage';
@@ -15,17 +17,9 @@ import LeaderboardPage from './pages/LeaderboardPage';
 import Footer from "./components/Footer.jsx"
 import TopBar from './components/top-bar/TopBar.jsx';
 
-function isDevAuthed()
-{
-	return (
-		import.meta.env.DEV
-		&& sessionStorage.getItem('dev_auth') === 'true'
-	);
-}
-
 function PrivateRoute({ children })
 {
-	if (!getAccessToken() && !isDevAuthed())
+	if (!getAccessToken())
 		return <Navigate to="/login" replace />;
 
 	return ( children );
@@ -33,7 +27,7 @@ function PrivateRoute({ children })
 
 function PublicAuthRoute({ children })
 {
-	if (getAccessToken() || isDevAuthed())
+	if (getAccessToken())
 		return <Navigate to="/lobby" replace />;
 
 	return ( children );
@@ -42,7 +36,9 @@ function PublicAuthRoute({ children })
 export default function App()
 {
 	const location = useLocation();
-	const isAuthed = Boolean(getAccessToken()) || isDevAuthed();
+	const isAuthed = Boolean(getAccessToken());
+
+	usePresenceHeartbeat(isAuthed);
 	return (
 		<div className="app-layout">
 			<TopBar current={location.pathname} authed={isAuthed} />

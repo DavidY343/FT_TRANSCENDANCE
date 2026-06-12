@@ -60,6 +60,20 @@ export function getGameSocketUrl(gameId)
 	);
 }
 
+export function getPresenceSocketUrl()
+{
+	const apiUrl = new URL(API_BASE, window.location.origin);
+	const wsProtocol = apiUrl.protocol === 'https:' ? 'wss:' : 'ws:';
+	const basePath = apiUrl.pathname
+		.replace(/\/api\/v\d+\/?$/, '')
+		.replace(/\/api\/?$/, '')
+		.replace(/\/$/, '');
+
+	return (
+		`${wsProtocol}//${apiUrl.host}${basePath}/ws/presence`
+	);
+}
+
 export function getRefreshToken()
 {
 	return ( readToken(REFRESH_TOKEN_KEY) );

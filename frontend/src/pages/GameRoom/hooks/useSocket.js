@@ -76,7 +76,7 @@ export function useSocket({ gameId, setState, setError, setMoveError, setGameOve
 
 						return {
 							...prev,
-							disconnect_grace: payload.active ? payload : null,
+							disconnect_grace: payload,
 						};
 					});
 					return;
@@ -101,10 +101,17 @@ export function useSocket({ gameId, setState, setError, setMoveError, setGameOve
 
 				if (payload.type === 'STATE_SYNC')
 				{
+					const hasDisconnectGrace = Object.prototype.hasOwnProperty.call(
+						payload.state,
+						'disconnect_grace',
+					);
+
 					setState((prev) => ({
 						...payload.state,
 						presence: prev?.presence || {},
-						disconnect_grace: prev?.disconnect_grace || null,
+						disconnect_grace: hasDisconnectGrace
+							? payload.state.disconnect_grace
+							: prev?.disconnect_grace || null,
 					}));
 					return;
 				}
@@ -163,16 +170,30 @@ export function useSocket({ gameId, setState, setError, setMoveError, setGameOve
 
 		connectSocket();
 
-		return () => {
-			shouldReconnectRef.current = false;
+			return () => {
+				shouldReconnectRef.current = false;
 
-			if (reconnectTimerRef.current)
-				clearTimeout(reconnectTimerRef.current);
+				if (reconnectTimerRef.current)
+					clearTimeout(reconnectTimerRef.current);
 
-			if (wsRef.current)
-				wsRef.current.close();
-		};
-	}, [gameId, setError, setGameOver, setMoveError, setState]);
+				if (!wsRef.current)
+					return;
+
+				const ws = wsRef.current;
+				ws.onclose = null;
+				ws.onerror = null;
+				ws.onmessage = null;
+
+				if (ws.readyState === WebSocket.CONNECTING)
+				{
+					ws.onopen = () => ws.close();
+					return;
+				}
+
+				if (ws.readyState === WebSocket.OPEN)
+					ws.close();
+			};
+		}, [gameId, setError, setGameOver, setMoveError, setState]);
 
 	return {
 		wsRef,
