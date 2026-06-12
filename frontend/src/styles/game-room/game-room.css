@@ -4,6 +4,7 @@
 @import './confirm.css';
 @import './result.css';
 @import './game-error.css';
+@import './disconnect-grace.css';
 
 .game-room
 {

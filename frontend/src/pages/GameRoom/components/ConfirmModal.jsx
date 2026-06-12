@@ -1,4 +1,4 @@
-export function GameRoomConfirmModal({ room })
+export function ConfirmModal({ room })
 {
 	if (room.confirmAction !== 'resign')
 		return (null);

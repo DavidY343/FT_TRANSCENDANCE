@@ -43,7 +43,7 @@ function formatChatTime(value)
 	});
 }
 
-export function GameRoomChatCard({ room })
+export function ChatCard({ room })
 {
 	const messagesRef = useRef(null);
 

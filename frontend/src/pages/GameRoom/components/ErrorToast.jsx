@@ -1,4 +1,4 @@
-export function GameRoomErrorToast({ error })
+export function ErrorToast({ error })
 {
 	if (!error)
 		return null;

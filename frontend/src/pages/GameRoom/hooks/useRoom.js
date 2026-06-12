@@ -7,11 +7,11 @@ import {
 	getLoserColor,
 	getPlayerColor,
 	isMyTurn,
-} from './gameRoomUtils';
+} from './roomUtils';
 import { useGameActions } from './gameBoardHooks/useGameActions';
 import { useChat } from './useChat';
 
-export function useGameRoom(gameId)
+export function useRoom(gameId)
 {
 	const [moveError, setMoveError] = useState('');
 	const [gameOver, setGameOver] = useState(null);

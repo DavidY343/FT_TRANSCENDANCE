@@ -1,14 +1,14 @@
 import { GameBoard } from "./GameBoard";
-import { GameRoomActions } from "./GameRoomActions";
-import { GameRoomClocks } from "./GameRoomClocks";
+import { Actions } from "./Actions";
+import { Clocks } from "./Clocks";
 
-export function GameRoomBoardArea({ room })
+export function BoardArea({ room })
 {
 	const state = room?.state;
 
 	return (
 		<main className="game-board-area">
-			<GameRoomClocks
+			<Clocks
 				clocks={state?.clocks}
 				turn={state?.turn}
 				players={{
@@ -29,7 +29,7 @@ export function GameRoomBoardArea({ room })
 
 				<GameBoard room={room} />
 
-				<GameRoomActions room={room}/>
+				<Actions room={room}/>
 			</section>
 		</main>
 	);

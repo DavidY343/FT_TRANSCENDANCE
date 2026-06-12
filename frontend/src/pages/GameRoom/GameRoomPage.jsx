@@ -1,27 +1,29 @@
 import { useParams } from 'react-router-dom';
 
-import { GameRoomBoardArea } from './components/BoardZone/GameRoomBoardArea';
-import { GameRoomChatCard } from './components/GameRoomChatCard';
+import { BoardArea } from './components/BoardZone/BoardArea';
+import { ChatCard } from './components/ChatCard';
 import { GameRoomInfoCard } from './components/GameRoomInfoCard';
-import { GameRoomErrorToast } from './components/GameRoomErrorToast';
-import { GameRoomConfirmModal } from './components/GameRoomConfirmModal';
-import { GameRoomResultModal } from './components/GameRoomResultModal';
+import { ErrorToast } from './components/ErrorToast';
+import { ConfirmModal } from './components/ConfirmModal';
+import { ResultModal } from './components/ResultModal';
+import { DisconnectGraceModal } from './components/DisconnectGraceModal';
 
-import { useGameRoom } from './hooks/useGameRoom';
+import { useRoom } from './hooks/useRoom';
 
 export default function GameRoomPage()
 {
 	const { gameId } = useParams();
-	const room = useGameRoom(gameId);
+	const room = useRoom(gameId);
 
 	return (
 		<section className="game-room">
 			<GameRoomInfoCard gameId={gameId} room={room}/>
-			<GameRoomBoardArea room={room}/>
-			<GameRoomChatCard room={room} />
-			<GameRoomErrorToast error={room?.moveError} />
-			<GameRoomConfirmModal room={room} />
-			<GameRoomResultModal room={room} />
+			<BoardArea room={room}/>
+			<ChatCard room={room} />
+			<ErrorToast error={room?.moveError} />
+			<ConfirmModal room={room} />
+			<DisconnectGraceModal room={room} />
+			<ResultModal room={room} />
 		</section>
 	);
 }

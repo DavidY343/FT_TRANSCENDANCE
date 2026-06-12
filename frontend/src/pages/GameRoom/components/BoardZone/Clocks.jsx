@@ -1,6 +1,6 @@
-import { formatClock } from '../../hooks/gameRoomUtils';
+import { formatClock } from '../../hooks/roomUtils';
 
-export function GameRoomClocks({ clocks, turn, players })
+export function Clocks({ clocks, turn, players })
 {
 	return (
 		<div className="clocks-banner">

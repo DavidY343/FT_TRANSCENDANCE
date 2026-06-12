@@ -41,13 +41,6 @@ export function GameRoomInfoCard({ gameId, room })
 					<p> {opponentLabel} </p>
 				</div>
 			</div>
-
-			{opponentDisconnectGrace && (
-				<div className="game-room-info-row">
-					<span>Forfeit in: </span>
-					<p>{state.disconnect_grace.seconds}s</p>
-				</div>
-			)}
 		</aside>
 	);
 }

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-export function GameRoomResultModal({ room })
+export function ResultModal({ room })
 {
 	if (!room.gameResult)
 		return (null);

@@ -1,4 +1,4 @@
-export function GameRoomActions({ room })
+export function Actions({ room })
 {
 	return (
 		<div className="game-room-actions">
