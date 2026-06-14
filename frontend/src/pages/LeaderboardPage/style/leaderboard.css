@@ -198,13 +198,19 @@
 
 	.leaderboard-item
 	{
-		grid-template-columns: auto minmax(0, 1fr);
-		align-items: start;
+		grid-template-columns: auto minmax(0, 1fr) auto;
+		gap: 0.5rem;
+		padding: 0.65rem;
+	}
+
+	.leaderboard-rank
+	{
+		width: 2.5rem;
 	}
 
 	.leaderboard-rating
 	{
-		grid-column: 2;
-		justify-items: start;
+		min-width: 3.5rem;
+		justify-items: end;
 	}
 }

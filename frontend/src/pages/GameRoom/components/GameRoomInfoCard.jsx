@@ -14,9 +14,9 @@ export function GameRoomInfoCard({ gameId, room })
 	);
 	let opponentLabel;
 
-	if (opponentId == undefined)
+	if (state?.is_ai)
 		opponentLabel = 'Playing vs AI';
-	if (opponentDisconnectGrace || opponentOnline === false)
+	else if (opponentDisconnectGrace || opponentOnline === false)
 		opponentLabel = 'Offline';
 	else
 		opponentLabel = 'Online';

@@ -3,9 +3,6 @@
 	position: fixed;
 	inset: 0;
 	z-index: 40;
-	display: grid;
-	place-items: center;
-	padding: 1rem;
 }
 
 .result-backdrop-win
@@ -23,6 +20,21 @@
 	background: rgb(100 116 139 / 0.35);
 }
 
+.game-room-result-win
+{
+	--result-backdrop-color: rgb(22 163 74 / 0.35);
+}
+
+.game-room-result-lost
+{
+	--result-backdrop-color: rgb(220 38 38 / 0.35);
+}
+
+.game-room-result-draw
+{
+	--result-backdrop-color: rgb(100 116 139 / 0.35);
+}
+
 .result-card
 {
 	width: min(100%, 380px);
@@ -36,6 +48,27 @@
 	flex-direction: column;
 	align-items: center;
 	gap: 1rem;
+}
+
+.game-room-has-result .game-info-column
+{
+	z-index: 41;
+}
+
+.game-room-has-result .game-info-column::before
+{
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	border-radius: 14px;
+	background: var(--result-backdrop-color);
+}
+
+.game-room-has-result .result-modal-card
+{
+	position: relative;
+	z-index: 2;
 }
 
 .result-title

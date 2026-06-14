@@ -46,6 +46,7 @@ function formatChatTime(value)
 export function ChatCard({ room })
 {
 	const messagesRef = useRef(null);
+	const isAiGame = Boolean(room?.state?.is_ai);
 
 	useEffect(() => {
 		const animationId = window.requestAnimationFrame(() => {
@@ -63,8 +64,13 @@ export function ChatCard({ room })
 			<h2 className="card-title">
 				Chat
 			</h2>
-			<div className="chat-table">
-				<div className="chat-messages" ref={messagesRef}>
+			{isAiGame ? (
+				<p className="chat-unavailable">
+					Chat unavailable in games against AI
+				</p>
+			) : (
+				<div className="chat-table">
+					<div className="chat-messages" ref={messagesRef}>
 					{room.chatMessages.length > 0 ? (
 						room.chatMessages.map((chatMessage, index) => {
 							const isMine = chatMessage.user_id === room.me?.id;
@@ -98,17 +104,20 @@ export function ChatCard({ room })
 							No new messages
 						</p>
 					)}
+					</div>
+					<form className="chat-form" onSubmit={room.submitChatMessage}>
+						<input
+							className="chat-input"
+							placeholder="Message"
+							value={room.chatMessage}
+							onChange={(event) => room.setChatMessage(event.target.value)}
+						/>
+						<button className="btn" type="submit">
+							Send
+						</button>
+					</form>
 				</div>
-				<form className="chat-form" onSubmit={room.submitChatMessage}>
-					<input
-						className="chat-input"
-						placeholder="Message"
-						value={room.chatMessage}
-						onChange={(event) => room.setChatMessage(event.target.value)}
-					/>
-					<button className="btn" type="submit">Send</button>
-				</form>
-			</div>
+			)}
 		</aside>
 	);
 }

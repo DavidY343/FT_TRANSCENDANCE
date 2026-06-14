@@ -16,16 +16,26 @@ export default function GameRoomPage()
 	const room = useRoom(gameId);
 
 	return (
-		<section className="game-room">
+		<section
+			className={`game-room${room.gameResult
+				? ` game-room-has-result game-room-result-${room.gameResult}`
+				: ''}`}
+		>
+			{room.gameResult && (
+				<div
+					className={`result-backdrop result-backdrop-${room.gameResult}`}
+					aria-hidden="true"
+				/>
+			)}
 			<div className="game-info-column">
 				<GameRoomInfoCard gameId={gameId} room={room} />
 				<DisconnectGraceModal room={room} />
+				<ResultModal room={room} />
 			</div>
 			<BoardArea room={room}/>
 			<ChatCard room={room} />
 			<ErrorToast error={room?.moveError} />
 			<ConfirmModal room={room} />
-			<ResultModal room={room} />
 		</section>
 	);
 }

@@ -1,8 +1,18 @@
 import { Chessboard } from "react-chessboard";
 
+import { isOwnPiece } from '../../hooks/gameBoardHooks/boardRules';
+
 export function GameBoard({ room })
 {
 	const state = room?.state;
+
+	function isDraggablePiece({ piece })
+	{
+		return Boolean(
+			room?.canInteractBoard
+			&& isOwnPiece(piece, room?.myColor)
+		);
+	}
 
 	return (
 		<div className="chessboard">
@@ -20,6 +30,7 @@ export function GameBoard({ room })
 				onSquareClick={room?.selectTarget}
 				customSquareStyles={room?.squareStyles}
 				arePiecesDraggable={room?.canInteractBoard}
+				isDraggablePiece={isDraggablePiece}
 			/>
 		</div>
 	);
