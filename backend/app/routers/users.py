@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 from app.db import get_db
 from app.deps import get_current_user
-from app.models import User
+from app.models import User, Friendship, Game
 from app.schemas import UserOut, UserUpdateRequest
 
 
@@ -60,3 +60,66 @@ async def upload_avatar(file: UploadFile = File(...), db: Session = Depends(get_
     db.commit()
     db.refresh(current_user)
     return current_user
+
+
+@router.get("/me/achievements")
+def get_my_achievements(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    # 1. Add friend achievement
+    has_friend = db.query(Friendship).filter(
+        ((Friendship.requester_id == current_user.id) | (Friendship.addressee_id == current_user.id)) &
+        (Friendship.status == "accepted")
+    ).first() is not None
+
+    # 2. Reach > 1250 Elo achievement
+    high_elo = current_user.elo > 1250
+
+    # 3. Play un-AI (human) game achievement
+    played_human = db.query(Game).filter(
+        ((Game.white_id == current_user.id) & (Game.black_id.isnot(None))) |
+        ((Game.black_id == current_user.id) & (Game.white_id.isnot(None)))
+    ).filter(
+        Game.status == "finished"
+    ).filter(
+        ~Game.mode.like("ai:%")
+    ).first() is not None
+
+    # 4. Play AI game achievement
+    played_ai = db.query(Game).filter(
+        (Game.white_id == current_user.id) | (Game.black_id == current_user.id)
+    ).filter(
+        Game.status == "finished"
+    ).filter(
+        Game.mode.like("ai:%")
+    ).first() is not None
+
+    achievements = [
+        {
+            "id": "add_friend",
+            "title": "Friendly Spirit",
+            "description": "Add at least one friend",
+            "emoji": "🤝",
+            "unlocked": has_friend
+        },
+        {
+            "id": "elo_1250",
+            "title": "Tactical Master",
+            "description": "Reach more than 1250 Elo rating",
+            "emoji": "🏆",
+            "unlocked": high_elo
+        },
+        {
+            "id": "play_human",
+            "title": "True Competitor",
+            "description": "Play a finished game against a human player",
+            "emoji": "👤",
+            "unlocked": played_human
+        },
+        {
+            "id": "play_ai",
+            "title": "Machine Challenger",
+            "description": "Play a finished game against the AI",
+            "emoji": "🤖",
+            "unlocked": played_ai
+        }
+    ]
+    return achievements
