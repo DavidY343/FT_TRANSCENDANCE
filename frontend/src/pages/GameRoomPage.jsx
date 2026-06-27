@@ -421,18 +421,19 @@ export default function GameRoomPage() {
           <article className={`turn-banner ${effectiveTurn === 'w' ? 'white-turn' : 'black-turn'}`}>
             <span>Turn</span>
             <strong>
-              {effectiveTurn === 'w' ? 'White to move' : state?.is_ai ? 'AI thinking...' : 'Black to move'} · {state.time_control_minutes || 10} min
+              {effectiveTurn === 'w' ? 'White to move' : state?.is_ai ? 'AI thinking...' : 'Black to move'}
+              {state.is_check ? ' ⚠️ CHECK!' : ''} · {state.time_control_minutes || 10} min
             </strong>
           </article>
         ) : null}
 
         <div className="clock-pair">
           <article className={`clock-card ${effectiveTurn === 'w' ? 'active' : ''}`}>
-            <span>White</span>
+            <span>{state?.players?.white?.display_name || 'White'} (W)</span>
             <strong>{formatClock(displayClocks.whiteMs)}</strong>
           </article>
           <article className={`clock-card ${effectiveTurn === 'b' ? 'active' : ''}`}>
-            <span>Black</span>
+            <span>{state?.players?.black?.display_name || 'Black'} (B)</span>
             <strong>{formatClock(displayClocks.blackMs)}</strong>
           </article>
         </div>

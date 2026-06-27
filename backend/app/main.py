@@ -23,7 +23,13 @@ app = FastAPI(title="Online Chess API", version="0.1.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://localhost", "http://localhost", "http://localhost:5173"],
+    allow_origins=[
+        "https://localhost",
+        "http://localhost",
+        "http://localhost:5173",
+        "https://localhost:8080",
+        "http://localhost:8080",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -46,6 +52,43 @@ app.include_router(friends.router, prefix="/api/v1")
 app.include_router(games.router, prefix="/api/v1")
 app.include_router(matchmaking.router, prefix="/api/v1")
 app.mount("/uploads", StaticFiles(directory="/app/uploads"), name="uploads")
+
+
+@app.websocket("/ws/presence")
+async def websocket_presence(websocket: WebSocket, token: str | None = Query(default=None)):
+    """
+    Global presence heartbeat.
+    The frontend opens this socket as soon as the user is authenticated and
+    keeps it open for the entire session. No game logic happens here – it
+    only drives set_online / set_offline so the Friends list reflects the
+    real app-level presence rather than just in-game presence.
+    """
+    if not token:
+        await websocket.close(code=1008, reason="Missing token")
+        return
+
+    try:
+        payload = decode_token(token)
+        user_id = int(payload.get("sub", "0"))
+        if payload.get("type") != "access" or user_id <= 0:
+            raise ValueError("Invalid access token")
+    except Exception:
+        await websocket.close(code=1008, reason="Invalid token")
+        return
+
+    await websocket.accept()
+    set_online(user_id)
+    try:
+        while True:
+            try:
+                # Keep the socket alive; client may send {"type":"ping"} or
+                # just hold the connection open. Any receive error means the
+                # browser navigated away / closed the tab.
+                await websocket.receive_text()
+            except (WebSocketDisconnect, RuntimeError):
+                break
+    finally:
+        set_offline(user_id)
 
 
 DISCONNECT_GRACE_SECONDS = 30
@@ -305,6 +348,18 @@ async def websocket_game(game_id: int, websocket: WebSocket, token: str | None =
         game_mode = game.mode
         game_finished = game.status == "finished"
         final_fen = game.final_fen
+
+        white_user = init_db.get(User, white_id) if white_id else None
+        black_user = init_db.get(User, black_id) if black_id else None
+
+        def _player_info(u: User | None):
+            return {"id": u.id, "username": u.username, "display_name": u.display_name} if u else None
+
+        white_info = _player_info(white_user)
+        black_info = _player_info(black_user)
+        if _is_ai_mode(game) and black_id is None:
+            difficulty = _ai_level_from_mode(game_mode)
+            black_info = {"id": None, "username": "ai", "display_name": f"AI ({difficulty.capitalize()})"}
     finally:
         try:
             init_db.close()
@@ -322,6 +377,8 @@ async def websocket_game(game_id: int, websocket: WebSocket, token: str | None =
             white_id,
             black_id,
             final_fen,
+            white_info=white_info,
+            black_info=black_info,
             initial_ms=minutes * 60 * 1000,
             time_control_minutes=minutes,
             is_ai=bool(game_mode and game_mode.startswith("ai:")),
@@ -560,6 +617,7 @@ async def websocket_game(game_id: int, websocket: WebSocket, token: str | None =
             )
             room = realtime_manager.get_room(game_id)
             if room:
+                room.disconnect_started_at[user_id] = datetime.utcnow()
                 room.disconnect_tasks[user_id] = asyncio.create_task(_forfeit_if_not_reconnected(game_id, user_id))
 
         pass
