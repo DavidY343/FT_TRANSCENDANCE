@@ -17,6 +17,10 @@
 
 @import './styles/game-room/game-room.css';
 
-@import './styles/profile.css';
+@import './pages/ProfilePage/style/avatar.css';
+@import './pages/ProfilePage/style/edit-form.css';
+@import './pages/ProfilePage/style/messages.css';
+@import './pages/ProfilePage/style/profile.css';
+@import './pages/ProfilePage/style/summary.css';
 
 @import './styles/responsive.css';

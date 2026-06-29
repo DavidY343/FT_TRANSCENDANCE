@@ -6,7 +6,7 @@ export function ProfileSummary({ user })
 				{user?.avatar_url ? (
 					<img
 						src={user.avatar_url}
-						alt=""
+						alt={`Avatar of ${user?.display_name || user?.username || 'user'}`}
 					/>
 				) : (
 					<span>

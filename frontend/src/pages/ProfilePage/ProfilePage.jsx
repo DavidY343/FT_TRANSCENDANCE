@@ -13,6 +13,26 @@ export default function ProfilePage()
 				<p>Loading profile...</p>
 			</section>
 		);
+	if (profile.error && !profile.user)
+	{
+		return (
+			<section className="profile-layout">
+				<article className="card profile-card">
+					<p className="form-error" role="alert">
+						{profile.error}
+					</p>
+
+					<button
+						className="btn"
+						type="button"
+						onClick={profile.loadProfile}
+					>
+						Retry
+					</button>
+				</article>
+			</section>
+		);
+	}
 
 	return (
 		<section className="profile-layout">

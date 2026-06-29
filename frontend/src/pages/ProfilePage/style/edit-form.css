@@ -1,0 +1,18 @@
+
+.profile-edit-form
+{
+	width: min(100%, 620px);
+	justify-self: center;
+	display: grid;
+	gap: 1rem;
+}
+
+.profile-edit-form input
+{
+	text-align: center;
+}
+
+.profile-edit-form .submit-btn
+{
+	justify-self: center;
+}

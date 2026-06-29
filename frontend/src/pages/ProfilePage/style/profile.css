@@ -1,0 +1,64 @@
+.profile-layout
+{
+	grid-column: 1 / -1;
+	width: min(100%, 1180px);
+	margin: 0 auto;
+	padding: clamp(1rem, 3vw, 2rem);
+	display: grid;
+	place-items: center;
+}
+
+.profile-card
+{
+	width: min(100%, 940px);
+	display: grid;
+	grid-template-columns: minmax(240px, 320px) minmax(0, 1fr);
+	align-items: center;
+	gap: clamp(1.25rem, 4vw, 2.75rem);
+}
+
+.profile-card .section-kicker,
+.profile-card .card-title
+{
+	grid-column: 1 / -1;
+}
+
+.profile-card .section-kicker
+{
+	margin: 0;
+	text-align: center;
+}
+
+.profile-card .card-title
+{
+	margin: 0;
+	text-align: center;
+	font-size: clamp(2rem, 4vw, 2.7rem);
+	line-height: 1.05;
+}
+
+
+.profile-left
+{
+	display: grid;
+	justify-items: center;
+	align-content: start;
+	gap: 1.25rem;
+	min-width: 0;
+	border: 1px solid rgba(139, 115, 76, 0.4);
+	border-radius: 8px;
+	padding: clamp(1rem, 3vw, 1.4rem);
+	background: rgba(42, 42, 42, 0.32);
+}
+
+.profile-right
+{
+	display: grid;
+	align-content: start;
+	justify-items: center;
+	min-width: 0;
+	border: 1px solid rgba(139, 115, 76, 0.4);
+	border-radius: 8px;
+	padding: clamp(1rem, 3vw, 1.4rem);
+	background: rgba(42, 42, 42, 0.32);
+}
