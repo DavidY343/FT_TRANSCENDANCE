@@ -4,6 +4,16 @@ import { api, getApiErrorMessage } from '../../api';
 
 import './style/leaderboard.css';
 
+/*
+	LeaderboardRow → Representa una posición individual del ranking.
+
+	row → Información del jugador.
+	rank → Posición del jugador dentro del ranking.
+	displayName → Nombre que se mostrará en la interfaz.
+
+	Return
+	Elemento de lista con posición, jugador y puntuación ELO.
+*/
 function LeaderboardRow({ row, rank })
 {
 	const displayName = row.display_name || row.username || 'Unknown player';
@@ -27,23 +37,63 @@ function LeaderboardRow({ row, rank })
 	);
 }
 
+/*
+	LeaderboardPage → Gestiona y muestra la clasificación de jugadores.
+
+	rows → Lista de jugadores ordenados por ELO.
+	loading → Indica si se está cargando la clasificación.
+	error → Mensaje producido si la petición falla.
+	topPlayer → Primer jugador del ranking.
+	topRating → Puntuación ELO más alta disponible.
+
+	loadLeaderboard() → Solicita la clasificación al backend.
+	useEffect(...) → Carga la clasificación al montar la página.
+	useMemo(...) → Calcula la mejor puntuación cuando cambia el ranking.
+
+	Return
+	Resumen de la clasificación y listado de jugadores.
+*/
 export default function LeaderboardPage()
 {
 	const [rows, setRows] = useState([]);
+	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState('');
+	/*
+		loadLeaderboard → Obtiene la clasificación desde el backend.
 
+		data → Lista de jugadores incluida en la respuesta.
+		err → Error producido durante la petición.
+
+		api.get(...) → Solicita el ranking de jugadores.
+		getApiErrorMessage(...) → Convierte el error en un mensaje legible.
+
+		Return
+		No devuelve ningún valor. Actualiza los estados de la página.
+	*/
+	async function loadLeaderboard()
+	{
+		setLoading(true);
+		setError('');
+
+		try
+		{
+			const { data } = await api.get('/games/leaderboard');
+			setRows(data);
+		}
+		catch (err)
+		{
+			setError(getApiErrorMessage(
+				err,
+				'Failed to load leaderboard'
+			));
+		}
+		finally
+		{
+			setLoading(false);
+		}
+	}
 	useEffect(() => {
-		(async () => {
-			try
-			{
-				const { data } = await api.get('/games/leaderboard');
-				setRows(data);
-			}
-			catch (err)
-			{
-				setError(getApiErrorMessage(err, 'Failed to load leaderboard'));
-			}
-		})();
+		loadLeaderboard();
 	}, []);
 
 	const topPlayer = rows[0];
@@ -81,7 +131,6 @@ export default function LeaderboardPage()
 					<strong>{topPlayer?.display_name || topPlayer?.username || '-'}</strong>
 				</div>
 
-				{error && <p className="form-error">{error}</p>}
 			</aside>
 
 			<aside className="card panel-card leaderboard-panel">
@@ -89,7 +138,25 @@ export default function LeaderboardPage()
 					Standings
 				</h3>
 
-				{rows.length === 0 ? (
+				{loading ? (
+					<p className="leaderboard-empty" aria-live="polite">
+						Loading leaderboard...
+					</p>
+				) : error ? (
+					<div>
+						<p className="form-error" role="alert">
+							{error}
+						</p>
+
+						<button
+							className="btn"
+							type="button"
+							onClick={loadLeaderboard}
+						>
+							Retry
+						</button>
+					</div>
+				) : rows.length === 0 ? (
 					<p className="leaderboard-empty">
 						No ranking data available.
 					</p>
