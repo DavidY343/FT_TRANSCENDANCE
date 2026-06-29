@@ -83,9 +83,6 @@ export function ChatCard({ room })
 									key={`${chatMessage.user_id}-${chatMessage.at}-${index}`}
 								>
 									<div className="chat-message-meta">
-										<span className="chat-message-user">
-											{author}
-										</span>
 										{time && (
 											<span className="chat-message-time">
 												{time}
