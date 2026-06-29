@@ -25,12 +25,28 @@ export function useFriends()
 	const [loading, setLoading] = useState(true);
 	const [searching, setSearching] = useState(false);
 	const [actionLoading, setActionLoading] = useState(false);
+	const [loadError, setLoadError] = useState('');
+	const [pendingRemoveFriend, setPendingRemoveFriend] = useState(null);
 
 	const feedback = useScopedTimedMessage(1500);
+
+	function getFeedback(scope)
+	{
+		const scopedMessage = feedback.getScopedMessage(scope);
+
+		if (scopedMessage)
+			return scopedMessage;
+
+		if (loadError && (scope === 'friends' || scope === 'requests'))
+			return { scope, type: 'error', message: loadError };
+
+		return null;
+	}
 
 	async function refresh()
 	{
 		setLoading(true);
+		setLoadError('');
 
 		try
 		{
@@ -50,7 +66,9 @@ export function useFriends()
 		}
 		catch (err)
 		{
-			feedback.setError(getApiErrorMessage(err, 'Unable to load friends'), 'friends');
+			const message = getApiErrorMessage(err, 'Unable to load friends');
+
+			setLoadError(message);
 		}
 		finally
 		{
@@ -62,28 +80,31 @@ export function useFriends()
 	{
 		event?.preventDefault();
 
-		const query = searchQuery.trim();
+		const normalizedQuery = searchQuery.trim();
 
-		if (query.length < 2)
+		if (normalizedQuery.length < 2)
 		{
+			feedback.setError('Search must contain at least 2 characters.', 'search');
 			setSearchResults([]);
 			setHasSearched(false);
-			feedback.setError('Search requires at least 2 characters', 'search');
 			return;
 		}
+
 
 		setSearching(true);
 		feedback.clearMessage();
 
 		try
 		{
-			const response = await searchUsers(query);
+			const response = await searchUsers(normalizedQuery);
 			setSearchResults(response.data);
 			setHasSearched(true);
 		}
 		catch (err)
 		{
 			feedback.setError(getApiErrorMessage(err, 'Unable to search users'), 'search');
+			setSearchResults([]);
+			setHasSearched(true);
 		}
 		finally
 		{
@@ -157,9 +178,22 @@ export function useFriends()
 		}
 	}
 
-	async function removeFriendById(userId)
+	function requestRemoveFriend(friend)
 	{
-		if (!window.confirm('Remove this friend?'))
+		setPendingRemoveFriend(friend);
+	}
+
+	function cancelRemoveFriend()
+	{
+		if (actionLoading)
+			return;
+
+		setPendingRemoveFriend(null);
+	}
+
+	async function confirmRemoveFriend()
+	{
+		if (!pendingRemoveFriend || actionLoading)
 			return;
 
 		setActionLoading(true);
@@ -167,8 +201,9 @@ export function useFriends()
 
 		try
 		{
-			await removeFriend(userId);
+			await removeFriend(pendingRemoveFriend.id);
 			feedback.setSuccess('Friend removed', 'friends');
+			setPendingRemoveFriend(null);
 			await refresh();
 		}
 		catch (err)
@@ -195,6 +230,7 @@ export function useFriends()
 		loading,
 		searching,
 		actionLoading,
+		pendingRemoveFriend,
 		feedback: feedback.message,
 
 		setSearchQuery,
@@ -202,8 +238,10 @@ export function useFriends()
 		sendRequest,
 		acceptRequest,
 		rejectRequest,
-		removeFriendById,
+		requestRemoveFriend,
+		cancelRemoveFriend,
+		confirmRemoveFriend,
 		refresh,
-		getFeedback: feedback.getScopedMessage,
+		getFeedback,
 	};
 }

@@ -19,6 +19,7 @@ export function SearchCard({
 			<form className="friends-search-form" onSubmit={onSubmit}>
 				<input
 					type="search"
+					aria-label="Search players by username or display name"
 					placeholder="Username or display name"
 					value={query}
 					onChange={(event) => setQuery(event.target.value)}
@@ -34,11 +35,14 @@ export function SearchCard({
 			</form>
 
 			{feedback && (
-				<p className={`friends-message friends-message-${feedback.type}`}>
+				<p
+					className={`friends-message friends-message-${feedback.type}`}
+					role={feedback.type === 'error' ? 'alert' : 'status'}
+					aria-live="polite"
+				>
 					{feedback.message}
 				</p>
 			)}
-
 			{results.length > 0 && (
 				<div className="friends-list">
 					{results.map((user) => (

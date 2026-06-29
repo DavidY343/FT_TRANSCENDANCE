@@ -3,6 +3,7 @@ import { FriendsInfoCard } from './components/FriendsInfoCard';
 import { SearchCard } from './components/SearchCard';
 import { FriendsListCard } from './components/FriendsListCard';
 import { RequestsCard } from './components/RequestsCard';
+import { RemoveFriendModal } from './components/RemoveFriendModal';
 
 import { useFriends } from './hooks/useFriends';
 
@@ -31,7 +32,7 @@ export default function FriendsPage()
 				loading={friends.loading}
 				actionLoading={friends.actionLoading}
 				feedback={friends.getFeedback('friends')}
-				onRemoveFriend={friends.removeFriendById}
+				onRequestRemoveFriend={friends.requestRemoveFriend}
 			/>
 			<RequestsCard
 				incomingRequests={friends.incomingRequests}
@@ -42,6 +43,12 @@ export default function FriendsPage()
 				onRefresh={friends.refresh}
 				onAccept={friends.acceptRequest}
 				onReject={friends.rejectRequest}
+			/>
+			<RemoveFriendModal
+				friend={friends.pendingRemoveFriend}
+				actionLoading={friends.actionLoading}
+				onCancel={friends.cancelRemoveFriend}
+				onConfirm={friends.confirmRemoveFriend}
 			/>
 		</section>
 	);

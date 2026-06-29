@@ -26,11 +26,15 @@ export function RequestsCard({
 			</div>
 
 			{feedback && (
-				<p className={`friends-message friends-message-${feedback.type}`}>
+				<p
+					className={`friends-message friends-message-${feedback.type}`}
+					role={feedback.type === 'error' ? 'alert' : 'status'}
+					aria-live="polite"
+				>
 					{feedback.message}
 				</p>
 			)}
-
+			
 			<div className="friends-request-block">
 				<h4>
 					Incoming
