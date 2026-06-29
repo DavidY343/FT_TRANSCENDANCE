@@ -20,10 +20,10 @@ export function BoardArea({ room })
 			<section className="card board-card">
 				<div className="moves-strip">
 					<span>
-						Move
+						{state?.is_check ? 'Check' : 'Move'}
 					</span>
 					<strong>
-						{state?.last_move || 'Opening position'}
+						{state?.is_check ? 'King under attack' : state?.last_move || 'Opening position'}
 					</strong>
 				</div>
 

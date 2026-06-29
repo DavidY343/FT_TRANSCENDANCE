@@ -18,3 +18,8 @@ export function uploadProfileAvatar(formData)
 		},
 	});
 }
+
+export function fetchAchievements()
+{
+	return api.get('/users/me/achievements');
+}

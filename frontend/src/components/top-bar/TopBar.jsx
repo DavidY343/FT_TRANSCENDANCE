@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom"
 import { clearTokens } from "../../api";
+import { clearStoredAchievements } from '../../hooks/useAchievementToasts';
 import { MenuDisplay } from "./MenuDisplay";
 
 function BrandBlock()
@@ -29,6 +30,7 @@ function TopNav(props)
 	function handleLogout()
 	{
 		clearTokens();
+		clearStoredAchievements();
 		sessionStorage.removeItem('dev_auth');
 		navigate('/login');
 	}

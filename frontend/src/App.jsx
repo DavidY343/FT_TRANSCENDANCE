@@ -2,7 +2,9 @@ import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 
 import { getAccessToken } from './api';
 
+import { AchievementToastContainer } from './components/AchievementToastContainer.jsx';
 import { usePresenceHeartbeat } from './hooks/usePresenceHeartbeat';
+import { useAchievementToasts } from './hooks/useAchievementToasts';
 
 import LobbyPage from './pages/LobbyPage/LobbyPage.jsx';
 import LoginPage from './pages/AuthPages/LoginPage';
@@ -37,6 +39,7 @@ export default function App()
 {
 	const location = useLocation();
 	const isAuthed = Boolean(getAccessToken());
+	const achievementToasts = useAchievementToasts(isAuthed);
 
 	usePresenceHeartbeat(isAuthed);
 	return (
@@ -122,6 +125,7 @@ export default function App()
 				</div>
 			</main>
 			<Footer/>
+			<AchievementToastContainer toasts={achievementToasts} />
 		</div>
 	);
 }

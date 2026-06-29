@@ -1,11 +1,90 @@
+import { useEffect, useState } from 'react';
+
 import { useProfile } from './hooks/useProfile';
 import { ProfileSummary } from './components/ProfileSummary';
 import { ProfileEditForm } from './components/ProfileEditForm';
 import { ProfileAvatarForm } from './components/ProfileAvatarForm';
+import { fetchAchievements } from './hooks/profileApi';
+import { getApiErrorMessage } from '../../api';
+
+function AchievementsPanel({ onError })
+{
+	const [achievements, setAchievements] = useState([]);
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		let cancelled = false;
+
+		async function loadAchievements()
+		{
+			try
+			{
+				setLoading(true);
+				const { data } = await fetchAchievements();
+
+				if (!cancelled)
+					setAchievements(Array.isArray(data) ? data : []);
+			}
+			catch (err)
+			{
+				if (!cancelled)
+					onError(getApiErrorMessage(err, 'Failed to load achievements'));
+			}
+			finally
+			{
+				if (!cancelled)
+					setLoading(false);
+			}
+		}
+
+		loadAchievements();
+
+		return () => {
+			cancelled = true;
+		};
+	}, [onError]);
+
+	return (
+		<div className="achievements-panel">
+			<header className="achievements-header">
+				<p className="section-kicker">Achievements</p>
+				<h2 className="card-title">Badges of Honor</h2>
+				<p>Complete challenges to unlock badges for your profile.</p>
+			</header>
+
+			{loading ? (
+				<p>Loading achievements...</p>
+			) : (
+				<div className="achievements-grid">
+					{achievements.map((achievement) => (
+						<article
+							key={achievement.id}
+							className={`achievement-card${achievement.unlocked ? '' : ' achievement-card-locked'}`}
+						>
+							<span className="achievement-emoji" aria-hidden="true">
+								{achievement.emoji}
+							</span>
+							<div className="achievement-info">
+								<h3>{achievement.title}</h3>
+								<p>{achievement.description}</p>
+								<span
+									className={`achievement-badge${achievement.unlocked ? ' achievement-badge-unlocked' : ''}`}
+								>
+									{achievement.unlocked ? 'Completed' : 'Locked'}
+								</span>
+							</div>
+						</article>
+					))}
+				</div>
+			)}
+		</div>
+	);
+}
 
 export default function ProfilePage()
 {
 	const profile = useProfile();
+	const [activeTab, setActiveTab] = useState('settings');
 
 	if (profile.loading)
 		return (
@@ -37,13 +116,22 @@ export default function ProfilePage()
 	return (
 		<section className="profile-layout">
 			<article className="card intro-card profile-card">
-				<p className="section-kicker">
-					Profile Settings
-				</p>
-
-				<h1 className="card-title">
-					Profile
-				</h1>
+				<div className="profile-tabs">
+					<button
+						className={`profile-tab-btn${activeTab === 'settings' ? ' profile-tab-btn-active' : ''}`}
+						type="button"
+						onClick={() => setActiveTab('settings')}
+					>
+						Profile Settings
+					</button>
+					<button
+						className={`profile-tab-btn${activeTab === 'achievements' ? ' profile-tab-btn-active' : ''}`}
+						type="button"
+						onClick={() => setActiveTab('achievements')}
+					>
+						Achievements
+					</button>
+				</div>
 
 				{profile.error && (
 					<p className="form-error">
@@ -56,15 +144,29 @@ export default function ProfilePage()
 						{profile.success}
 					</p>
 				)}
-				
-				<div className="profile-left">
-					<ProfileAvatarForm profile={profile} />
-					<ProfileSummary user={profile.user} />
-				</div>
 
-				<div className="profile-right">
-					<ProfileEditForm profile={profile} />
-				</div>
+				{activeTab === 'settings' ? (
+					<>
+						<p className="section-kicker">
+							Profile Settings
+						</p>
+
+						<h1 className="card-title">
+							Profile
+						</h1>
+
+						<div className="profile-left">
+							<ProfileAvatarForm profile={profile} />
+							<ProfileSummary user={profile.user} />
+						</div>
+
+						<div className="profile-right">
+							<ProfileEditForm profile={profile} />
+						</div>
+					</>
+				) : (
+					<AchievementsPanel onError={profile.setError} />
+				)}
 			</article>
 		</section>
 	);

@@ -23,7 +23,13 @@ app = FastAPI(title="Online Chess API", version="0.1.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://localhost", "http://localhost", "http://localhost:5173"],
+    allow_origins=[
+        "https://localhost",
+        "http://localhost",
+        "http://localhost:5173",
+        "https://localhost:8080",
+        "http://localhost:8080",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

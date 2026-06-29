@@ -16,6 +16,7 @@
 @import './styles/lobby.css';
 
 @import './styles/game-room/game-room.css';
+@import './styles/achievements.css';
 
 @import './pages/ProfilePage/style/avatar.css';
 @import './pages/ProfilePage/style/edit-form.css';
