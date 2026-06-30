@@ -21,11 +21,28 @@ export function GameRoomInfoCard({ gameId, room })
 	else
 		opponentLabel = 'Online';
 
+	const wsStatus = room?.wsStatus;
+
 	return (
 		<aside className="card intro-card">
 			<h2 className="card-title">
 				Game Room #{gameId}
 			</h2>
+
+			{(wsStatus === 'reconnecting' || wsStatus === 'disconnected') && (
+				<div className={`ws-status-badge ws-status-${wsStatus}`} style={{
+					padding: '8px',
+					marginBottom: '12px',
+					borderRadius: '4px',
+					backgroundColor: wsStatus === 'reconnecting' ? '#f59e0b' : '#ef4444',
+					color: '#fff',
+					textAlign: 'center',
+					fontSize: '0.9rem',
+					fontWeight: '600'
+				}}>
+					{wsStatus === 'reconnecting' ? 'Reconnecting...' : 'Disconnected from server'}
+				</div>
+			)}
 
 			<GameStatus room={room}/>
 

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { ActiveGameCard } from './components/ActiveGameCard';
 import { AiGameCard } from './components/AiGameCard';
 import { LobbyHero } from './components/LobbyHero';
@@ -9,10 +10,20 @@ export default function LobbyPage()
 {
 	const lobby = useLobby();
 
+	useEffect(() => {
+		const handleKeyDown = (e) => {
+			if (e.key === 'Escape' && lobby.confirmResignModal) {
+				lobby.cancelResign();
+			}
+		};
+		window.addEventListener('keydown', handleKeyDown);
+		return () => window.removeEventListener('keydown', handleKeyDown);
+	}, [lobby.confirmResignModal, lobby.cancelResign]);
+
 	return (
 		<section className="lobby-layout">
 			{lobby.confirmResignModal && (
-				<div className="confirm-backdrop">
+				<div className="confirm-backdrop" role="dialog" aria-modal="true">
 					<div className="card confirm-card">
 						<p className="confirm-text">
 							Resign this game? Your opponent will win.
@@ -46,32 +57,39 @@ export default function LobbyPage()
 			/>
 
 			<div className="lobby-actions-grid">
-				{lobby.activeGameId && (
-					<ActiveGameCard
-						activeGameId={lobby.activeGameId}
-						onResume={lobby.resumeActiveGame}
-						onResign={lobby.requestResign}
-						actionState={lobby.actionState}
-					/>
+				{lobby.activeGameId ? (
+					<div className="active-game-container" style={{ gridColumn: '1 / -1' }}>
+						<div style={{ padding: '1rem', marginBottom: '1rem', backgroundColor: '#3b82f6', color: 'white', borderRadius: '8px', textAlign: 'center' }}>
+							<strong>You have a game in progress!</strong> Please resume or resign before starting a new one.
+						</div>
+						<ActiveGameCard
+							activeGameId={lobby.activeGameId}
+							onResume={lobby.resumeActiveGame}
+							onResign={lobby.requestResign}
+							actionState={lobby.actionState}
+						/>
+					</div>
+				) : (
+					<>
+						<MatchmakingCard
+							status={lobby.status}
+							timeMinutes={lobby.timeMinutes}
+							setTimeMinutes={lobby.setTimeMinutes}
+							onJoin={lobby.joinQueue}
+							onLeave={lobby.leaveQueue}
+							actionState={lobby.actionState}
+						/>
+
+						<AiGameCard
+							difficulty={lobby.difficulty}
+							setDifficulty={lobby.setDifficulty}
+							timeMinutes={lobby.timeMinutes}
+							setTimeMinutes={lobby.setTimeMinutes}
+							onPlay={lobby.playVsAi}
+							actionState={lobby.actionState}
+						/>
+					</>
 				)}
-
-				<MatchmakingCard
-					status={lobby.status}
-					timeMinutes={lobby.timeMinutes}
-					setTimeMinutes={lobby.setTimeMinutes}
-					onJoin={lobby.joinQueue}
-					onLeave={lobby.leaveQueue}
-					actionState={lobby.actionState}
-				/>
-
-				<AiGameCard
-					difficulty={lobby.difficulty}
-					setDifficulty={lobby.setDifficulty}
-					timeMinutes={lobby.timeMinutes}
-					setTimeMinutes={lobby.setTimeMinutes}
-					onPlay={lobby.playVsAi}
-					actionState={lobby.actionState}
-				/>
 			</div>
 		</section>
 	);
