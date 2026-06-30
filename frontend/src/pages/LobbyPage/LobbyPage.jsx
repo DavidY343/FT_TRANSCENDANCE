@@ -58,10 +58,7 @@ export default function LobbyPage()
 
 			<div className="lobby-actions-grid">
 				{lobby.activeGameId ? (
-					<div className="active-game-container" style={{ gridColumn: '1 / -1' }}>
-						<div style={{ padding: '1rem', marginBottom: '1rem', backgroundColor: '#3b82f6', color: 'white', borderRadius: '8px', textAlign: 'center' }}>
-							<strong>You have a game in progress!</strong> Please resume or resign before starting a new one.
-						</div>
+					<div className="active-game-container" style={{ gridColumn: '1 / -1', maxWidth: '600px', margin: '0 auto' }}>
 						<ActiveGameCard
 							activeGameId={lobby.activeGameId}
 							onResume={lobby.resumeActiveGame}
