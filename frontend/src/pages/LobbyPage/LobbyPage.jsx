@@ -11,6 +11,33 @@ export default function LobbyPage()
 
 	return (
 		<section className="lobby-layout">
+			{lobby.confirmResignModal && (
+				<div className="confirm-backdrop">
+					<div className="card confirm-card">
+						<p className="confirm-text">
+							Resign this game? Your opponent will win.
+						</p>
+
+						<div className="confirm-actions">
+							<button
+								type="button"
+								className="btn confirm-button"
+								onClick={lobby.cancelResign}
+							>
+								Cancel
+							</button>
+
+							<button
+								type="button"
+								className="btn confirm-btn confirm-btn-danger"
+								onClick={lobby.resignActiveGame}
+							>
+								Resign
+							</button>
+						</div>
+					</div>
+				</div>
+			)}
 			<LobbyHero
 				status={lobby.status}
 				position={lobby.position}
@@ -23,8 +50,8 @@ export default function LobbyPage()
 					<ActiveGameCard
 						activeGameId={lobby.activeGameId}
 						onResume={lobby.resumeActiveGame}
-						onResign={lobby.resignActiveGame}
-						resigning={lobby.resigning}
+						onResign={lobby.requestResign}
+						actionState={lobby.actionState}
 					/>
 				)}
 
@@ -34,6 +61,7 @@ export default function LobbyPage()
 					setTimeMinutes={lobby.setTimeMinutes}
 					onJoin={lobby.joinQueue}
 					onLeave={lobby.leaveQueue}
+					actionState={lobby.actionState}
 				/>
 
 				<AiGameCard
@@ -42,6 +70,7 @@ export default function LobbyPage()
 					timeMinutes={lobby.timeMinutes}
 					setTimeMinutes={lobby.setTimeMinutes}
 					onPlay={lobby.playVsAi}
+					actionState={lobby.actionState}
 				/>
 			</div>
 		</section>

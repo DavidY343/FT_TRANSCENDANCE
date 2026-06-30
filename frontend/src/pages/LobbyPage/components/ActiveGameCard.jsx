@@ -2,7 +2,7 @@ export function ActiveGameCard({
 	activeGameId,
 	onResume,
 	onResign,
-	resigning
+	actionState
 })
 {
 	return (
@@ -19,16 +19,16 @@ export function ActiveGameCard({
 			</p>
 
 			<div className="lobby-card-actions">
-				<button className="btn" type="button" onClick={onResume}>
+				<button className="btn" type="button" onClick={onResume} disabled={actionState !== 'idle'}>
 					Resume game #{activeGameId}
 				</button>
 				<button
 					className="btn"
 					type="button"
 					onClick={onResign}
-					disabled={resigning}
+					disabled={actionState !== 'idle'}
 				>
-					{resigning ? 'Resigning...' : `Resign game #${activeGameId}`}
+					{actionState === 'resigning' ? 'Resigning...' : `Resign game #${activeGameId}`}
 				</button>
 			</div>
 		</article>

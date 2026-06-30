@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { api } from '../api';
+import { api, getAccessToken } from '../api';
 
 const STORAGE_KEY = 'unlocked_achievements';
 
@@ -42,6 +42,9 @@ export function useAchievementToasts(isAuthed)
 		{
 			if (cancelled)
 				return;
+
+            if (!getAccessToken())
+                return;
 
 			try
 			{

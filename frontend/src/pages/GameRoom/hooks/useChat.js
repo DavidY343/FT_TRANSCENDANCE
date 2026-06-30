@@ -5,18 +5,25 @@ export function useChat({ wsRef, setError })
 {
 	const [chatMessage, setChatMessage] = useState('');
 
-	function submitChatMessage(event)
+	async function submitChatMessage(event)
 	{
 		event?.preventDefault();
 
-		const sent = sendChatMessage({
-			wsRef,
-			setError,
-			message: chatMessage,
-		});
+		if (wsRef.current?.readyState !== WebSocket.OPEN)
+			return;
 
-		if (sent)
-			setChatMessage('');
+		try {
+			const sent = await sendChatMessage({
+				wsRef,
+				setError,
+				message: chatMessage,
+			});
+
+			if (sent)
+				setChatMessage('');
+		} catch (e) {
+			// Catch silently to avoid Unhandled Promise Rejections
+		}
 	}
 
 	return {

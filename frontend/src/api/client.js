@@ -114,6 +114,11 @@ api.interceptors.request.use((config) => {
 	api(originalRequest) → Resultado de la petición repetida.
 	Promise.reject(error) → Error que no pudo recuperarse.
 */
+window.addEventListener('unhandledrejection', (event) => {
+	if (event.reason && event.reason.isSafe)
+		event.preventDefault();
+});
+
 api.interceptors.response.use(
 	(response) => response,
 	async (error) => {
@@ -162,6 +167,12 @@ api.interceptors.response.use(
 			}
 		}
 
-		return Promise.reject(error);
+		const safeError = new Error(error.message);
+		safeError.isSafe = true;
+		safeError.config = error.config;
+		safeError.code = error.code;
+		safeError.response = error.response;
+
+		return Promise.reject(safeError);
 	}
 );

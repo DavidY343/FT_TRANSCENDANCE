@@ -3,10 +3,13 @@ export function MatchmakingCard({
 	timeMinutes,
 	setTimeMinutes,
 	onJoin,
-	onLeave
+	onLeave,
+	actionState
 })
 {
 	const waiting = status === 'waiting';
+	const disableJoin = waiting || actionState !== 'idle';
+	const disableLeave = !waiting || actionState !== 'idle';
 
 	return (
 		<article className="card lobby-action-card">
@@ -26,7 +29,7 @@ export function MatchmakingCard({
 				id="matchmaking-time-control"
 				value={timeMinutes}
 				onChange={(event) => setTimeMinutes(Number(event.target.value))}
-				disabled={waiting}
+				disabled={waiting || actionState !== 'idle'}
 			>
 				<option value={5}>5 minutes</option>
 				<option value={10}>10 minutes</option>
@@ -38,7 +41,7 @@ export function MatchmakingCard({
 					className="btn"
 					type="button"
 					onClick={onJoin}
-					disabled={waiting}
+					disabled={disableJoin}
 				>
 					{waiting ? 'Waiting...' : 'Join matchmaking'}
 				</button>
@@ -47,7 +50,7 @@ export function MatchmakingCard({
 					className="btn"
 					type="button"
 					onClick={onLeave}
-					disabled={!waiting}
+					disabled={disableLeave}
 				>
 					Leave queue
 				</button>

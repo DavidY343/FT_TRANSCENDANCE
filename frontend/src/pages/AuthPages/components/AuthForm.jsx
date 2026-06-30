@@ -25,6 +25,7 @@ export function RegisterForm({
 					value={form.email}
 					onChange={(event) => updateField('email', event.target.value)}
 					type="email"
+					autoComplete="email"
 					placeholder="Email"
 					required
 				/>
@@ -37,6 +38,7 @@ export function RegisterForm({
 					id="register-username"
 					value={form.username}
 					onChange={(event) => updateField('username', event.target.value)}
+					autoComplete="username"
 					placeholder="Username"
 					required
 				/>
@@ -49,6 +51,7 @@ export function RegisterForm({
 					id="register-display-name"
 					value={form.display_name}
 					onChange={(event) => updateField('display_name', event.target.value)}
+					autoComplete="name"
 					placeholder="Display name"
 					required
 				/>
@@ -62,6 +65,7 @@ export function RegisterForm({
 					value={form.password}
 					onChange={(event) => updateField('password', event.target.value)}
 					type="password"
+					autoComplete="new-password"
 					placeholder="Password"
 					required
 				/>
@@ -75,11 +79,12 @@ export function RegisterForm({
 					value={form.confirm_password}
 					onChange={(event) => updateField('confirm_password', event.target.value)}
 					type="password"
+					autoComplete="new-password"
 					placeholder="Confirm password"
 					required
 				/>
 
-				<button className="btn submit-btn" disabled={submitting}>
+				<button className="btn submit-btn" disabled={submitting || !form.email || !form.username || !form.display_name || !form.password || !form.confirm_password || form.password !== form.confirm_password}>
 					{submitting ? 'Creating account...' : 'Create'}
 				</button>
 			</form>
@@ -124,6 +129,7 @@ export function LoginForm({
 					value={email}
 					onChange={(event) => setEmail(event.target.value)}
 					type="email"
+					autoComplete="username"
 					placeholder="Email"
 					required
 				/>
@@ -136,11 +142,12 @@ export function LoginForm({
 					value={password}
 					onChange={(event) => setPassword(event.target.value)}
 					type="password"
+					autoComplete="current-password"
 					placeholder="Password"
 					required
 				/>
 
-				<button className="btn submit-btn" disabled={submitting}>
+				<button className="btn submit-btn" disabled={submitting || !email || !password}>
 					{submitting ? 'Signing in...' : 'Sign in'}
 				</button>
 			</form>

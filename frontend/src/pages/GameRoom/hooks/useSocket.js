@@ -18,7 +18,7 @@ export function useSocket({ gameId, setState, setError, setMoveError, setGameOve
 	const [wsStatus, setWsStatus] = useState('disconnected');
 
 	useEffect(() => {
-		if (!gameId)
+		if (!gameId || gameId == 'null')
 			return undefined;
 
 		shouldReconnectRef.current = true;
@@ -168,9 +168,17 @@ export function useSocket({ gameId, setState, setError, setMoveError, setGameOve
 
 			if (reconnectTimerRef.current)
 				clearTimeout(reconnectTimerRef.current);
-
-			if (wsRef.current)
-				wsRef.current.close();
+            
+            const socketToClose = wsRef.current;
+            if (socketToClose) {
+                if (socketToClose.readyState === 0) {
+                    socketToClose.onopen = () => {
+                        socketToClose.close();
+                    };
+                } else {
+                    socketToClose.close();
+                }
+            }
 		};
 	}, [gameId, setError, setGameOver, setMoveError, setState]);
 

@@ -3,7 +3,8 @@ export function AiGameCard({
 	setDifficulty,
 	timeMinutes,
 	setTimeMinutes,
-	onPlay
+	onPlay,
+	actionState
 })
 {
 	return (
@@ -25,6 +26,7 @@ export function AiGameCard({
 				id="ai-difficulty"
 				value={difficulty}
 				onChange={(event) => setDifficulty(event.target.value)}
+				disabled={actionState !== 'idle'}
 			>
 				<option value="easy">Easy</option>
 				<option value="medium">Medium</option>
@@ -39,6 +41,7 @@ export function AiGameCard({
 				id="ai-time-control"
 				value={timeMinutes}
 				onChange={(event) => setTimeMinutes(Number(event.target.value))}
+				disabled={actionState !== 'idle'}
 			>
 				<option value={5}>5 minutes</option>
 				<option value={10}>10 minutes</option>
@@ -46,7 +49,7 @@ export function AiGameCard({
 			</select>
 
 			<div className="lobby-card-actions">
-				<button className="btn" type="button" onClick={onPlay}>
+				<button className="btn" type="button" onClick={onPlay} disabled={actionState !== 'idle'}>
 					Start AI game
 				</button>
 			</div>

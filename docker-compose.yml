@@ -30,11 +30,11 @@ services:
       db:
         condition: service_healthy
     volumes:
-      - ./backend/uploads:/app/uploads
+      - ./backend/uploads:/app/uploads:z
 
   frontend:
     volumes:
-    - ./frontend:/app
+    - ./frontend:/app:z
     - /app/node_modules
     ports:
     - "3000:3000"

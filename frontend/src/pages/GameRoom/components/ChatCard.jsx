@@ -106,10 +106,13 @@ export function ChatCard({ room })
 						<input
 							className="chat-input"
 							placeholder="Message"
+							aria-label="Chat message"
+							maxLength={200}
 							value={room.chatMessage}
 							onChange={(event) => room.setChatMessage(event.target.value)}
+							disabled={room.wsStatus !== 'connected'}
 						/>
-						<button className="btn" type="submit">
+						<button className="btn" type="submit" disabled={room.wsStatus !== 'connected'}>
 							Send
 						</button>
 					</form>

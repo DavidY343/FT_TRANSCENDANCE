@@ -15,7 +15,8 @@ export function useLobby()
 	const [timeMinutes, setTimeMinutes] = useState(10);
 	const [error, setError] = useState('');
 	const [activeGameId, setActiveGameId] = useState(null);
-	const [resigning, setResigning] = useState(false);
+	const [actionState, setActionState] = useState('idle');
+	const [confirmResignModal, setConfirmResignModal] = useState(false);
 
 	function clearPolling()
 	{
@@ -116,7 +117,9 @@ export function useLobby()
 
 	async function joinQueue()
 	{
+		if (actionState !== 'idle') return;
 		setError('');
+		setActionState('joining');
 
 		try
 		{
@@ -136,9 +139,11 @@ export function useLobby()
 			setPosition(data.position ?? null);
 			clearPolling();
 			pollRef.current = setInterval(pollStatus, 1500);
+			setActionState('idle');
 		}
 		catch (err)
 		{
+			setActionState('idle');
 			const message = getApiErrorMessage(err, 'Unable to join queue');
 
 			if (message === 'You already have an active game in progress')
@@ -161,7 +166,9 @@ export function useLobby()
 
 	async function leaveQueue()
 	{
+		if (actionState !== 'idle') return;
 		setError('');
+		setActionState('leavingQueue');
 
 		try
 		{
@@ -169,16 +176,20 @@ export function useLobby()
 			clearPolling();
 			setStatus('idle');
 			setPosition(null);
+			setActionState('idle');
 		}
 		catch (err)
 		{
+			setActionState('idle');
 			setError(getApiErrorMessage(err, 'Unable to leave queue'));
 		}
 	}
 
 	async function playVsAi()
 	{
+		if (actionState !== 'idle') return;
 		setError('');
+		setActionState('startingAi');
 		clearPolling();
 
 		try
@@ -191,9 +202,11 @@ export function useLobby()
 
 			sessionStorage.setItem('active_game_id', String(data.game_id));
 			navigate(`/games/${data.game_id}`);
+			setActionState('idle');
 		}
 		catch (err)
 		{
+			setActionState('idle');
 			const message = getApiErrorMessage(err, 'Unable to start AI game');
 
 			if (message === 'You already have an active game in progress')
@@ -270,16 +283,22 @@ export function useLobby()
 		});
 	}
 
+	function requestResign() {
+		if (actionState === 'idle') setConfirmResignModal(true);
+	}
+
+	function cancelResign() {
+		setConfirmResignModal(false);
+	}
+
 	async function resignActiveGame()
 	{
-		if (!activeGameId || resigning)
-			return;
-
-		if (!window.confirm('Resign this game? Your opponent will win.'))
+		setConfirmResignModal(false);
+		if (!activeGameId || actionState !== 'idle')
 			return;
 
 		setError('');
-		setResigning(true);
+		setActionState('resigning');
 
 		try
 		{
@@ -293,7 +312,7 @@ export function useLobby()
 		}
 		finally
 		{
-			setResigning(false);
+			setActionState('idle');
 		}
 	}
 
@@ -312,7 +331,10 @@ export function useLobby()
 		setTimeMinutes,
 		error,
 		activeGameId,
-		resigning,
+		actionState,
+		confirmResignModal,
+		requestResign,
+		cancelResign,
 		joinQueue,
 		leaveQueue,
 		playVsAi,
