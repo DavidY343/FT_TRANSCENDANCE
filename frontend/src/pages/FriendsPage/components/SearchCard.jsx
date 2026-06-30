@@ -64,7 +64,7 @@ export function SearchCard({
 							<button
 								className="btn"
 								type="button"
-								disabled={actionLoading}
+								disabled={actionLoading[user.id]}
 								onClick={() => onSendRequest(user.id)}
 							>
 								Add

@@ -68,7 +68,7 @@ export function RequestsCard({
 										<button
 											className="btn"
 											type="button"
-											disabled={actionLoading}
+											disabled={actionLoading[request.requester_id]}
 											onClick={() => onAccept(request.requester_id)}
 										>
 											Accept
@@ -77,7 +77,7 @@ export function RequestsCard({
 										<button
 											className="btn"
 											type="button"
-											disabled={actionLoading}
+											disabled={actionLoading[request.requester_id]}
 											onClick={() => onReject(request.requester_id)}
 										>
 											Reject

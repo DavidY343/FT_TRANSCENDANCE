@@ -47,7 +47,7 @@ export function FriendsListCard({
 							<button
 								className="btn"
 								type="button"
-								disabled={actionLoading}
+								disabled={actionLoading[friend.id]}
 								onClick={() => onRequestRemoveFriend(friend)}
 							>
 								Remove

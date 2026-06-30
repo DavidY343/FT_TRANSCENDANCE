@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export function RegisterForm({
@@ -9,6 +10,9 @@ export function RegisterForm({
 	onSubmit
 })
 {
+	const [showPassword, setShowPassword] = useState(false);
+	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
 	return (
 		<section className="card auth-card form-card">
 			<h2 className="panel-title panel-title-large">
@@ -57,32 +61,74 @@ export function RegisterForm({
 				/>
 
 				<label className="lab" htmlFor="register-password">Password</label>
-				<input
-					className={errorField === 'password' ? 'input-error' : ''}
-					aria-describedby={error ? 'register-form-error' : undefined}
-					aria-invalid={errorField === 'password'}
-					id="register-password"
-					value={form.password}
-					onChange={(event) => updateField('password', event.target.value)}
-					type="password"
-					autoComplete="new-password"
-					placeholder="Password"
-					required
-				/>
+				<div style={{ position: 'relative', width: '100%' }}>
+					<input
+						className={errorField === 'password' ? 'input-error' : ''}
+						aria-describedby={error ? 'register-form-error' : undefined}
+						aria-invalid={errorField === 'password'}
+						id="register-password"
+						value={form.password}
+						onChange={(event) => updateField('password', event.target.value)}
+						type={showPassword ? 'text' : 'password'}
+						autoComplete="new-password"
+						placeholder="Password"
+						required
+						style={{ width: '100%', paddingRight: '4rem' }}
+					/>
+					<button
+						type="button"
+						aria-label={showPassword ? "Hide password" : "Show password"}
+						onClick={() => setShowPassword(!showPassword)}
+						style={{
+							position: 'absolute',
+							right: '0.5rem',
+							top: '50%',
+							transform: 'translateY(-50%)',
+							background: 'transparent',
+							border: 'none',
+							cursor: 'pointer',
+							fontSize: '0.85rem',
+							color: '#666'
+						}}
+					>
+						{showPassword ? 'Hide' : 'Show'}
+					</button>
+				</div>
 
 				<label className="lab" htmlFor="register-confirm-password">Confirm password</label>
-				<input
-					className={errorField === 'confirm_password' ? 'input-error' : ''}
-					aria-describedby={error ? 'register-form-error' : undefined}
-					aria-invalid={errorField === 'confirm_password'}
-					id="register-confirm-password"
-					value={form.confirm_password}
-					onChange={(event) => updateField('confirm_password', event.target.value)}
-					type="password"
-					autoComplete="new-password"
-					placeholder="Confirm password"
-					required
-				/>
+				<div style={{ position: 'relative', width: '100%' }}>
+					<input
+						className={errorField === 'confirm_password' ? 'input-error' : ''}
+						aria-describedby={error ? 'register-form-error' : undefined}
+						aria-invalid={errorField === 'confirm_password'}
+						id="register-confirm-password"
+						value={form.confirm_password}
+						onChange={(event) => updateField('confirm_password', event.target.value)}
+						type={showConfirmPassword ? 'text' : 'password'}
+						autoComplete="new-password"
+						placeholder="Confirm password"
+						required
+						style={{ width: '100%', paddingRight: '4rem' }}
+					/>
+					<button
+						type="button"
+						aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+						onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+						style={{
+							position: 'absolute',
+							right: '0.5rem',
+							top: '50%',
+							transform: 'translateY(-50%)',
+							background: 'transparent',
+							border: 'none',
+							cursor: 'pointer',
+							fontSize: '0.85rem',
+							color: '#666'
+						}}
+					>
+						{showConfirmPassword ? 'Hide' : 'Show'}
+					</button>
+				</div>
 
 				<button className="btn submit-btn" disabled={submitting || !form.email || !form.username || !form.display_name || !form.password || !form.confirm_password || form.password !== form.confirm_password}>
 					{submitting ? 'Creating account...' : 'Create'}
@@ -113,6 +159,8 @@ export function LoginForm({
 	onSubmit
 })
 {
+	const [showPassword, setShowPassword] = useState(false);
+
 	return (
 		<section className="card auth-card form-card">
 			<h2 className="panel-title panel-title-large">
@@ -134,18 +182,39 @@ export function LoginForm({
 					required
 				/>
 				<label className="lab" htmlFor="login-password">Password</label>
-				<input
-					className={errorField === 'password' ? 'input-error' : ''}
-					aria-describedby={error ? 'login-form-error' : undefined}
-					aria-invalid={errorField === 'password'}
-					id="login-password"
-					value={password}
-					onChange={(event) => setPassword(event.target.value)}
-					type="password"
-					autoComplete="current-password"
-					placeholder="Password"
-					required
-				/>
+				<div style={{ position: 'relative', width: '100%' }}>
+					<input
+						className={errorField === 'password' ? 'input-error' : ''}
+						aria-describedby={error ? 'login-form-error' : undefined}
+						aria-invalid={errorField === 'password'}
+						id="login-password"
+						value={password}
+						onChange={(event) => setPassword(event.target.value)}
+						type={showPassword ? 'text' : 'password'}
+						autoComplete="current-password"
+						placeholder="Password"
+						required
+						style={{ width: '100%', paddingRight: '4rem' }}
+					/>
+					<button
+						type="button"
+						aria-label={showPassword ? "Hide password" : "Show password"}
+						onClick={() => setShowPassword(!showPassword)}
+						style={{
+							position: 'absolute',
+							right: '0.5rem',
+							top: '50%',
+							transform: 'translateY(-50%)',
+							background: 'transparent',
+							border: 'none',
+							cursor: 'pointer',
+							fontSize: '0.85rem',
+							color: '#666'
+						}}
+					>
+						{showPassword ? 'Hide' : 'Show'}
+					</button>
+				</div>
 
 				<button className="btn submit-btn" disabled={submitting || !email || !password}>
 					{submitting ? 'Signing in...' : 'Sign in'}

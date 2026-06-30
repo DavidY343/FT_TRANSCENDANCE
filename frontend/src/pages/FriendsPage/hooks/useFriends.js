@@ -24,7 +24,7 @@ export function useFriends()
 
 	const [loading, setLoading] = useState(true);
 	const [searching, setSearching] = useState(false);
-	const [actionLoading, setActionLoading] = useState(false);
+	const [actionLoading, setActionLoading] = useState({});
 	const [loadError, setLoadError] = useState('');
 	const [pendingRemoveFriend, setPendingRemoveFriend] = useState(null);
 
@@ -114,7 +114,7 @@ export function useFriends()
 
 	async function sendRequest(userId)
 	{
-		setActionLoading(true);
+		setActionLoading((prev) => ({ ...prev, [userId]: true }));
 		feedback.clearMessage();
 
 		try
@@ -132,13 +132,13 @@ export function useFriends()
 		}
 		finally
 		{
-			setActionLoading(false);
+			setActionLoading((prev) => ({ ...prev, [userId]: false }));
 		}
 	}
 
 	async function acceptRequest(requesterId)
 	{
-		setActionLoading(true);
+		setActionLoading((prev) => ({ ...prev, [requesterId]: true }));
 		feedback.clearMessage();
 
 		try
@@ -153,13 +153,13 @@ export function useFriends()
 		}
 		finally
 		{
-			setActionLoading(false);
+			setActionLoading((prev) => ({ ...prev, [requesterId]: false }));
 		}
 	}
 
 	async function rejectRequest(requesterId)
 	{
-		setActionLoading(true);
+		setActionLoading((prev) => ({ ...prev, [requesterId]: true }));
 		feedback.clearMessage();
 
 		try
@@ -174,7 +174,7 @@ export function useFriends()
 		}
 		finally
 		{
-			setActionLoading(false);
+			setActionLoading((prev) => ({ ...prev, [requesterId]: false }));
 		}
 	}
 
@@ -185,7 +185,7 @@ export function useFriends()
 
 	function cancelRemoveFriend()
 	{
-		if (actionLoading)
+		if (pendingRemoveFriend && actionLoading[pendingRemoveFriend.id])
 			return;
 
 		setPendingRemoveFriend(null);
@@ -193,15 +193,16 @@ export function useFriends()
 
 	async function confirmRemoveFriend()
 	{
-		if (!pendingRemoveFriend || actionLoading)
+		if (!pendingRemoveFriend || actionLoading[pendingRemoveFriend.id])
 			return;
 
-		setActionLoading(true);
+		const targetId = pendingRemoveFriend.id;
+		setActionLoading((prev) => ({ ...prev, [targetId]: true }));
 		feedback.clearMessage();
 
 		try
 		{
-			await removeFriend(pendingRemoveFriend.id);
+			await removeFriend(targetId);
 			feedback.setSuccess('Friend removed', 'friends');
 			setPendingRemoveFriend(null);
 			await refresh();
@@ -212,7 +213,7 @@ export function useFriends()
 		}
 		finally
 		{
-			setActionLoading(false);
+			setActionLoading((prev) => ({ ...prev, [targetId]: false }));
 		}
 	}
 

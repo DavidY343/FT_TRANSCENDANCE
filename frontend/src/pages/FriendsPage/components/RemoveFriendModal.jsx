@@ -9,7 +9,7 @@ export function RemoveFriendModal({
 {
 	useEffect(() => {
 		const handleKeyDown = (e) => {
-			if (e.key === 'Escape' && friend && !actionLoading) {
+			if (e.key === 'Escape' && friend && !actionLoading[friend.id]) {
 				onCancel();
 			}
 		};
@@ -40,7 +40,7 @@ export function RemoveFriendModal({
 					<button
 						className="btn"
 						type="button"
-						disabled={actionLoading}
+						disabled={actionLoading[friend.id]}
 						onClick={onCancel}
 					>
 						Cancel
@@ -49,10 +49,10 @@ export function RemoveFriendModal({
 					<button
 						className="btn friends-danger-btn"
 						type="button"
-						disabled={actionLoading}
+						disabled={actionLoading[friend.id]}
 						onClick={onConfirm}
 					>
-						{actionLoading ? 'Removing...' : 'Remove'}
+						{actionLoading[friend.id] ? 'Removing...' : 'Remove'}
 					</button>
 				</div>
 			</div>
