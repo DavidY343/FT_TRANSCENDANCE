@@ -1,3 +1,5 @@
+import { useTranslation } from '../../../contexts/LanguageContext';
+
 export function RequestsCard({
 	incomingRequests,
 	outgoingRequests,
@@ -9,11 +11,13 @@ export function RequestsCard({
 	onReject,
 })
 {
+	const { t } = useTranslation();
+
 	return (
 		<article className="card panel-card">
 			<div className="friends-card-header">
 				<h2 className="panel-title">
-					Requests
+					{t('friends.requests.title')}
 				</h2>
 				<button
 					className="btn friends-refresh-btn"
@@ -21,7 +25,7 @@ export function RequestsCard({
 					disabled={loading}
 					onClick={onRefresh}
 				>
-					Refresh
+					{t('friends.requests.refresh')}
 				</button>
 			</div>
 
@@ -37,7 +41,7 @@ export function RequestsCard({
 			
 			<div className="friends-request-block">
 				<h4>
-					Incoming
+					{t('friends.requests.incoming')}
 				</h4>
 
 				{incomingRequests.length > 0 ? (
@@ -60,7 +64,7 @@ export function RequestsCard({
 										</span>
 
 										<span className={user.online ? 'friend-online' : 'friend-offline'}>
-											{user.online ? 'Online' : 'Offline'}
+											{user.online ? t('friends.requests.status_online') : t('friends.requests.status_offline')}
 										</span>
 									</div>
 
@@ -71,7 +75,7 @@ export function RequestsCard({
 											disabled={actionLoading[request.requester_id]}
 											onClick={() => onAccept(request.requester_id)}
 										>
-											Accept
+											{t('friends.requests.accept')}
 										</button>
 
 										<button
@@ -80,7 +84,7 @@ export function RequestsCard({
 											disabled={actionLoading[request.requester_id]}
 											onClick={() => onReject(request.requester_id)}
 										>
-											Reject
+											{t('friends.requests.reject')}
 										</button>
 									</div>
 								</div>
@@ -89,14 +93,14 @@ export function RequestsCard({
 					</div>
 				) : (
 					<p className="friends-empty">
-						No incoming requests
+						{t('friends.requests.no_incoming')}
 					</p>
 				)}
 			</div>
 
 			<div className="friends-request-block">
 				<h4>
-					Outgoing
+					{t('friends.requests.outgoing')}
 				</h4>
 
 				{outgoingRequests.length > 0 ? (
@@ -119,12 +123,12 @@ export function RequestsCard({
 										</span>
 
 										<span className={user.online ? 'friend-online' : 'friend-offline'}>
-											{user.online ? 'Online' : 'Offline'}
+											{user.online ? t('friends.requests.status_online') : t('friends.requests.status_offline')}
 										</span>
 									</div>
 
 									<span className="friend-pending">
-										Pending
+										{t('friends.requests.pending')}
 									</span>
 								</div>
 							);
@@ -132,7 +136,7 @@ export function RequestsCard({
 					</div>
 				) : (
 					<p className="friends-empty">
-						No pending requests
+						{t('friends.requests.no_pending')}
 					</p>
 				)}
 			</div>

@@ -1,30 +1,31 @@
 import { useEffect, useRef } from 'react';
+import { useTranslation } from '../../../contexts/LanguageContext';
 
-function getChatAuthor(chatMessage, room)
+function getChatAuthor(chatMessage, room, t)
 {
 	const players = room?.state?.players;
 
 	if (!chatMessage || !players)
-		return ('Player');
+		return (t('chat.player'));
 
 	if (chatMessage.user_id === room.me?.id)
-		return ('You');
+		return (t('chat.you'));
 
 	if (chatMessage.user_id === players.white_id)
 		return (
 			players.white?.display_name
 			|| players.white?.username
-			|| 'White'
+			|| t('color.white')
 		);
 
 	if (chatMessage.user_id === players.black_id)
 		return (
 			players.black?.display_name
 			|| players.black?.username
-			|| 'Black'
+			|| t('color.black')
 		);
 
-	return (`Player #${chatMessage.user_id}`);
+	return (`${t('chat.player')} #${chatMessage.user_id}`);
 }
 
 function formatChatTime(value)
@@ -45,6 +46,7 @@ function formatChatTime(value)
 
 export function ChatCard({ room })
 {
+	const { t } = useTranslation();
 	const messagesRef = useRef(null);
 	const isAiGame = Boolean(room?.state?.is_ai);
 
@@ -62,11 +64,11 @@ export function ChatCard({ room })
 	return (
 		<aside className="card game-chat-card">
 			<h2 className="card-title">
-				Chat
+				{t('chat.title')}
 			</h2>
 			{isAiGame ? (
 				<p className="chat-unavailable">
-					Chat unavailable in games against AI
+					{t('chat.unavailable_ai')}
 				</p>
 			) : (
 				<div className="chat-table">
@@ -74,7 +76,7 @@ export function ChatCard({ room })
 					{room.chatMessages.length > 0 ? (
 						room.chatMessages.map((chatMessage, index) => {
 							const isMine = chatMessage.user_id === room.me?.id;
-							const author = getChatAuthor(chatMessage, room);
+							const author = getChatAuthor(chatMessage, room, t);
 							const time = formatChatTime(chatMessage.at);
 
 							return (
@@ -98,7 +100,7 @@ export function ChatCard({ room })
 						})
 					) : (
 						<p className="chat-empty">
-							No new messages
+							{t('chat.empty')}
 						</p>
 					)}
 					</div>
@@ -109,20 +111,20 @@ export function ChatCard({ room })
 						paddingBottom: '8px',
 						color: room.wsStatus === 'connected' ? '#4caf50' : room.wsStatus === 'reconnecting' ? '#ff9800' : '#f44336'
 					}}>
-						{room.wsStatus === 'connected' ? 'Connected' : room.wsStatus === 'reconnecting' ? 'Reconnecting...' : 'Disconnected'}
+						{room.wsStatus === 'connected' ? t('status.connected') : room.wsStatus === 'reconnecting' ? t('status.reconnecting') : t('status.disconnected')}
 					</div>
 					<form className="chat-form" onSubmit={room.submitChatMessage}>
 						<input
 							className="chat-input"
-							placeholder="Message"
-							aria-label="Chat message"
+							placeholder={t('chat.placeholder')}
+							aria-label={t('chat.aria_label')}
 							maxLength={200}
 							value={room.chatMessage}
 							onChange={(event) => room.setChatMessage(event.target.value)}
 							disabled={room.wsStatus !== 'connected'}
 						/>
 						<button className="btn" type="submit" disabled={room.wsStatus !== 'connected'}>
-							Send
+							{t('chat.send')}
 						</button>
 					</form>
 				</div>

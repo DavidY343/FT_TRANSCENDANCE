@@ -1,10 +1,13 @@
+import { useTranslation } from '../../../contexts/LanguageContext';
+
 export function GameStatus({ room })
 {
+	const { t } = useTranslation();
 	if (room?.loading)
 	{
 		return (
 			<div className="game-room__status game-room__status--loading">
-				<p>Loading...</p>
+				<p>{t('status.loading')}</p>
 			</div>
 		);
 	}
@@ -15,7 +18,7 @@ export function GameStatus({ room })
 			<div className="game-status game-status-error">
 				<p>{room.error}</p>
 				<button className="btn" type="button" onClick={room.reload}>
-					Retry
+					{t('action.retry')}
 				</button>
 			</div>
 		);

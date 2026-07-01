@@ -1,28 +1,29 @@
+import { useTranslation } from '../../../contexts/LanguageContext';
+
 export function RegisterIntroCard()
 {
+	const { t } = useTranslation();
 	return (
 		<article className="card auth-card intro-card">
 			<p className="section-kicker">
-				New Membership
+				{t('auth.intro.register.kicker')}
 			</p>
 
 			<h2 className="intro-title">
-				Join the club.
+				{t('auth.intro.register.title')}
 			</h2>
 
 			<p>
-				Set your name on the ledger, claim your table and start playing rapid
-				duels, quiet endgames and reckless attacks against friends or AI.
+				{t('auth.intro.register.body')}
 			</p>
 
 			<div className="info-note">
 				<span>
-					Entry standard
+					{t('auth.intro.register.noteTitle')}
 				</span>
 
 				<p>
-					Bring a valid email, a solid alias and enough patience for your first
-					opening mistake.
+					{t('auth.intro.register.noteBody')}
 				</p>
 			</div>
 		</article>
@@ -31,28 +32,28 @@ export function RegisterIntroCard()
 
 export function LoginIntroCard()
 {
+	const { t } = useTranslation();
 	return (
 		<article className="card auth-card intro-card">
 			<p className="section-kicker">
-				Members Entrance
+				{t('auth.intro.login.kicker')}
 			</p>
 
 			<h2 className="intro-title">
-				Return to the board.
+				{t('auth.intro.login.title')}
 			</h2>
 
 			<p>
-				Pick up unfinished rivalries, review your last games and step back
-				into a room that looks like it has been waiting for you all evening...
+				{t('auth.intro.login.body')}
 			</p>
 
 			<div className="info-note">
 				<span>
-					House note
+					{t('auth.intro.login.noteTitle')}
 				</span>
 
 				<p>
-					Best experienced with coffee nearby and your queen protected.
+					{t('auth.intro.login.noteBody')}
 				</p>
 			</div>
 		</article>

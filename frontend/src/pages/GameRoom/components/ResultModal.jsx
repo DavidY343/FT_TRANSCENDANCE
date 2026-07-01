@@ -1,8 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useModalA11y } from '../../../hooks/useModalA11y';
+import { useTranslation } from '../../../contexts/LanguageContext';
 
 export function ResultModal({ room })
 {
+	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const isOpen = !!room.gameResult;
 	const onClose = () => navigate('/lobby');
@@ -12,9 +14,9 @@ export function ResultModal({ room })
 		return (null);
 
 	const resultText = {
-		win: 'YOU WIN',
-		lost: 'YOU LOST',
-		draw: 'DRAW',
+		win: t('result.win'),
+		lost: t('result.lost'),
+		draw: t('result.draw'),
 	}[room.gameResult];
 
 	return (
@@ -23,7 +25,7 @@ export function ResultModal({ room })
 				{resultText}
 			</h2>
 			<Link className="btn" to="/lobby" ref={cancelBtnRef}>
-				Lobby
+				{t('action.lobby')}
 			</Link>
 		</div>
 	);

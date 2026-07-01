@@ -1,3 +1,5 @@
+import { useTranslation } from '../../../contexts/LanguageContext';
+
 export function AiGameCard({
 	difficulty,
 	setDifficulty,
@@ -7,19 +9,20 @@ export function AiGameCard({
 	actionState
 })
 {
+	const { t } = useTranslation();
 	return (
 		<article className="card lobby-action-card">
 
 			<h3 className="lobby-card-title lobby-card-play">
-				Play vs AI
+				{t('lobby.ai.title')}
 			</h3>
 
 			<p className="lobby-card-copy">
-				Warm up with the engine and choose how sharp the room should feel.
+				{t('lobby.ai.copy')}
 			</p>
 
 			<label className="lab" htmlFor="ai-difficulty">
-				AI difficulty
+				{t('lobby.ai.difficulty_label')}
 			</label>
 
 			<select
@@ -28,13 +31,13 @@ export function AiGameCard({
 				onChange={(event) => setDifficulty(event.target.value)}
 				disabled={actionState !== 'idle'}
 			>
-				<option value="easy">Easy</option>
-				<option value="medium">Medium</option>
-				<option value="hard">Hard</option>
+				<option value="easy">{t('lobby.ai.diff_easy')}</option>
+				<option value="medium">{t('lobby.ai.diff_medium')}</option>
+				<option value="hard">{t('lobby.ai.diff_hard')}</option>
 			</select>
 
 			<label className="lab" htmlFor="ai-time-control">
-				Time control
+				{t('lobby.ai.time_label')}
 			</label>
 
 			<select
@@ -43,14 +46,14 @@ export function AiGameCard({
 				onChange={(event) => setTimeMinutes(Number(event.target.value))}
 				disabled={actionState !== 'idle'}
 			>
-				<option value={5}>5 minutes</option>
-				<option value={10}>10 minutes</option>
-				<option value={30}>30 minutes</option>
+				<option value={5}>5 {t('lobby.ai.minutes')}</option>
+				<option value={10}>10 {t('lobby.ai.minutes')}</option>
+				<option value={30}>30 {t('lobby.ai.minutes')}</option>
 			</select>
 
 			<div className="lobby-card-actions">
 				<button className="btn" type="button" onClick={onPlay} disabled={actionState !== 'idle'}>
-					Start AI game
+					{t('lobby.ai.start_btn')}
 				</button>
 			</div>
 		</article>

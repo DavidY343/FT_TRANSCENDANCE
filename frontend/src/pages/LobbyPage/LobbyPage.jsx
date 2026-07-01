@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from '../../contexts/LanguageContext';
 import { ActiveGameCard } from './components/ActiveGameCard';
 import { AiGameCard } from './components/AiGameCard';
 import { LobbyHero } from './components/LobbyHero';
@@ -9,6 +10,7 @@ import { useModalA11y } from '../../hooks/useModalA11y';
 
 export default function LobbyPage()
 {
+	const { t } = useTranslation();
 	const lobby = useLobby();
 
 	const { modalRef, cancelBtnRef } = useModalA11y(lobby.confirmResignModal, lobby.cancelResign);
@@ -19,7 +21,7 @@ export default function LobbyPage()
 				<div className="confirm-backdrop" role="dialog" aria-modal="true" ref={modalRef} tabIndex="-1">
 					<div className="card confirm-card">
 						<p className="confirm-text">
-							Resign this game? Your opponent will win.
+							{t('lobby.confirm_resign')}
 						</p>
 
 						<div className="confirm-actions">
@@ -29,7 +31,7 @@ export default function LobbyPage()
 								onClick={lobby.cancelResign}
 								ref={cancelBtnRef}
 							>
-								Cancel
+								{t('lobby.cancel')}
 							</button>
 
 							<button
@@ -37,7 +39,7 @@ export default function LobbyPage()
 								className="btn confirm-btn confirm-btn-danger"
 								onClick={lobby.resignActiveGame}
 							>
-								Resign
+								{t('lobby.resign')}
 							</button>
 						</div>
 					</div>

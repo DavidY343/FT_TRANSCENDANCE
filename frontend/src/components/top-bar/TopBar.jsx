@@ -2,17 +2,40 @@ import { Link, useNavigate } from "react-router-dom"
 import { clearTokens } from "../../api";
 import { clearStoredAchievements } from '../../hooks/useAchievementToasts';
 import { MenuDisplay } from "./MenuDisplay";
+import { useTranslation } from '../../contexts/LanguageContext';
 
 function BrandBlock()
 {
+	const { t } = useTranslation();
 	return (
 		<div className="brand-block">
 			<h1 className="brand-title">
-				Checkmate Club
+				{t('topbar.brandTitle')}
 			</h1>
 			<p className="brand-subtitle">
-				A quiet room for sharp games, stubborn defenses and elegant blunders.
+				{t('topbar.brandSubtitle')}
 			</p>
+		</div>
+	);
+}
+
+function LanguageSelector() {
+	const { lang, changeLanguage } = useTranslation();
+	
+	const styles = {
+		container: { display: 'flex', gap: '8px', alignItems: 'center', margin: '0 16px', fontSize: '0.85rem', color: 'var(--text-muted, #888)' },
+		active: { color: 'var(--text-color, #fff)', fontWeight: 'bold', cursor: 'pointer' },
+		inactive: { cursor: 'pointer', opacity: 0.7 },
+		separator: { opacity: 0.3 }
+	};
+
+	return (
+		<div className="language-selector" style={styles.container}>
+			<span style={lang === 'en' ? styles.active : styles.inactive} onClick={() => changeLanguage('en')}>EN</span>
+			<span style={styles.separator}>|</span>
+			<span style={lang === 'es' ? styles.active : styles.inactive} onClick={() => changeLanguage('es')}>ES</span>
+			<span style={styles.separator}>|</span>
+			<span style={lang === 'fr' ? styles.active : styles.inactive} onClick={() => changeLanguage('fr')}>FR</span>
 		</div>
 	);
 }
@@ -20,6 +43,7 @@ function BrandBlock()
 function TopNav(props)
 {
 	const navigate = useNavigate();
+	const { t } = useTranslation();
 
 	function handleDevLogin()
 	{
@@ -39,9 +63,10 @@ function TopNav(props)
 	{
 		return (
 			<nav className="top-nav">
+				<LanguageSelector />
 				<MenuDisplay current={props.current}/>
 				<button className="btn nav-btn" onClick={handleLogout}>
-					Logout
+					{t('topbar.logout')}
 				</button>
 			</nav>
 		);
@@ -50,11 +75,12 @@ function TopNav(props)
 	else 
 		return (
 			<nav className="top-nav">
+				<LanguageSelector />
 				<Link className="btn nav-btn" to="/login">
-					Login
+					{t('topbar.login')}
 				</Link>
 				<Link className="btn nav-btn" to="/register">
-					Register
+					{t('topbar.register')}
 				</Link>
 			</nav>
 		);

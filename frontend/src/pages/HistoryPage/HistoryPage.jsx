@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api, getApiErrorMessage } from '../../api';
 import { HistoryListCard } from './components/HistoryListCard';
+import { useTranslation } from '../../contexts/LanguageContext';
 
 import './style/history.css';
 
@@ -24,6 +25,7 @@ import './style/history.css';
 
 export default function HistoryPage()
 {
+	const { t } = useTranslation();
 	const [games, setGames] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState('');
@@ -66,24 +68,24 @@ export default function HistoryPage()
 	return (
 		<section className="history-layout">
 			<aside className="card intro-card history-hero">
-				<p className="section-kicker">Archive</p>
+				<p className="section-kicker">{t('history.kicker')}</p>
 
 				<h2 className="intro-title">
-					Match History
+					{t('history.title')}
 				</h2>
 
 				<p>
-					Recent completed and interrupted games from your account timeline.
+					{t('history.desc')}
 				</p>
 
 				<div className="history-stats">
 					<div className="info-note">
-						<span>Total games</span>
+						<span>{t('history.total_games')}</span>
 						<p>{games.length}</p>
 					</div>
 
 					<div className="info-note">
-						<span>Last result</span>
+						<span>{t('history.last_result')}</span>
 						<p>{games[0]?.result_for_me?.replaceAll('_', ' ') || '-'}</p>
 					</div>
 				</div>

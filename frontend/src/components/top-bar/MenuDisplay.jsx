@@ -1,15 +1,17 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from '../../contexts/LanguageContext';
 
 export function MenuDisplay({current})
 {
+	const { t } = useTranslation();
 	const detailsRef = useRef(null);
 	const privateLinks = [
-		{ to: '/lobby', label: 'Lobby' },
-		{ to: '/profile', label: 'Profile' },
-		{ to: '/friends', label: 'Friends' },
-		{ to: '/history', label: 'History' },
-		{ to: '/leaderboard', label: 'Leaderboard' },
+		{ to: '/lobby', label: t('menu.lobby') },
+		{ to: '/profile', label: t('menu.profile') },
+		{ to: '/friends', label: t('menu.friends') },
+		{ to: '/history', label: t('menu.history') },
+		{ to: '/leaderboard', label: t('menu.leaderboard') },
 	];
 	const visibleLinks = privateLinks.filter((link) => link.to !== current);
 
@@ -27,7 +29,7 @@ export function MenuDisplay({current})
 	return (
 		<details className="nav-menu" ref={detailsRef}>
 			<summary className="btn nav-btn">
-				Menu
+				{t('menu.title')}
 			</summary>
 
 			<div className="nav-menu-panel">

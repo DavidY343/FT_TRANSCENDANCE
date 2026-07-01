@@ -1,3 +1,5 @@
+import { useTranslation } from '../../../contexts/LanguageContext';
+
 export function FriendsListCard({
 	friends,
 	loading,
@@ -6,10 +8,12 @@ export function FriendsListCard({
 	onRequestRemoveFriend,
 })
 {
+	const { t } = useTranslation();
+
 	return (
 		<article className="card panel-card">
 			<h2 className="panel-title">
-				Your friends
+				{t('friends.list.title')}
 			</h2>
 
 			{feedback && (
@@ -24,7 +28,7 @@ export function FriendsListCard({
 			
 			{loading ? (
 				<p className="friends-empty">
-					Loading friends...
+					{t('friends.list.loading')}
 				</p>
 			) : friends.length > 0 ? (
 				<div className="friends-list">
@@ -40,7 +44,7 @@ export function FriendsListCard({
 								</span>
 
 								<span className={friend.online ? 'friend-online' : 'friend-offline'}>
-									{friend.online ? 'Online' : 'Offline'}
+									{friend.online ? t('friends.list.status_online') : t('friends.list.status_offline')}
 								</span>
 							</div>
 
@@ -50,14 +54,14 @@ export function FriendsListCard({
 								disabled={actionLoading[friend.id]}
 								onClick={() => onRequestRemoveFriend(friend)}
 							>
-								Remove
+								{t('friends.list.remove_btn')}
 							</button>
 						</div>
 					))}
 				</div>
 			) : (
 				<p className="friends-empty">
-					No friends yet
+					{t('friends.list.empty')}
 				</p>
 			)}
 		</article>

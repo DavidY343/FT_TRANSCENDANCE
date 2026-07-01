@@ -1,7 +1,10 @@
 import { GameStatus } from "./GameStatus";
 
+import { useTranslation } from '../../../contexts/LanguageContext';
+
 export function GameRoomInfoCard({ gameId, room })
 {
+	const { t } = useTranslation();
 	const state = room?.state;
 	const players = state?.players;
 	const myId = room?.me?.id;
@@ -15,18 +18,18 @@ export function GameRoomInfoCard({ gameId, room })
 	let opponentLabel;
 
 	if (state?.is_ai)
-		opponentLabel = 'Playing vs AI';
+		opponentLabel = t('opponent.playing_vs_ai');
 	else if (opponentDisconnectGrace || opponentOnline === false)
-		opponentLabel = 'Offline';
+		opponentLabel = t('opponent.offline');
 	else
-		opponentLabel = 'Online';
+		opponentLabel = t('opponent.online');
 
 	const wsStatus = room?.wsStatus;
 
 	return (
 		<aside className="card intro-card">
 			<h2 className="card-title">
-				Game Room #{gameId}
+				{t('game.room_number')}#{gameId}
 			</h2>
 
 			{(wsStatus === 'reconnecting' || wsStatus === 'disconnected') && (
@@ -40,7 +43,7 @@ export function GameRoomInfoCard({ gameId, room })
 					fontSize: '0.9rem',
 					fontWeight: '600'
 				}}>
-					{wsStatus === 'reconnecting' ? 'Reconnecting...' : 'Disconnected from server'}
+					{wsStatus === 'reconnecting' ? t('status.reconnecting') : t('status.disconnected_server')}
 				</div>
 			)}
 
@@ -48,11 +51,11 @@ export function GameRoomInfoCard({ gameId, room })
 
 			<div className="game-room-info-notes">
 				<div className="info-note">
-					<span>Duration: </span>
-					<p>{state?.time_control_minutes || '-'} min</p>
+					<span>{t('info.duration')}</span>
+					<p>{state?.time_control_minutes || '-'} {t('info.min')}</p>
 				</div>
 				<div className="info-note">
-					<span>Opponent: </span>
+					<span>{t('info.opponent')}</span>
 					<p> {opponentLabel} </p>
 				</div>
 			</div>

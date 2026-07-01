@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from '../../../contexts/LanguageContext';
 
 export function RegisterForm({
 	form,
@@ -10,17 +11,18 @@ export function RegisterForm({
 	onSubmit
 })
 {
+	const { t } = useTranslation();
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
 	return (
 		<section className="card auth-card form-card">
 			<h2 className="panel-title panel-title-large">
-				Create account
+				{t('auth.register.title')}
 			</h2>
 
 			<form className="form-container" onSubmit={onSubmit} noValidate>
-				<label className="lab" htmlFor="register-email">Email</label>
+				<label className="lab" htmlFor="register-email">{t('auth.register.emailLabel')}</label>
 				<input
 					className={errorField === 'email' ? 'input-error' : ''}
 					aria-describedby={error ? 'register-form-error' : undefined}
@@ -30,11 +32,11 @@ export function RegisterForm({
 					onChange={(event) => updateField('email', event.target.value)}
 					type="email"
 					autoComplete="email"
-					placeholder="Email"
+					placeholder={t('auth.register.emailPlaceholder')}
 					required
 				/>
 
-				<label className="lab" htmlFor="register-username">Username</label>
+				<label className="lab" htmlFor="register-username">{t('auth.register.usernameLabel')}</label>
 				<input
 					className={errorField === 'username' ? 'input-error' : ''}
 					aria-describedby={error ? 'register-form-error' : undefined}
@@ -43,11 +45,11 @@ export function RegisterForm({
 					value={form.username}
 					onChange={(event) => updateField('username', event.target.value)}
 					autoComplete="username"
-					placeholder="Username"
+					placeholder={t('auth.register.usernamePlaceholder')}
 					required
 				/>
 
-				<label className="lab" htmlFor="register-display-name">Display name</label>
+				<label className="lab" htmlFor="register-display-name">{t('auth.register.displayNameLabel')}</label>
 				<input
 					className={errorField === 'display_name' ? 'input-error' : ''}
 					aria-describedby={error ? 'register-form-error' : undefined}
@@ -56,11 +58,11 @@ export function RegisterForm({
 					value={form.display_name}
 					onChange={(event) => updateField('display_name', event.target.value)}
 					autoComplete="name"
-					placeholder="Display name"
+					placeholder={t('auth.register.displayNamePlaceholder')}
 					required
 				/>
 
-				<label className="lab" htmlFor="register-password">Password</label>
+				<label className="lab" htmlFor="register-password">{t('auth.register.passwordLabel')}</label>
 				<div style={{ position: 'relative', width: '100%' }}>
 					<input
 						className={errorField === 'password' ? 'input-error' : ''}
@@ -71,13 +73,13 @@ export function RegisterForm({
 						onChange={(event) => updateField('password', event.target.value)}
 						type={showPassword ? 'text' : 'password'}
 						autoComplete="new-password"
-						placeholder="Password"
+						placeholder={t('auth.register.passwordPlaceholder')}
 						required
 						style={{ width: '100%', paddingRight: '4rem' }}
 					/>
 					<button
 						type="button"
-						aria-label={showPassword ? "Hide password" : "Show password"}
+						aria-label={showPassword ? t('auth.hidePassword') : t('auth.showPassword')}
 						onClick={() => setShowPassword(!showPassword)}
 						style={{
 							position: 'absolute',
@@ -91,11 +93,11 @@ export function RegisterForm({
 							color: '#666'
 						}}
 					>
-						{showPassword ? 'Hide' : 'Show'}
+						{showPassword ? t('auth.hide') : t('auth.show')}
 					</button>
 				</div>
 
-				<label className="lab" htmlFor="register-confirm-password">Confirm password</label>
+				<label className="lab" htmlFor="register-confirm-password">{t('auth.register.confirmPasswordLabel')}</label>
 				<div style={{ position: 'relative', width: '100%' }}>
 					<input
 						className={errorField === 'confirm_password' ? 'input-error' : ''}
@@ -106,13 +108,13 @@ export function RegisterForm({
 						onChange={(event) => updateField('confirm_password', event.target.value)}
 						type={showConfirmPassword ? 'text' : 'password'}
 						autoComplete="new-password"
-						placeholder="Confirm password"
+						placeholder={t('auth.register.confirmPasswordPlaceholder')}
 						required
 						style={{ width: '100%', paddingRight: '4rem' }}
 					/>
 					<button
 						type="button"
-						aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+						aria-label={showConfirmPassword ? t('auth.hidePassword') : t('auth.showPassword')}
 						onClick={() => setShowConfirmPassword(!showConfirmPassword)}
 						style={{
 							position: 'absolute',
@@ -126,12 +128,12 @@ export function RegisterForm({
 							color: '#666'
 						}}
 					>
-						{showConfirmPassword ? 'Hide' : 'Show'}
+						{showConfirmPassword ? t('auth.hide') : t('auth.show')}
 					</button>
 				</div>
 
 				<button className="btn submit-btn" disabled={submitting || !form.email || !form.username || !form.display_name || !form.password || !form.confirm_password || form.password !== form.confirm_password}>
-					{submitting ? 'Creating account...' : 'Create'}
+					{submitting ? t('auth.register.submitting') : t('auth.register.submit')}
 				</button>
 			</form>
 
@@ -142,7 +144,7 @@ export function RegisterForm({
 			)}
 
 			<p className="auth-switch">
-				Already have an account? <Link className='auth-link' to="/login">Sign in</Link>
+				{t('auth.register.alreadyHaveAccount')} <Link className='auth-link' to="/login">{t('auth.register.signInLink')}</Link>
 			</p>
 		</section>
 	);
@@ -159,16 +161,17 @@ export function LoginForm({
 	onSubmit
 })
 {
+	const { t } = useTranslation();
 	const [showPassword, setShowPassword] = useState(false);
 
 	return (
 		<section className="card auth-card form-card">
 			<h2 className="panel-title panel-title-large">
-				Sign in
+				{t('auth.login.title')}
 			</h2>
 
 			<form className="form-container" onSubmit={onSubmit} noValidate>
-				<label className="lab" htmlFor="login-email">Email</label>
+				<label className="lab" htmlFor="login-email">{t('auth.login.emailLabel')}</label>
 				<input
 					className={errorField === 'email' ? 'input-error' : ''}
 					aria-describedby={error ? 'login-form-error' : undefined}
@@ -178,10 +181,10 @@ export function LoginForm({
 					onChange={(event) => setEmail(event.target.value)}
 					type="email"
 					autoComplete="username"
-					placeholder="Email"
+					placeholder={t('auth.login.emailPlaceholder')}
 					required
 				/>
-				<label className="lab" htmlFor="login-password">Password</label>
+				<label className="lab" htmlFor="login-password">{t('auth.login.passwordLabel')}</label>
 				<div style={{ position: 'relative', width: '100%' }}>
 					<input
 						className={errorField === 'password' ? 'input-error' : ''}
@@ -192,13 +195,13 @@ export function LoginForm({
 						onChange={(event) => setPassword(event.target.value)}
 						type={showPassword ? 'text' : 'password'}
 						autoComplete="current-password"
-						placeholder="Password"
+						placeholder={t('auth.login.passwordPlaceholder')}
 						required
 						style={{ width: '100%', paddingRight: '4rem' }}
 					/>
 					<button
 						type="button"
-						aria-label={showPassword ? "Hide password" : "Show password"}
+						aria-label={showPassword ? t('auth.hidePassword') : t('auth.showPassword')}
 						onClick={() => setShowPassword(!showPassword)}
 						style={{
 							position: 'absolute',
@@ -212,12 +215,12 @@ export function LoginForm({
 							color: '#666'
 						}}
 					>
-						{showPassword ? 'Hide' : 'Show'}
+						{showPassword ? t('auth.hide') : t('auth.show')}
 					</button>
 				</div>
 
 				<button className="btn submit-btn" disabled={submitting || !email || !password}>
-					{submitting ? 'Signing in...' : 'Sign in'}
+					{submitting ? t('auth.login.submitting') : t('auth.login.submit')}
 				</button>
 			</form>
 
@@ -228,7 +231,7 @@ export function LoginForm({
 			)}
 
 			<p className="auth-switch">
-				No account? <Link className="auth-link" to="/register">Register</Link>
+				{t('auth.login.noAccount')} <Link className="auth-link" to="/register">{t('auth.login.registerLink')}</Link>
 			</p>
 		</section>
 	);

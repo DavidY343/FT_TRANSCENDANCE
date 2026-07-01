@@ -1,26 +1,28 @@
+import { useTranslation } from '../../../contexts/LanguageContext';
+
 export function FriendsInfoCard()
 {
+	const { t } = useTranslation();
+
 	return (
 		<article className="card intro-card">
 			<p className="section-kicker">
-				Friends List
+				{t('friends.info.kicker')}
 			</p>
 			<h2 className="intro-title">
-				Let's make some "friends".
+				{t('friends.info.title')}
 			</h2>
 			<p>
-				Keep your favorite rivals close, see who is online, and turn quiet names
-				into the next game waiting across the board.
+				{t('friends.info.description')}
 			</p>
 
 			<div className="info-note">
 				<span>
-					House note
+					{t('friends.info.note_title')}
 				</span>
 
 				<p>
-					Friend requests stay quiet until accepted. Direct challenges are still a
-					rumor in the back office, so keep your rivals close for now.
+					{t('friends.info.note_desc')}
 				</p>
 			</div>
 		</article>

@@ -1,3 +1,5 @@
+import { useTranslation } from '../../../contexts/LanguageContext';
+
 export function MatchmakingCard({
 	status,
 	timeMinutes,
@@ -7,6 +9,7 @@ export function MatchmakingCard({
 	actionState
 })
 {
+	const { t } = useTranslation();
 	const waiting = status === 'waiting';
 	const disableJoin = waiting || actionState !== 'idle';
 	const disableLeave = !waiting || actionState !== 'idle';
@@ -14,15 +17,15 @@ export function MatchmakingCard({
 	return (
 		<article className="card lobby-action-card">
 			<h3 className="lobby-card-title lobby-card-play">
-				Play 1v1
+				{t('lobby.matchmaking.title')}
 			</h3>
 
 			<p className="lobby-card-copy">
-				Enter the queue and move into a real-time room when a rival appears.
+				{t('lobby.matchmaking.copy')}
 			</p>
 
 			<label className="lab" htmlFor="matchmaking-time-control">
-				Time control
+				{t('lobby.matchmaking.time_label')}
 			</label>
 
 			<select
@@ -31,9 +34,9 @@ export function MatchmakingCard({
 				onChange={(event) => setTimeMinutes(Number(event.target.value))}
 				disabled={waiting || actionState !== 'idle'}
 			>
-				<option value={5}>5 minutes</option>
-				<option value={10}>10 minutes</option>
-				<option value={30}>30 minutes</option>
+				<option value={5}>5 {t('lobby.matchmaking.minutes')}</option>
+				<option value={10}>10 {t('lobby.matchmaking.minutes')}</option>
+				<option value={30}>30 {t('lobby.matchmaking.minutes')}</option>
 			</select>
 
 			<div className="lobby-card-actions">
@@ -43,7 +46,7 @@ export function MatchmakingCard({
 					onClick={onJoin}
 					disabled={disableJoin}
 				>
-					{waiting ? 'Waiting...' : 'Join matchmaking'}
+					{waiting ? t('lobby.matchmaking.waiting') : t('lobby.matchmaking.join')}
 				</button>
 
 				<button
@@ -52,7 +55,7 @@ export function MatchmakingCard({
 					onClick={onLeave}
 					disabled={disableLeave}
 				>
-					Leave queue
+					{t('lobby.matchmaking.leave')}
 				</button>
 			</div>
 		</article>

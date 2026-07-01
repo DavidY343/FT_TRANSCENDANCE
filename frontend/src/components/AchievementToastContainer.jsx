@@ -1,5 +1,8 @@
+import { useTranslation } from '../contexts/LanguageContext';
+
 export function AchievementToastContainer({ toasts })
 {
+	const { t } = useTranslation();
 	if (!toasts.length)
 		return null;
 
@@ -14,7 +17,7 @@ export function AchievementToastContainer({ toasts })
 						{toast.emoji}
 					</span>
 					<div className="toast-content">
-						<span className="toast-kicker">Achievement unlocked</span>
+						<span className="toast-kicker">{t('toast.achievementUnlocked')}</span>
 						<strong className="toast-title">{toast.title}</strong>
 						<p className="toast-desc">{toast.description}</p>
 					</div>

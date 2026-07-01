@@ -1,14 +1,16 @@
 import { Link } from "react-router-dom"
+import { useTranslation } from '../contexts/LanguageContext';
 
 export default function Footer()
 {
+	const { t } = useTranslation();
 	return (
 		<footer className="app-footer">
 				<Link className="footer-link" to="/privacy-policy">
-					Privacy Policy
+					{t('footer.privacyPolicy')}
 				</Link>
 				<Link className="footer-link" to="/terms-of-service">
-					Terms
+					{t('footer.terms')}
 				</Link>
 		</footer>
 	);

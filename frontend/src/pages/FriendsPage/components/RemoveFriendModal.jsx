@@ -1,4 +1,5 @@
 import { useModalA11y } from '../../../hooks/useModalA11y';
+import { useTranslation } from '../../../contexts/LanguageContext';
 
 export function RemoveFriendModal({
 	friend,
@@ -7,6 +8,7 @@ export function RemoveFriendModal({
 	onConfirm,
 })
 {
+	const { t } = useTranslation();
 	const isOpen = !!friend;
 	const onClose = () => {
 		if (friend && !actionLoading[friend.id]) {
@@ -18,7 +20,7 @@ export function RemoveFriendModal({
 	if (!isOpen)
 		return null;
 
-	const displayName = friend.display_name || friend.username || 'this friend';
+	const displayName = friend.display_name || friend.username || t('friends.modal.default_friend');
 
 	return (
 		<div className="friends-modal-backdrop" role="dialog" aria-modal="true" ref={modalRef} tabIndex="-1">
@@ -27,11 +29,11 @@ export function RemoveFriendModal({
 				aria-labelledby="remove-friend-title"
 			>
 				<h2 id="remove-friend-title" className="panel-title">
-					Remove friend?
+					{t('friends.modal.title')}
 				</h2>
 
 				<p className="friends-modal-copy">
-					Remove {displayName} from your friends list?
+					{t('friends.modal.copy').replace('{name}', displayName)}
 				</p>
 
 				<div className="friends-modal-actions">
@@ -42,7 +44,7 @@ export function RemoveFriendModal({
 						onClick={onCancel}
 						ref={cancelBtnRef}
 					>
-						Cancel
+						{t('friends.modal.cancel')}
 					</button>
 
 					<button
@@ -51,7 +53,7 @@ export function RemoveFriendModal({
 						disabled={actionLoading[friend.id]}
 						onClick={onConfirm}
 					>
-						{actionLoading[friend.id] ? 'Removing...' : 'Remove'}
+						{actionLoading[friend.id] ? t('friends.modal.removing') : t('friends.modal.remove')}
 					</button>
 				</div>
 			</div>

@@ -1,5 +1,8 @@
+import { useTranslation } from '../../../../contexts/LanguageContext';
+
 export function Actions({ room })
 {
+	const { t } = useTranslation();
 	return (
 		<div className="game-room-actions">
 			<button
@@ -7,7 +10,7 @@ export function Actions({ room })
 				className="btn"
 				onClick={room.requestResign}
 			>
-				Resign
+				{t('action.resign')}
 			</button>
 		</div>
 	);

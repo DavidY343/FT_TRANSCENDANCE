@@ -1,8 +1,11 @@
 import { useDisconnectGraceCountdown } from '../hooks/useDisconnectGraceCountdown';
 import { useModalA11y } from '../../../hooks/useModalA11y';
 
+import { useTranslation } from '../../../contexts/LanguageContext';
+
 export function DisconnectGraceModal({ room })
 {
+	const { t } = useTranslation();
 	const disconnectGrace = room?.disconnectGrace;
 	const { showGrace, secondsLeft } = useDisconnectGraceCountdown(
 		disconnectGrace,
@@ -23,7 +26,7 @@ export function DisconnectGraceModal({ room })
 	return (
 		<div className="card result-card disconnect-grace-card" role="dialog" aria-modal="true" ref={modalRef} tabIndex="-1">
 			<p className="section-kicker">
-				Opponent disconnected
+				{t('grace.opponent_disconnected')}
 			</p>
 
 			<h2 className="disconnect-grace-title">
@@ -31,7 +34,7 @@ export function DisconnectGraceModal({ room })
 			</h2>
 
 			<p className="disconnect-grace-copy">
-				{secondsLeft > 0 ? 'Forfeit countdown' : 'Resolving result'}
+				{secondsLeft > 0 ? t('grace.forfeit_countdown') : t('grace.resolving_result')}
 			</p>
 		</div>
 	);

@@ -1,7 +1,10 @@
 import { useModalA11y } from '../../../hooks/useModalA11y';
 
+import { useTranslation } from '../../../contexts/LanguageContext';
+
 export function ConfirmModal({ room })
 {
+	const { t } = useTranslation();
 	const isOpen = room.confirmAction === 'resign';
 	const { modalRef, cancelBtnRef } = useModalA11y(isOpen, room.cancelAction);
 
@@ -12,7 +15,7 @@ export function ConfirmModal({ room })
 		<div className="confirm-backdrop" role="dialog" aria-modal="true" ref={modalRef} tabIndex="-1">
 			<div className="card confirm-card">
 				<p className="confirm-text">
-					Are you sure you want to resign?
+					{t('confirm.resign_question')}
 				</p>
 
 				<div className="confirm-actions">
@@ -22,7 +25,7 @@ export function ConfirmModal({ room })
 						onClick={room.cancelAction}
 						ref={cancelBtnRef}
 					>
-						Cancel
+						{t('action.cancel')}
 					</button>
 
 					<button
@@ -30,7 +33,7 @@ export function ConfirmModal({ room })
 						className="btn confirm-btn confirm-btn-danger"
 						onClick={room.confirmResign}
 					>
-						Resign
+						{t('action.resign')}
 					</button>
 				</div>
 			</div>

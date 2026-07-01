@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import { api, getApiErrorMessage } from '../../api';
+import { useTranslation } from '../../contexts/LanguageContext';
 
 import './style/leaderboard.css';
 
@@ -16,7 +17,8 @@ import './style/leaderboard.css';
 */
 function LeaderboardRow({ row, rank })
 {
-	const displayName = row.display_name || row.username || 'Unknown player';
+	const { t } = useTranslation();
+	const displayName = row.display_name || row.username || t('leaderboard.unknown_player');
 
 	return (
 		<li className="leaderboard-item">
@@ -26,11 +28,11 @@ function LeaderboardRow({ row, rank })
 
 			<div className="leaderboard-player">
 				<strong>{displayName}</strong>
-				<span>@{row.username || 'unknown'}</span>
+				<span>@{row.username || t('leaderboard.unknown_username')}</span>
 			</div>
 
 			<div className="leaderboard-rating">
-				<span>Rating</span>
+				<span>{t('leaderboard.rating')}</span>
 				<strong>{row.elo ?? '-'}</strong>
 			</div>
 		</li>
@@ -55,6 +57,7 @@ function LeaderboardRow({ row, rank })
 */
 export default function LeaderboardPage()
 {
+	const { t } = useTranslation();
 	const [rows, setRows] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState('');
@@ -104,30 +107,30 @@ export default function LeaderboardPage()
 	return (
 		<section className="leaderboard-layout">
 			<aside className="card intro-card leaderboard-hero">
-				<p className="section-kicker">Ranking</p>
+				<p className="section-kicker">{t('leaderboard.kicker')}</p>
 
 				<h2 className="intro-title">
-					Leaderboard
+					{t('leaderboard.title')}
 				</h2>
 
 				<p>
-					Current standings sorted by rating across the club.
+					{t('leaderboard.desc')}
 				</p>
 
 				<div className="leaderboard-stats">
 					<div className="info-note">
-						<span>Players</span>
+						<span>{t('leaderboard.players_count')}</span>
 						<p>{rows.length}</p>
 					</div>
 
 					<div className="info-note">
-						<span>Top rating</span>
+						<span>{t('leaderboard.top_rating')}</span>
 						<p>{topRating || '-'}</p>
 					</div>
 				</div>
 
 				<div className="leaderboard-champion">
-					<span>Current leader</span>
+					<span>{t('leaderboard.current_leader')}</span>
 					<strong>{topPlayer?.display_name || topPlayer?.username || '-'}</strong>
 				</div>
 
@@ -135,12 +138,12 @@ export default function LeaderboardPage()
 
 			<aside className="card panel-card leaderboard-panel">
 				<h3 className="panel-title">
-					Standings
+					{t('leaderboard.standings')}
 				</h3>
 
 				{loading ? (
 					<p className="leaderboard-empty" aria-live="polite">
-						Loading leaderboard...
+						{t('leaderboard.loading')}
 					</p>
 				) : error ? (
 					<div>
@@ -153,12 +156,12 @@ export default function LeaderboardPage()
 							type="button"
 							onClick={loadLeaderboard}
 						>
-							Retry
+							{t('leaderboard.retry')}
 						</button>
 					</div>
 				) : rows.length === 0 ? (
 					<p className="leaderboard-empty">
-						No ranking data available.
+						{t('leaderboard.empty')}
 					</p>
 				) : (
 					<ol className="leaderboard-list">

@@ -1,3 +1,5 @@
+import { useTranslation } from '../../../contexts/LanguageContext';
+
 export function ActiveGameCard({
 	activeGameId,
 	onResume,
@@ -5,22 +7,22 @@ export function ActiveGameCard({
 	actionState
 })
 {
+	const { t } = useTranslation();
 	return (
 		<article className="card lobby-action-card">
-			<p className="section-kicker">Resume</p>
+			<p className="section-kicker">{t('lobby.active.kicker')}</p>
 
 			<h3 className="lobby-card-title">
-				Active game
+				{t('lobby.active.title')}
 			</h3>
 
 			<p className="lobby-card-copy">
-				You have an unfinished game. Return to the room before the clock
-				gets ideas.
+				{t('lobby.active.copy')}
 			</p>
 
 			<div className="lobby-card-actions">
 				<button className="btn" type="button" onClick={onResume} disabled={actionState !== 'idle'}>
-					Resume game #{activeGameId}
+					{t('lobby.active.resume_btn')} #{activeGameId}
 				</button>
 				<button
 					className="btn"
@@ -28,7 +30,7 @@ export function ActiveGameCard({
 					onClick={onResign}
 					disabled={actionState !== 'idle'}
 				>
-					{actionState === 'resigning' ? 'Resigning...' : `Resign game #${activeGameId}`}
+					{actionState === 'resigning' ? t('lobby.active.resigning') : `${t('lobby.active.resign_btn')} #${activeGameId}`}
 				</button>
 			</div>
 		</article>

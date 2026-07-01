@@ -6,9 +6,11 @@ import { ProfileEditForm } from './components/ProfileEditForm';
 import { ProfileAvatarForm } from './components/ProfileAvatarForm';
 import { fetchAchievements } from './hooks/profileApi';
 import { getApiErrorMessage } from '../../api';
+import { useTranslation } from '../../contexts/LanguageContext';
 
 function AchievementsPanel({ onError })
 {
+	const { t } = useTranslation();
 	const [achievements, setAchievements] = useState([]);
 	const [loading, setLoading] = useState(true);
 
@@ -28,7 +30,7 @@ function AchievementsPanel({ onError })
 			catch (err)
 			{
 				if (!cancelled)
-					onError(getApiErrorMessage(err, 'Failed to load achievements'));
+					onError(getApiErrorMessage(err, t('profile.achievements.error_load')));
 			}
 			finally
 			{
@@ -47,13 +49,13 @@ function AchievementsPanel({ onError })
 	return (
 		<div className="achievements-panel">
 			<header className="achievements-header">
-				<p className="section-kicker">Achievements</p>
-				<h2 className="card-title">Badges of Honor</h2>
-				<p>Complete challenges to unlock badges for your profile.</p>
+				<p className="section-kicker">{t('profile.achievements.kicker')}</p>
+				<h2 className="card-title">{t('profile.achievements.title')}</h2>
+				<p>{t('profile.achievements.copy')}</p>
 			</header>
 
 			{loading ? (
-				<p>Loading achievements...</p>
+				<p>{t('profile.achievements.loading')}</p>
 			) : (
 				<div className="achievements-grid">
 					{achievements.map((achievement) => (
@@ -70,7 +72,7 @@ function AchievementsPanel({ onError })
 								<span
 									className={`achievement-badge${achievement.unlocked ? ' achievement-badge-unlocked' : ''}`}
 								>
-									{achievement.unlocked ? 'Completed' : 'Locked'}
+									{achievement.unlocked ? t('profile.achievements.completed') : t('profile.achievements.locked')}
 								</span>
 							</div>
 						</article>
@@ -83,13 +85,14 @@ function AchievementsPanel({ onError })
 
 export default function ProfilePage()
 {
+	const { t } = useTranslation();
 	const profile = useProfile();
 	const [activeTab, setActiveTab] = useState('settings');
 
 	if (profile.loading)
 		return (
 			<section className="card profile-card">
-				<p>Loading profile...</p>
+				<p>{t('profile.loading')}</p>
 			</section>
 		);
 	if (profile.error && !profile.user)
@@ -106,7 +109,7 @@ export default function ProfilePage()
 						type="button"
 						onClick={profile.loadProfile}
 					>
-						Retry
+						{t('profile.retry')}
 					</button>
 				</article>
 			</section>
@@ -122,14 +125,14 @@ export default function ProfilePage()
 						type="button"
 						onClick={() => setActiveTab('settings')}
 					>
-						Profile Settings
+						{t('profile.tabs.settings')}
 					</button>
 					<button
 						className={`profile-tab-btn${activeTab === 'achievements' ? ' profile-tab-btn-active' : ''}`}
 						type="button"
 						onClick={() => setActiveTab('achievements')}
 					>
-						Achievements
+						{t('profile.tabs.achievements')}
 					</button>
 				</div>
 
@@ -148,11 +151,11 @@ export default function ProfilePage()
 				{activeTab === 'settings' ? (
 					<>
 						<p className="section-kicker">
-							Profile Settings
+							{t('profile.settings.kicker')}
 						</p>
 
 						<h1 className="card-title">
-							Profile
+							{t('profile.settings.title')}
 						</h1>
 
 						<div className="profile-left">

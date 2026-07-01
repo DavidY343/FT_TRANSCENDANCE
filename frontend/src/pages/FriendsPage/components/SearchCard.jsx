@@ -1,3 +1,5 @@
+import { useTranslation } from '../../../contexts/LanguageContext';
+
 export function SearchCard({
 	query,
 	setQuery,
@@ -10,17 +12,19 @@ export function SearchCard({
 	onSendRequest,
 })
 {
+	const { t } = useTranslation();
+
 	return (
 		<article className="card panel-card">
 			<h2 className="panel-title">
-				Find players
+				{t('friends.search.title')}
 			</h2>
 
 			<form className="friends-search-form" onSubmit={onSubmit}>
 				<input
 					type="search"
-					aria-label="Search players by username or display name"
-					placeholder="Username or display name"
+					aria-label={t('friends.search.aria_label')}
+					placeholder={t('friends.search.placeholder')}
 					value={query}
 					onChange={(event) => setQuery(event.target.value)}
 				/>
@@ -30,7 +34,7 @@ export function SearchCard({
 					type="submit"
 					disabled={searching}
 				>
-					{searching ? 'Searching...' : 'Search'}
+					{searching ? t('friends.search.btn_searching') : t('friends.search.btn')}
 				</button>
 			</form>
 
@@ -57,7 +61,7 @@ export function SearchCard({
 								</span>
 
 								<span className={user.online ? 'friend-online' : 'friend-offline'}>
-									{user.online ? 'Online' : 'Offline'}
+									{user.online ? t('friends.search.status_online') : t('friends.search.status_offline')}
 								</span>
 							</div>
 
@@ -67,7 +71,7 @@ export function SearchCard({
 								disabled={actionLoading[user.id]}
 								onClick={() => onSendRequest(user.id)}
 							>
-								Add
+								{t('friends.search.add_btn')}
 							</button>
 						</div>
 					))}
@@ -75,7 +79,7 @@ export function SearchCard({
 			)}
 			{hasSearched && !searching && results.length === 0 && (
 				<p className="friends-empty">
-					No players found
+					{t('friends.search.no_players')}
 				</p>
 			)}
 		</article>

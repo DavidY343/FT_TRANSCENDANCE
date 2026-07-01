@@ -1,3 +1,5 @@
+import { useTranslation } from '../../../contexts/LanguageContext';
+
 /*
 	prettyResult → Convierte el resultado interno en un texto legible.
 
@@ -44,9 +46,9 @@ function getResultClass(result)
 	Return
 	Display name, username o 'Unknown'.
 */
-function getOpponentName(game)
+function getOpponentName(game, t)
 {
-	return game.opponent?.display_name || game.opponent?.username || 'Unknown';
+	return game.opponent?.display_name || game.opponent?.username || t('history.list.unknown');
 }
 
 /*
@@ -58,18 +60,18 @@ function getOpponentName(game)
 	Return
 	Objeto con los nombres de los jugadores blanco y negro.
 */
-function getPlayersBySide(game)
+function getPlayersBySide(game, t)
 {
-	const opponent = getOpponentName(game);
+	const opponent = getOpponentName(game, t);
 
 	if (game.my_color === 'b' || game.my_color === 'black')
 		return {
 			white: opponent,
-			black: 'You',
+			black: t('history.list.you'),
 		};
 
 	return {
-		white: 'You',
+		white: t('history.list.you'),
 		black: opponent,
 	};
 }
@@ -91,12 +93,14 @@ function getPlayersBySide(game)
 */
 export function HistoryListCard({ games, loading, error, onRetry })
 {
+	const { t } = useTranslation();
+
 	if (loading)
 	{
 		return (
 			<aside className="card panel-card history-panel">
 				<p className="history-empty" aria-live="polite">
-					Loading match history...
+					{t('history.list.loading')}
 				</p>
 			</aside>
 		);
@@ -114,7 +118,7 @@ export function HistoryListCard({ games, loading, error, onRetry })
 					type="button"
 					onClick={onRetry}
 				>
-					Retry
+					{t('history.list.retry')}
 				</button>
 			</aside>
 		);
@@ -122,20 +126,20 @@ export function HistoryListCard({ games, loading, error, onRetry })
 	if (games.length === 0)
 		return (
 			<p className="history-empty">
-				No games recorded yet.
+				{t('history.list.no_games')}
 			</p>
 		);
 
 	return (
 		<aside className="card panel-card history-panel">
 			<h3 className="panel-title">
-				Timeline
+				{t('history.list.timeline')}
 			</h3>
 			<ul className="history-list">
 				{games.map((game) => (
 					<li key={game.id} className="history-item">
 						<div className="history-row-main">
-							<strong>Game #{game.id}</strong>
+							<strong>{t('history.list.game_id').replace('{id}', game.id)}</strong>
 
 							<span className={`history-result ${getResultClass(game.result_for_me)}`}>
 								{prettyResult(game.result_for_me)}
@@ -144,13 +148,13 @@ export function HistoryListCard({ games, loading, error, onRetry })
 
 						<div className="history-sides">
 							<div className="history-side history-side-white">
-								<span>White</span>
-								<strong>{getPlayersBySide(game).white}</strong>
+								<span>{t('history.list.white')}</span>
+								<strong>{getPlayersBySide(game, t).white}</strong>
 							</div>
 
 							<div className="history-side history-side-black">
-								<span>Black</span>
-								<strong>{getPlayersBySide(game).black}</strong>
+								<span>{t('history.list.black')}</span>
+								<strong>{getPlayersBySide(game, t).black}</strong>
 							</div>
 						</div>
 					</li>

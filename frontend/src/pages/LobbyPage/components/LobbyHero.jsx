@@ -1,17 +1,18 @@
 import { LobbyStatusStrip } from './LobbyStatusStrip';
+import { useTranslation } from '../../../contexts/LanguageContext';
 
 export function LobbyHero({ status, position, timeMinutes, error })
 {
+	const { t } = useTranslation();
 	return (
 		<article className="card intro-card lobby-hero">
 			<div>
-				<p className="section-kicker">Game Lobby</p>
+				<p className="section-kicker">{t('lobby.hero.kicker')}</p>
 				<h2 className="intro-title">
-					Choose your table.
+					{t('lobby.hero.title')}
 				</h2>
 				<p>
-					Join live matchmaking, start a training game against the engine,
-					or resume the board you left waiting.
+					{t('lobby.hero.copy')}
 				</p>
 			</div>
 
