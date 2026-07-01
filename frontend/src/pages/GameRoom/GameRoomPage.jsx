@@ -33,7 +33,7 @@ export default function GameRoomPage()
 				<ResultModal room={room} />
 			</div>
 			<BoardArea room={room}/>
-			<ChatCard room={room} />
+			{!room?.state?.is_ai && <ChatCard room={room} />}
 			<ErrorToast error={room?.moveError} />
 			<ConfirmModal room={room} />
 		</section>
