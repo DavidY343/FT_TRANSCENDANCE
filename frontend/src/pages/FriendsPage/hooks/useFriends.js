@@ -13,6 +13,12 @@ import {
 	sendFriendRequest,
 } from './friendsApi';
 
+/*
+	useFriends → Hook principal para gestionar la lista de amigos y peticiones.
+
+	Return
+	Estado y funciones para interactuar con la API de amigos.
+*/
 export function useFriends()
 {
 	const [friends, setFriends] = useState([]);
@@ -30,6 +36,14 @@ export function useFriends()
 
 	const feedback = useScopedTimedMessage(1500);
 
+	/*
+		getFeedback → Obtiene mensajes de éxito o error según el contexto.
+
+		scope → Identificador del contexto (ej: 'friends', 'requests').
+
+		Return
+		Objeto con el mensaje o null si no hay ninguno.
+	*/
 	function getFeedback(scope)
 	{
 		const scopedMessage = feedback.getScopedMessage(scope);
@@ -43,6 +57,12 @@ export function useFriends()
 		return null;
 	}
 
+	/*
+		refresh → Actualiza la lista de amigos y peticiones pendientes.
+
+		Return
+		Promesa vacía.
+	*/
 	async function refresh()
 	{
 		setLoading(true);
@@ -76,6 +96,14 @@ export function useFriends()
 		}
 	}
 
+	/*
+		submitSearch → Busca usuarios por su nombre.
+
+		event → Evento opcional de envío del formulario.
+
+		Return
+		Promesa vacía.
+	*/
 	async function submitSearch(event)
 	{
 		event?.preventDefault();
@@ -112,6 +140,14 @@ export function useFriends()
 		}
 	}
 
+	/*
+		sendRequest → Envía una petición de amistad a otro usuario.
+
+		userId → ID del usuario al que se le envía la petición.
+
+		Return
+		Promesa vacía.
+	*/
 	async function sendRequest(userId)
 	{
 		setActionLoading((prev) => ({ ...prev, [userId]: true }));
@@ -136,6 +172,14 @@ export function useFriends()
 		}
 	}
 
+	/*
+		acceptRequest → Acepta una petición de amistad entrante.
+
+		requesterId → ID del usuario que envió la petición.
+
+		Return
+		Promesa vacía.
+	*/
 	async function acceptRequest(requesterId)
 	{
 		setActionLoading((prev) => ({ ...prev, [requesterId]: true }));
@@ -157,6 +201,14 @@ export function useFriends()
 		}
 	}
 
+	/*
+		rejectRequest → Rechaza una petición de amistad entrante.
+
+		requesterId → ID del usuario que envió la petición.
+
+		Return
+		Promesa vacía.
+	*/
 	async function rejectRequest(requesterId)
 	{
 		setActionLoading((prev) => ({ ...prev, [requesterId]: true }));
@@ -178,11 +230,19 @@ export function useFriends()
 		}
 	}
 
+	/*
+		requestRemoveFriend → Prepara la eliminación de un amigo (abre el modal).
+
+		friend → Objeto del amigo a eliminar.
+	*/
 	function requestRemoveFriend(friend)
 	{
 		setPendingRemoveFriend(friend);
 	}
 
+	/*
+		cancelRemoveFriend → Cancela la eliminación y cierra el modal.
+	*/
 	function cancelRemoveFriend()
 	{
 		if (pendingRemoveFriend && actionLoading[pendingRemoveFriend.id])
@@ -191,6 +251,12 @@ export function useFriends()
 		setPendingRemoveFriend(null);
 	}
 
+	/*
+		confirmRemoveFriend → Ejecuta la eliminación del amigo en la API.
+
+		Return
+		Promesa vacía.
+	*/
 	async function confirmRemoveFriend()
 	{
 		if (!pendingRemoveFriend || actionLoading[pendingRemoveFriend.id])

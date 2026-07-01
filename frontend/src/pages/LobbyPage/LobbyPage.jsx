@@ -4,26 +4,19 @@ import { AiGameCard } from './components/AiGameCard';
 import { LobbyHero } from './components/LobbyHero';
 import { MatchmakingCard } from './components/MatchmakingCard';
 import { useLobby } from './hooks/useLobby';
+import { useModalA11y } from '../../hooks/useModalA11y';
 
 
 export default function LobbyPage()
 {
 	const lobby = useLobby();
 
-	useEffect(() => {
-		const handleKeyDown = (e) => {
-			if (e.key === 'Escape' && lobby.confirmResignModal) {
-				lobby.cancelResign();
-			}
-		};
-		window.addEventListener('keydown', handleKeyDown);
-		return () => window.removeEventListener('keydown', handleKeyDown);
-	}, [lobby.confirmResignModal, lobby.cancelResign]);
+	const { modalRef, cancelBtnRef } = useModalA11y(lobby.confirmResignModal, lobby.cancelResign);
 
 	return (
 		<section className="lobby-layout">
 			{lobby.confirmResignModal && (
-				<div className="confirm-backdrop" role="dialog" aria-modal="true">
+				<div className="confirm-backdrop" role="dialog" aria-modal="true" ref={modalRef} tabIndex="-1">
 					<div className="card confirm-card">
 						<p className="confirm-text">
 							Resign this game? Your opponent will win.
@@ -34,6 +27,7 @@ export default function LobbyPage()
 								type="button"
 								className="btn confirm-button"
 								onClick={lobby.cancelResign}
+								ref={cancelBtnRef}
 							>
 								Cancel
 							</button>

@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
 import { useDisconnectGraceCountdown } from '../hooks/useDisconnectGraceCountdown';
+import { useModalA11y } from '../../../hooks/useModalA11y';
 
 export function DisconnectGraceModal({ room })
 {
@@ -10,21 +10,18 @@ export function DisconnectGraceModal({ room })
 		room?.gameResult,
 	);
 
-	useEffect(() => {
-		const handleKeyDown = (e) => {
-			if (e.key === 'Escape' && showGrace && room?.cancelAction) {
-				room.cancelAction();
-			}
-		};
-		window.addEventListener('keydown', handleKeyDown);
-		return () => window.removeEventListener('keydown', handleKeyDown);
-	}, [showGrace, room]);
+	const onClose = () => {
+		if (room?.cancelAction) {
+			room.cancelAction();
+		}
+	};
+	const { modalRef } = useModalA11y(showGrace, onClose);
 
 	if (!showGrace)
 		return (null);
 
 	return (
-		<div className="card result-card disconnect-grace-card" role="dialog" aria-modal="true">
+		<div className="card result-card disconnect-grace-card" role="dialog" aria-modal="true" ref={modalRef} tabIndex="-1">
 			<p className="section-kicker">
 				Opponent disconnected
 			</p>

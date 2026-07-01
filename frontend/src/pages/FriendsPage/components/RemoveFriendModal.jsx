@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useModalA11y } from '../../../hooks/useModalA11y';
 
 export function RemoveFriendModal({
 	friend,
@@ -7,23 +7,21 @@ export function RemoveFriendModal({
 	onConfirm,
 })
 {
-	useEffect(() => {
-		const handleKeyDown = (e) => {
-			if (e.key === 'Escape' && friend && !actionLoading[friend.id]) {
-				onCancel();
-			}
-		};
-		window.addEventListener('keydown', handleKeyDown);
-		return () => window.removeEventListener('keydown', handleKeyDown);
-	}, [friend, actionLoading, onCancel]);
+	const isOpen = !!friend;
+	const onClose = () => {
+		if (friend && !actionLoading[friend.id]) {
+			onCancel();
+		}
+	};
+	const { modalRef, cancelBtnRef } = useModalA11y(isOpen, onClose);
 
-	if (!friend)
+	if (!isOpen)
 		return null;
 
 	const displayName = friend.display_name || friend.username || 'this friend';
 
 	return (
-		<div className="friends-modal-backdrop" role="dialog" aria-modal="true">
+		<div className="friends-modal-backdrop" role="dialog" aria-modal="true" ref={modalRef} tabIndex="-1">
 			<div
 				className="card friends-modal-card"
 				aria-labelledby="remove-friend-title"
@@ -42,6 +40,7 @@ export function RemoveFriendModal({
 						type="button"
 						disabled={actionLoading[friend.id]}
 						onClick={onCancel}
+						ref={cancelBtnRef}
 					>
 						Cancel
 					</button>

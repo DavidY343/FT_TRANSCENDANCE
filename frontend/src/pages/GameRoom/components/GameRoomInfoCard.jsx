@@ -30,7 +30,7 @@ export function GameRoomInfoCard({ gameId, room })
 			</h2>
 
 			{(wsStatus === 'reconnecting' || wsStatus === 'disconnected') && (
-				<div className={`ws-status-badge ws-status-${wsStatus}`} style={{
+				<div role="alert" className={`ws-status-badge ws-status-${wsStatus}`} style={{
 					padding: '8px',
 					marginBottom: '12px',
 					borderRadius: '4px',

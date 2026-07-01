@@ -1,22 +1,15 @@
-import { useEffect } from 'react';
+import { useModalA11y } from '../../../hooks/useModalA11y';
 
 export function ConfirmModal({ room })
 {
-	useEffect(() => {
-		const handleKeyDown = (e) => {
-			if (e.key === 'Escape' && room.confirmAction === 'resign') {
-				room.cancelAction();
-			}
-		};
-		window.addEventListener('keydown', handleKeyDown);
-		return () => window.removeEventListener('keydown', handleKeyDown);
-	}, [room]);
+	const isOpen = room.confirmAction === 'resign';
+	const { modalRef, cancelBtnRef } = useModalA11y(isOpen, room.cancelAction);
 
-	if (room.confirmAction !== 'resign')
+	if (!isOpen)
 		return (null);
 
 	return (
-		<div className="confirm-backdrop" role="dialog" aria-modal="true">
+		<div className="confirm-backdrop" role="dialog" aria-modal="true" ref={modalRef} tabIndex="-1">
 			<div className="card confirm-card">
 				<p className="confirm-text">
 					Are you sure you want to resign?
@@ -27,6 +20,7 @@ export function ConfirmModal({ room })
 						type="button"
 						className="btn confirm-button"
 						onClick={room.cancelAction}
+						ref={cancelBtnRef}
 					>
 						Cancel
 					</button>
