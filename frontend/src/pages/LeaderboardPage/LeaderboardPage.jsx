@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 
+import { Link } from 'react-router-dom';
 import { api, getApiErrorMessage } from '../../api';
 import { useTranslation } from '../../contexts/LanguageContext';
 
@@ -27,8 +28,16 @@ function LeaderboardRow({ row, rank })
 			</div>
 
 			<div className="leaderboard-player">
-				<strong>{displayName}</strong>
-				<span>@{row.username || t('leaderboard.unknown_username')}</span>
+				<strong>
+					<Link to={`/profile/${row.id}`} className="profile-link">
+						{displayName}
+					</Link>
+				</strong>
+				<span>
+					<Link to={`/profile/${row.id}`} className="profile-link">
+						@{row.username || t('leaderboard.unknown_username')}
+					</Link>
+				</span>
 			</div>
 
 			<div className="leaderboard-rating">

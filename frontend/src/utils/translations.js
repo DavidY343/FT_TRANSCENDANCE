@@ -322,7 +322,7 @@ export const translations = {
     "profile.edit.saving": "Saving...",
     "profile.rank.novice": "Novice",
     "profile.rank.intermediate": "Intermediate",
-    "profile.rank.advanced": "Avanzado",
+    "profile.rank.advanced": "Advanced",
     "profile.rank.master": "Master",
     "profile.summary.avatar_alt": "Avatar of",
     "profile.summary.user": "user",

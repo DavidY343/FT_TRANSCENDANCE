@@ -12,6 +12,7 @@ import RegisterPage from './pages/AuthPages/RegisterPage';
 import PrivacyPage from './pages/LegalPages/PrivacyPage';
 import TermsPage from './pages/LegalPages/TermsPage';
 import ProfilePage from './pages/ProfilePage/ProfilePage.jsx';
+import PublicProfilePage from './pages/PublicProfilePage/PublicProfilePage.jsx';
 import GameRoomPage from './pages/GameRoom/GameRoomPage.jsx';
 import FriendsPage from './pages/FriendsPage/FriendsPage';
 import HistoryPage from './pages/HistoryPage/HistoryPage';
@@ -82,6 +83,15 @@ export default function App()
 							element={
 								<PrivateRoute>
 									<ProfilePage />
+								</PrivateRoute>
+							}
+						/>
+
+						<Route
+							path="/profile/:id"
+							element={
+								<PrivateRoute>
+									<PublicProfilePage />
 								</PrivateRoute>
 							}
 						/>

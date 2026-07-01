@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useTranslation } from '../../../contexts/LanguageContext';
 
 export function RequestsCard({
@@ -56,11 +57,15 @@ export function RequestsCard({
 								<div className="friend-row" key={request.id}>
 									<div className="friend-identity">
 										<strong>
-											{user.display_name}
+											<Link to={`/profile/${user.id}`} className="profile-link">
+												{user.display_name}
+											</Link>
 										</strong>
 
 										<span>
-											@{user.username}
+											<Link to={`/profile/${user.id}`} className="profile-link">
+												@{user.username}
+											</Link>
 										</span>
 
 										<span className={user.online ? 'friend-online' : 'friend-offline'}>
@@ -115,11 +120,15 @@ export function RequestsCard({
 								<div className="friend-row" key={request.id}>
 									<div className="friend-identity">
 										<strong>
-											{user.display_name}
+											<Link to={`/profile/${user.id}`} className="profile-link">
+												{user.display_name}
+											</Link>
 										</strong>
 
 										<span>
-											@{user.username}
+											<Link to={`/profile/${user.id}`} className="profile-link">
+												@{user.username}
+											</Link>
 										</span>
 
 										<span className={user.online ? 'friend-online' : 'friend-offline'}>

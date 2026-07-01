@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useTranslation } from '../../../contexts/LanguageContext';
 
 export function FriendsListCard({
@@ -36,11 +37,15 @@ export function FriendsListCard({
 						<div className="friend-row" key={friend.id}>
 							<div className="friend-identity">
 								<strong>
-									{friend.display_name}
+									<Link to={`/profile/${friend.id}`} className="profile-link">
+										{friend.display_name}
+									</Link>
 								</strong>
 
 								<span>
-									@{friend.username}
+									<Link to={`/profile/${friend.id}`} className="profile-link">
+										@{friend.username}
+									</Link>
 								</span>
 
 								<span className={friend.online ? 'friend-online' : 'friend-offline'}>

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useTranslation } from '../../../contexts/LanguageContext';
 
 /*
@@ -51,6 +52,18 @@ function getOpponentName(game, t)
 	return game.opponent?.display_name || game.opponent?.username || t('history.list.unknown');
 }
 
+function getOpponentLink(game, t)
+{
+	if (!game.opponent?.id)
+		return getOpponentName(game, t);
+
+	return (
+		<Link to={`/profile/${game.opponent.id}`} className="profile-link">
+			{getOpponentName(game, t)}
+		</Link>
+	);
+}
+
 /*
 	getPlayersBySide → Coloca al usuario y al rival según su color.
 
@@ -62,7 +75,7 @@ function getOpponentName(game, t)
 */
 function getPlayersBySide(game, t)
 {
-	const opponent = getOpponentName(game, t);
+	const opponent = getOpponentLink(game, t);
 
 	if (game.my_color === 'b' || game.my_color === 'black')
 		return {
