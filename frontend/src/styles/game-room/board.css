@@ -40,3 +40,49 @@
 {
 	min-width: 120px;
 }
+
+/* 
+	Fix for react-chessboard promotion dialog clipping.
+	The dialog is an absolutely positioned 2x2 grid. We center it perfectly
+	inside the board and add a premium backdrop dimming effect.
+*/
+.chessboard [data-boardid] > div[style*="display: grid"],
+.chessboard div[style*="display: grid"]
+{
+	top: 50% !important;
+	left: 50% !important;
+	right: auto !important;
+	bottom: auto !important;
+	transform: translate(-50%, -50%) !important;
+	width: 25% !important;
+	height: 25% !important;
+	background: linear-gradient(145deg, rgb(52 52 52 / 0.98), rgb(35 35 35 / 0.98)) !important;
+	border-radius: 12px !important;
+	box-shadow: 
+		0 22px 42px rgb(0 0 0 / 0.6), 
+		0 0 0 2000px rgb(0 0 0 / 0.4), /* Backdrop dimming */
+		inset 0 0 0 1px rgb(255 255 255 / 0.1) !important;
+	z-index: 1000 !important;
+	overflow: hidden;
+}
+
+.chessboard div[style*="display: grid"] > div
+{
+	display: flex !important;
+	justify-content: center !important;
+	align-items: center !important;
+	transition: background-color 0.2s ease, transform 0.2s ease !important;
+	border-radius: 8px;
+}
+
+.chessboard div[style*="display: grid"] > div > *
+{
+	width: 80% !important;
+	height: 80% !important;
+}
+
+.chessboard div[style*="display: grid"] > div:hover
+{
+	background-color: rgb(255 255 255 / 0.08) !important;
+	transform: scale(1.05) !important;
+}
