@@ -23,20 +23,36 @@ function LanguageSelector() {
 	const { lang, changeLanguage } = useTranslation();
 	
 	const styles = {
-		container: { display: 'flex', gap: '8px', alignItems: 'center', margin: '0 16px', fontSize: '0.85rem', color: 'var(--text-muted, #888)' },
-		active: { color: 'var(--text-color, #fff)', fontWeight: 'bold', cursor: 'pointer' },
-		inactive: { cursor: 'pointer', opacity: 0.7 },
-		separator: { opacity: 0.3 }
+		select: {
+			background: 'transparent',
+			color: 'inherit',
+			border: '1px solid var(--shadow, #ccc)',
+			borderRadius: '8px',
+			padding: '4px 8px',
+			margin: '0 16px',
+			cursor: 'pointer',
+			fontSize: '1rem',
+			outline: 'none',
+			fontFamily: 'inherit',
+			width: '64px',
+			textAlign: 'center'
+		},
+		option: {
+			color: 'black'
+		}
 	};
 
 	return (
-		<div className="language-selector" style={styles.container}>
-			<span style={lang === 'en' ? styles.active : styles.inactive} onClick={() => changeLanguage('en')}>EN</span>
-			<span style={styles.separator}>|</span>
-			<span style={lang === 'es' ? styles.active : styles.inactive} onClick={() => changeLanguage('es')}>ES</span>
-			<span style={styles.separator}>|</span>
-			<span style={lang === 'fr' ? styles.active : styles.inactive} onClick={() => changeLanguage('fr')}>FR</span>
-		</div>
+		<select 
+			className="language-selector" 
+			style={styles.select} 
+			value={lang} 
+			onChange={(e) => changeLanguage(e.target.value)}
+		>
+			<option style={styles.option} value="en">EN</option>
+			<option style={styles.option} value="es">ES</option>
+			<option style={styles.option} value="fr">FR</option>
+		</select>
 	);
 }
 

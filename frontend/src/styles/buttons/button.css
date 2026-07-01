@@ -56,13 +56,14 @@
 */
 .nav-btn
 {
-	padding: clamp(0.1rem, 0.2vw, 0.2rem);
+	padding: clamp(0.1rem, 0.2vw, 0.2rem) 1.5rem;
 	text-align: center;
-	width: 150px;
+	min-width: 150px;
+	width: max-content;
+	flex-shrink: 0;
 	min-height: 3.25rem;
-	font-size: x-large;
+	font-size: 1.15rem;
 	white-space: nowrap;
-
 }
 .nav-btn a
 {
