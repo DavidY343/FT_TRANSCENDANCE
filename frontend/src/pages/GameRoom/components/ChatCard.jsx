@@ -109,7 +109,7 @@ export function ChatCard({ room })
 						paddingBottom: '8px',
 						color: room.wsStatus === 'connected' ? '#4caf50' : room.wsStatus === 'reconnecting' ? '#ff9800' : '#f44336'
 					}}>
-						{room.wsStatus === 'connected' ? 'Conectado' : room.wsStatus === 'reconnecting' ? 'Reconectando...' : 'Desconectado'}
+						{room.wsStatus === 'connected' ? 'Connected' : room.wsStatus === 'reconnecting' ? 'Reconnecting...' : 'Disconnected'}
 					</div>
 					<form className="chat-form" onSubmit={room.submitChatMessage}>
 						<input
