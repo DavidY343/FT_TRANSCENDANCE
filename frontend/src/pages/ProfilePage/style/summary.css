@@ -20,10 +20,42 @@
 }
 
 .profile-username,
-.profile-elo
+.profile-elo,
+.profile-level
 {
 	margin: 0.35rem 0 0;
 	color: var(--text-soft);
 	text-align: center;
 	overflow-wrap: anywhere;
+}
+
+.profile-level
+{
+	margin-top: 0.5rem;
+	font-weight: 600;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.profile-level-text {
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.profile-progress-bar
+{
+	width: 100%;
+	max-width: 200px;
+	height: 6px;
+	background-color: var(--bg-modifier-hover, rgba(255, 255, 255, 0.1));
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.profile-progress-fill
+{
+	height: 100%;
+	border-radius: 4px;
+	transition: width 0.5s ease-in-out;
 }
