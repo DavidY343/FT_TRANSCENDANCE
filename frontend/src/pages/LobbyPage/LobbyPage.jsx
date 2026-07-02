@@ -74,6 +74,7 @@ export default function LobbyPage()
 						/>
 
 						<AiGameCard
+							status={lobby.status}
 							difficulty={lobby.difficulty}
 							setDifficulty={lobby.setDifficulty}
 							timeMinutes={lobby.timeMinutes}

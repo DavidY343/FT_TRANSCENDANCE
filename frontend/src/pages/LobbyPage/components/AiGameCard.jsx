@@ -1,6 +1,7 @@
 import { useTranslation } from '../../../contexts/LanguageContext';
 
 export function AiGameCard({
+	status,
 	difficulty,
 	setDifficulty,
 	timeMinutes,
@@ -10,6 +11,8 @@ export function AiGameCard({
 })
 {
 	const { t } = useTranslation();
+	const disableActions = status === 'waiting' || actionState !== 'idle';
+
 	return (
 		<article className="card lobby-action-card">
 
@@ -29,7 +32,7 @@ export function AiGameCard({
 				id="ai-difficulty"
 				value={difficulty}
 				onChange={(event) => setDifficulty(event.target.value)}
-				disabled={actionState !== 'idle'}
+				disabled={disableActions}
 			>
 				<option value="easy">{t('lobby.ai.diff_easy')}</option>
 				<option value="medium">{t('lobby.ai.diff_medium')}</option>
@@ -44,7 +47,7 @@ export function AiGameCard({
 				id="ai-time-control"
 				value={timeMinutes}
 				onChange={(event) => setTimeMinutes(Number(event.target.value))}
-				disabled={actionState !== 'idle'}
+				disabled={disableActions}
 			>
 				<option value={5}>5 {t('lobby.ai.minutes')}</option>
 				<option value={10}>10 {t('lobby.ai.minutes')}</option>
@@ -52,7 +55,7 @@ export function AiGameCard({
 			</select>
 
 			<div className="lobby-card-actions">
-				<button className="btn" type="button" onClick={onPlay} disabled={actionState !== 'idle'}>
+				<button className="btn" type="button" onClick={onPlay} disabled={disableActions}>
 					{t('lobby.ai.start_btn')}
 				</button>
 			</div>
