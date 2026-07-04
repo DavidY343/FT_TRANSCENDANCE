@@ -49,14 +49,21 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)):
 
 
 @router.post("/refresh", response_model=TokenResponse)
-def refresh(payload: RefreshRequest):
+def refresh(payload: RefreshRequest, db: Session = Depends(get_db)):
     token_payload = decode_token(payload.refresh_token)
     if token_payload.get("type") != "refresh":
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token")
 
-    user_id = token_payload.get("sub")
-    access_token = create_token(user_id, settings.access_token_expire_minutes, "access")
-    refresh_token = create_token(user_id, settings.refresh_token_expire_minutes, "refresh")
+    user_id_str = token_payload.get("sub")
+    if not user_id_str or not user_id_str.isdigit():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token subject")
+
+    user = db.get(User, int(user_id_str))
+    if not user:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
+
+    access_token = create_token(user_id_str, settings.access_token_expire_minutes, "access")
+    refresh_token = create_token(user_id_str, settings.refresh_token_expire_minutes, "refresh")
     return TokenResponse(access_token=access_token, refresh_token=refresh_token)
 
 

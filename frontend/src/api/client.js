@@ -119,46 +119,53 @@ window.addEventListener('unhandledrejection', (event) => {
 		event.preventDefault();
 });
 
-api.interceptors.response.use(
+	api.interceptors.response.use(
 	(response) => response,
 	async (error) => {
 		const originalRequest = error.config;
 
-		if (
-			error.response?.status === 401
-			&& originalRequest
-			&& !originalRequest._retry
-		)
+		if (error.response?.status === 401 && originalRequest)
 		{
-			originalRequest._retry = true;
-
-			try
+			if (!originalRequest._retry)
 			{
-				const refreshToken = getRefreshToken();
+				originalRequest._retry = true;
+				try
+				{
+					const refreshToken = getRefreshToken();
+					if (!refreshToken)
+						throw new Error('Missing refresh token');
 
-				if (!refreshToken)
-					throw new Error('Missing refresh token');
+					const response = await axios.post(
+						`${API_BASE}/auth/refresh`,
+						{ refresh_token: refreshToken }
+					);
 
-				const response = await axios.post(
-					`${API_BASE}/auth/refresh`,
-					{ refresh_token: refreshToken }
-				);
+					setTokens(
+						response.data.access_token,
+						response.data.refresh_token
+					);
 
-				setTokens(
-					response.data.access_token,
-					response.data.refresh_token
-				);
+					originalRequest.headers = originalRequest.headers || {};
+					originalRequest.headers.Authorization =
+						`Bearer ${response.data.access_token}`;
 
-				originalRequest.headers = originalRequest.headers || {};
-				originalRequest.headers.Authorization =
-					`Bearer ${response.data.access_token}`;
-
-				return api(originalRequest);
+					return api(originalRequest);
+				}
+				catch (refreshError)
+				{
+					clearTokens();
+					if (
+						window.location.pathname !== '/login'
+						&& window.location.pathname !== '/register'
+					)
+						window.location.href = '/login';
+					
+					return Promise.reject(refreshError);
+				}
 			}
-			catch (_refreshError)
+			else
 			{
 				clearTokens();
-
 				if (
 					window.location.pathname !== '/login'
 					&& window.location.pathname !== '/register'
