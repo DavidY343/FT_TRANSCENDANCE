@@ -42,6 +42,15 @@ class RoomState:
                     return {"user_id": user_id, "active": True, "seconds": remaining}
         return None
 
+    @property
+    def last_move_san(self) -> str | None:
+        if not self.board.move_stack:
+            return None
+        last_move = self.board.pop()
+        san = self.board.san(last_move)
+        self.board.push(last_move)
+        return san
+
     def to_payload(self, grace_seconds: int = 30) -> dict:
         return {
             "game_id": self.game_id,
@@ -49,6 +58,7 @@ class RoomState:
             "turn": "w" if self.board.turn == chess.WHITE else "b",
             "status": "finished" if self.finished or self.board.is_game_over(claim_draw=True) else "playing",
             "last_move": self.board.peek().uci() if self.board.move_stack else None,
+            "last_move_san": self.last_move_san,
             "move_count": len(self.board.move_stack),
             "is_check": self.board.is_check(),
             "legal_moves": [move.uci() for move in self.board.legal_moves],

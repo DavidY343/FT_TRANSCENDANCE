@@ -8,6 +8,16 @@ export function BoardArea({ room })
 	const { t } = useTranslation();
 	const state = room?.state;
 
+	function getFigurineNotation(sanMove) {
+		if (!sanMove) return null;
+		return sanMove
+			.replace(/N/g, '♞')
+			.replace(/B/g, '♝')
+			.replace(/R/g, '♜')
+			.replace(/Q/g, '♛')
+			.replace(/K/g, '♚');
+	}
+
 	return (
 		<main className="game-board-area">
 			<Clocks
@@ -25,7 +35,7 @@ export function BoardArea({ room })
 						{state?.is_check ? t('game.check') : t('game.move')}
 					</span>
 					<strong>
-						{state?.is_check ? t('game.king_under_attack') : state?.last_move || t('game.opening_position')}
+						{state?.is_check ? t('game.king_under_attack') : getFigurineNotation(state?.last_move_san) || state?.last_move || t('game.opening_position')}
 					</strong>
 				</div>
 
