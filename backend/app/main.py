@@ -465,6 +465,38 @@ async def websocket_game(game_id: int, websocket: WebSocket, token: str | None =
                 await realtime_manager.broadcast(game_id, {"type": "CHAT_MESSAGE", "payload": message})
                 continue
 
+            if event_type == "DRAW_OFFER":
+                if room.is_ai:
+                    await realtime_manager.send_personal(websocket, {"type": "ERROR", "message": "Cannot offer draw to AI"})
+                    continue
+                room.draw_offered_by = user_id
+                await realtime_manager.broadcast(game_id, {"type": "STATE_SYNC", "state": room.to_payload()})
+                continue
+
+            if event_type == "DRAW_ACCEPT":
+                if room.draw_offered_by and room.draw_offered_by != user_id:
+                    event_db = SessionLocal()
+                    try:
+                        game = event_db.get(Game, game_id)
+                        if not game or game.status == "finished" or room.finished:
+                            room.finished = True
+                            continue
+                        game_over_payload = _finish_game(event_db, game, room, "draw", "mutual_agreement")
+                    finally:
+                        try:
+                            event_db.close()
+                        except Exception:
+                            pass
+                    await realtime_manager.broadcast(game_id, {"type": "STATE_SYNC", "state": room.to_payload()})
+                    await realtime_manager.broadcast(game_id, game_over_payload)
+                continue
+
+            if event_type == "DRAW_DECLINE":
+                if room.draw_offered_by and room.draw_offered_by != user_id:
+                    room.draw_offered_by = None
+                    await realtime_manager.broadcast(game_id, {"type": "STATE_SYNC", "state": room.to_payload()})
+                continue
+
             if event_type != "MOVE_SUBMIT":
                 await realtime_manager.send_personal(websocket, {"type": "ERROR", "message": "Unsupported event type"})
                 continue
@@ -503,6 +535,7 @@ async def websocket_game(game_id: int, websocket: WebSocket, token: str | None =
                 continue
 
             room.board.push(move)
+            room.draw_offered_by = None
             room.last_clock_ts = datetime.utcnow()
             next_fen = room.board.fen()
             next_move_count = len(room.board.move_stack)

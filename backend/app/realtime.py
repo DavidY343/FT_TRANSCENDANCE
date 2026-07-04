@@ -24,6 +24,7 @@ class RoomState:
     is_ai: bool = False
     finished: bool = False
     chat_messages: list[dict] = field(default_factory=list)
+    draw_offered_by: int | None = None
     last_clock_ts: datetime = field(default_factory=datetime.utcnow)
     clock_started: bool = False
     clock_task: asyncio.Task | None = None
@@ -61,6 +62,7 @@ class RoomState:
             "last_move_san": self.last_move_san,
             "move_count": len(self.board.move_stack),
             "is_check": self.board.is_check(),
+            "draw_offered_by": self.draw_offered_by,
             "legal_moves": [move.uci() for move in self.board.legal_moves],
             "players": {
                 "white_id": self.white_id,

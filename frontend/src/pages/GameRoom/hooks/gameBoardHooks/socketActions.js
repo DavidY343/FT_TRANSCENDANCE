@@ -36,6 +36,30 @@ export function sendResign({ wsRef, setError })
 	return (true);
 }
 
+export function sendDrawOffer({ wsRef, setError })
+{
+	const ws = wsRef.current;
+	if (!ws || ws.readyState !== WebSocket.OPEN) { setError('WebSocket not connected'); return (false); }
+	ws.send(JSON.stringify({ type: 'DRAW_OFFER' }));
+	return (true);
+}
+
+export function sendDrawAccept({ wsRef, setError })
+{
+	const ws = wsRef.current;
+	if (!ws || ws.readyState !== WebSocket.OPEN) { setError('WebSocket not connected'); return (false); }
+	ws.send(JSON.stringify({ type: 'DRAW_ACCEPT' }));
+	return (true);
+}
+
+export function sendDrawDecline({ wsRef, setError })
+{
+	const ws = wsRef.current;
+	if (!ws || ws.readyState !== WebSocket.OPEN) { setError('WebSocket not connected'); return (false); }
+	ws.send(JSON.stringify({ type: 'DRAW_DECLINE' }));
+	return (true);
+}
+
 export function sendChatMessage({ wsRef, setError, message })
 {
 	const ws = wsRef.current;

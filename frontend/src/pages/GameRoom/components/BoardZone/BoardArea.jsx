@@ -35,7 +35,7 @@ export function BoardArea({ room })
 						{state?.is_check ? t('game.check') : t('game.move')}
 					</span>
 					<strong>
-						{state?.is_check ? t('game.king_under_attack') : getFigurineNotation(state?.last_move_san) || state?.last_move || t('game.opening_position')}
+						{getFigurineNotation(state?.last_move_san) || state?.last_move || t('game.opening_position')}
 					</strong>
 				</div>
 
