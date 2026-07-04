@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 
 import { getAccessToken } from './api';
@@ -39,7 +40,19 @@ function PublicAuthRoute({ children })
 export default function App()
 {
 	const location = useLocation();
+	const [authTick, setAuthTick] = useState(0);
 	const isAuthed = Boolean(getAccessToken());
+
+	useEffect(() => {
+		function handleStorage(e) {
+			if (e.key === 'access_token') {
+				setAuthTick(prev => prev + 1);
+			}
+		}
+		window.addEventListener('storage', handleStorage);
+		return () => window.removeEventListener('storage', handleStorage);
+	}, []);
+
 	const achievementToasts = useAchievementToasts(isAuthed);
 
 	usePresenceHeartbeat(isAuthed);
