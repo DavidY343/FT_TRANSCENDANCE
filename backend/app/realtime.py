@@ -68,7 +68,7 @@ class RoomState:
 
 class RealtimeManager:
     def __init__(self) -> None:
-        self._room_connections: dict[int, dict[int, WebSocket]] = defaultdict(dict)
+        self._room_connections: dict[int, dict[int, set[WebSocket]]] = defaultdict(lambda: defaultdict(set))
         self._user_connections: dict[int, int] = defaultdict(int)
         self._rooms: dict[int, RoomState] = {}
         self._lock = asyncio.Lock()
@@ -77,7 +77,7 @@ class RealtimeManager:
         await websocket.accept()
         was_reconnecting = False
         async with self._lock:
-            self._room_connections[game_id][user_id] = websocket
+            self._room_connections[game_id][user_id].add(websocket)
             self._user_connections[user_id] += 1
 
             room = self._rooms.get(game_id)
@@ -90,10 +90,14 @@ class RealtimeManager:
 
         return was_reconnecting
 
-    async def disconnect(self, game_id: int, user_id: int) -> bool:
+    async def disconnect(self, game_id: int, user_id: int, websocket: WebSocket) -> bool:
         async with self._lock:
             room_map = self._room_connections.get(game_id, {})
-            room_map.pop(user_id, None)
+            user_sockets = room_map.get(user_id, set())
+            if websocket in user_sockets:
+                user_sockets.remove(websocket)
+            if not user_sockets and user_id in room_map:
+                room_map.pop(user_id, None)
             if not room_map and game_id in self._room_connections:
                 self._room_connections.pop(game_id, None)
 
@@ -106,6 +110,9 @@ class RealtimeManager:
 
     def is_user_connected(self, user_id: int) -> bool:
         return self._user_connections.get(user_id, 0) > 0
+
+    def is_user_in_room(self, game_id: int, user_id: int) -> bool:
+        return user_id in self._room_connections.get(game_id, {}) and len(self._room_connections[game_id][user_id]) > 0
 
     def get_or_create_room(
         self,
@@ -163,19 +170,24 @@ class RealtimeManager:
 
     async def broadcast(self, game_id: int, payload: dict) -> None:
         room_map = self._room_connections.get(game_id, {})
-        stale_users: list[int] = []
+        stale_sockets: list[tuple[int, WebSocket]] = []
 
-        for user_id, websocket in list(room_map.items()):
-            try:
-                await websocket.send_json(payload)
-            except (WebSocketDisconnect, RuntimeError):
-                stale_users.append(user_id)
+        for user_id, user_sockets in list(room_map.items()):
+            for websocket in list(user_sockets):
+                try:
+                    await websocket.send_json(payload)
+                except (WebSocketDisconnect, RuntimeError):
+                    stale_sockets.append((user_id, websocket))
 
-        if stale_users:
+        if stale_sockets:
             async with self._lock:
                 target_room = self._room_connections.get(game_id, {})
-                for user_id in stale_users:
-                    target_room.pop(user_id, None)
+                for user_id, websocket in stale_sockets:
+                    user_sockets = target_room.get(user_id, set())
+                    if websocket in user_sockets:
+                        user_sockets.remove(websocket)
+                    if not user_sockets and user_id in target_room:
+                        target_room.pop(user_id, None)
                     if user_id in self._user_connections:
                         self._user_connections[user_id] -= 1
                         if self._user_connections[user_id] <= 0:

@@ -32,15 +32,15 @@ def join_queue(
     current_user: User = Depends(get_current_user),
 ):
     from fastapi import HTTPException, status
-    active_game = db.query(Game).filter(
-        ((Game.white_id == current_user.id) | (Game.black_id == current_user.id)),
-        Game.status != "finished"
-    ).first()
-    if active_game:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="You already have an active game in progress")
-
     queue = _queues[payload.time_minutes]
     with _lock:
+        active_game = db.query(Game).filter(
+            ((Game.white_id == current_user.id) | (Game.black_id == current_user.id)),
+            Game.status != "finished"
+        ).first()
+        if active_game:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="You already have an active game in progress")
+
         matched_game_id = _pending_matches.pop(current_user.id, None)
         if matched_game_id:
             return {"status": "matched", "game_id": matched_game_id}

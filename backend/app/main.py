@@ -286,7 +286,7 @@ async def _clock_loop(game_id: int):
 
 async def _forfeit_if_not_reconnected(game_id: int, disconnected_user_id: int):
     await asyncio.sleep(DISCONNECT_GRACE_SECONDS)
-    if realtime_manager.is_user_connected(disconnected_user_id):
+    if realtime_manager.is_user_in_room(game_id, disconnected_user_id):
         return
 
     room = realtime_manager.get_room(game_id)
@@ -519,7 +519,11 @@ async def websocket_game(game_id: int, websocket: WebSocket, token: str | None =
 
             if should_sync_before_ai:
                 think_start = perf_counter()
-                ai_move = ai_for_level(_ai_level_from_mode(game_mode)).choose_move(room.board)
+                
+                ai = ai_for_level(_ai_level_from_mode(game_mode))
+                board_copy = room.board.copy()
+                ai_move = await asyncio.to_thread(ai.choose_move, board_copy)
+                
                 think_elapsed_ms = int((perf_counter() - think_start) * 1000)
 
                 if think_elapsed_ms > 0:
@@ -602,9 +606,10 @@ async def websocket_game(game_id: int, websocket: WebSocket, token: str | None =
         # Defensive: runtime disconnect race can bypass WebSocketDisconnect.
         pass
     finally:
-        offline = await realtime_manager.disconnect(game_id, user_id)
-        if offline:
-            set_offline(user_id)
+        await realtime_manager.disconnect(game_id, user_id, websocket)
+        # Always trigger disconnect grace for the room, even if they have a presence connection open elsewhere
+        in_room = realtime_manager.is_user_in_room(game_id, user_id)
+        if not in_room:
             await realtime_manager.broadcast(game_id, {"type": "PRESENCE", "user_id": user_id, "online": False})
             await realtime_manager.broadcast(
                 game_id,
@@ -619,5 +624,3 @@ async def websocket_game(game_id: int, websocket: WebSocket, token: str | None =
             if room:
                 room.disconnect_started_at[user_id] = datetime.utcnow()
                 room.disconnect_tasks[user_id] = asyncio.create_task(_forfeit_if_not_reconnected(game_id, user_id))
-
-        pass
