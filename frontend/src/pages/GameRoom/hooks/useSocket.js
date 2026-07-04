@@ -21,11 +21,11 @@ export function useSocket({ gameId, setState, setError, setMoveError, setGameOve
 		if (!gameId || gameId == 'null')
 			return undefined;
 
-		shouldReconnectRef.current = true;
+		let shouldReconnect = true;
 
 		function connectSocket()
 		{
-			if (!shouldReconnectRef.current)
+			if (!shouldReconnect)
 				return;
 
 			setWsStatus('connecting');
@@ -151,11 +151,8 @@ export function useSocket({ gameId, setState, setError, setMoveError, setGameOve
 			};
 
 			ws.onclose = () => {
-				if (!shouldReconnectRef.current)
-				{
-					setWsStatus('disconnected');
+				if (!shouldReconnect)
 					return;
-				}
 
 				setWsStatus('reconnecting');
 				reconnectTimerRef.current = setTimeout(connectSocket, 1500);
@@ -165,7 +162,7 @@ export function useSocket({ gameId, setState, setError, setMoveError, setGameOve
 		connectSocket();
 
 		return () => {
-			shouldReconnectRef.current = false;
+			shouldReconnect = false;
 
 			if (reconnectTimerRef.current)
 				clearTimeout(reconnectTimerRef.current);
