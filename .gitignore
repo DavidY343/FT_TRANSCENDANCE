@@ -333,3 +333,10 @@ backend/uploads/
 frontend/dist/
 .antigravitycli/
 en.subject.pdf
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/

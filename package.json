@@ -1,0 +1,22 @@
+{
+  "name": "ft_transcendence_testing",
+  "version": "1.0.0",
+  "description": "*This project has been created as part of the 42 curriculum by*",
+  "main": "playwright.config.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DavidY343/FT_TRANSCENDANCE.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DavidY343/FT_TRANSCENDANCE/issues"
+  },
+  "homepage": "https://github.com/DavidY343/FT_TRANSCENDANCE#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.61.1",
+    "@types/node": "^26.1.0"
+  }
+}
