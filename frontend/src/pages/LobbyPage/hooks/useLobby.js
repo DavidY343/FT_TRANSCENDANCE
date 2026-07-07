@@ -15,7 +15,13 @@ export function useLobby()
 	const [timeMinutes, setTimeMinutes] = useState(10);
 	const [error, setError] = useState('');
 	const [activeGameId, setActiveGameId] = useState(null);
+
+	const [joining, setJoining] = useState(false);
+	const [leaving, setLeaving] = useState(false);
+	const [startingAi, setStartingAi] = useState(false);
 	const [resigning, setResigning] = useState(false);
+
+	const [pendingResignGameId, setPendingResignGameId] = useState(null);
 
 	function clearPolling()
 	{
@@ -116,7 +122,11 @@ export function useLobby()
 
 	async function joinQueue()
 	{
+		if (joining || status === 'waiting')
+			return;
+
 		setError('');
+		setJoining(true);
 
 		try
 		{
@@ -157,11 +167,19 @@ export function useLobby()
 
 			setError(message);
 		}
+		finally
+		{
+			setJoining(false);
+		}
 	}
 
 	async function leaveQueue()
 	{
+		if (leaving || status !== 'waiting')
+			return;
+
 		setError('');
+		setLeaving(true);
 
 		try
 		{
@@ -174,12 +192,20 @@ export function useLobby()
 		{
 			setError(getApiErrorMessage(err, 'Unable to leave queue'));
 		}
+			finally
+		{
+			setLeaving(false);
+		}
 	}
 
 	async function playVsAi()
 	{
+		if (startingAi)
+			return;
+
 		setError('');
 		clearPolling();
+		setStartingAi(true);
 
 		try
 		{
@@ -211,6 +237,10 @@ export function useLobby()
 			}
 
 			setError(message);
+		}
+		finally
+		{
+			setStartingAi(false);
 		}
 	}
 
@@ -312,11 +342,17 @@ export function useLobby()
 		setTimeMinutes,
 		error,
 		activeGameId,
+		joining,
+		leaving,
+		startingAi,
 		resigning,
+		pendingResignGameId,
 		joinQueue,
 		leaveQueue,
 		playVsAi,
 		resumeActiveGame,
-		resignActiveGame
+		requestResignActiveGame,
+		cancelResignActiveGame,
+		confirmResignActiveGame
 	};
 }
