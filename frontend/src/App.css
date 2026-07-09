@@ -4,24 +4,12 @@
 @import './styles/layout/layout.css';
 
 @import './styles/cards/cards.css';
-@import './styles/cards/auth-cards.css';
+@import './styles/cards/intro-cards.css';
 
 @import './styles/input.css';
 
 @import './styles/links.css';
 @import './styles/buttons/button.css';
 @import './styles/buttons/menu.css';
-
-@import './styles/auth.css';
-@import './styles/lobby.css';
-
-@import './styles/game-room/game-room.css';
-@import './styles/achievements.css';
-
-@import './pages/ProfilePage/style/avatar.css';
-@import './pages/ProfilePage/style/edit-form.css';
-@import './pages/ProfilePage/style/messages.css';
-@import './pages/ProfilePage/style/profile.css';
-@import './pages/ProfilePage/style/summary.css';
 
 @import './styles/responsive.css';

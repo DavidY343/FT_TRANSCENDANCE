@@ -1,7 +1,7 @@
 import { LoginIntroCard } from "./components/AuthIntroCard";
 import { LoginForm } from "./components/AuthForm";
 import { useLoginForm } from './hooks/useFormHooks/useLoginForm';
-
+import './style/auth.css';
 export default function LoginPage()
 {
 	const loginForm = useLoginForm();

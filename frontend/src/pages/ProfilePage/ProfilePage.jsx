@@ -7,6 +7,12 @@ import { ProfileAvatarForm } from './components/ProfileAvatarForm';
 import { fetchAchievements } from './hooks/profileApi';
 import { getApiErrorMessage } from '../../api';
 import { useTranslation } from '../../contexts/LanguageContext';
+import './style/avatar.css';
+import './style/edit-form.css';
+import './style/messages.css';
+import './style/profile.css';
+import './style/summary.css';
+import './style/achievements.css';
 
 function AchievementsPanel({ onError })
 {

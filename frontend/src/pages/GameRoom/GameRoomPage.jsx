@@ -9,6 +9,7 @@ import { ResultModal } from './components/ResultModal';
 import { DisconnectGraceModal } from './components/DisconnectGraceModal';
 
 import { useRoom } from './hooks/useRoom';
+import './style/game-room.css';
 
 export default function GameRoomPage()
 {

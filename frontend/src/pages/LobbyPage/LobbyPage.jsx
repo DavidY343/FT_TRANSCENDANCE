@@ -6,6 +6,7 @@ import { LobbyHero } from './components/LobbyHero';
 import { MatchmakingCard } from './components/MatchmakingCard';
 import { useLobby } from './hooks/useLobby';
 import { useModalA11y } from '../../hooks/useModalA11y';
+import './style/lobby.css';
 
 
 export default function LobbyPage()

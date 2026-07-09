@@ -1,5 +1,5 @@
 import { useTranslation } from '../contexts/LanguageContext';
-
+import './style/achievement-toast.css';
 export function AchievementToastContainer({ toasts })
 {
 	const { t } = useTranslation();
