@@ -10,11 +10,14 @@ Beyond the core gameplay, the platform features a full suite of social and compe
 
 To get the project up and running on your local machine, follow these steps:
 
-1. **Prerequisites**: Ensure you have [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/) installed.
+1. **Prerequisites**: Ensure you have [Docker](https://docs.docker.com/get-docker/) and [Docker Compose v2.20.0+](https://docs.docker.com/compose/install/) (or Docker Desktop with Compose V2 enabled) installed.
 2. **Environment Variables**: Create a `.env` file in the root directory based on the provided `.env.example`. This file contains the necessary configuration for the database and API.
-3. **Build and Run**: Execute `make` or `make all` in the terminal. This command will build the Docker images and start the containers. The application will be accessible via your browser.
-4. **Stop**: To stop the containers without removing data, run `make down`.
-5. **Clean Up**: If you need to remove the containers, images, and volumes, run `make fclean`.
+3. **Build and Run (Production Mode)**: Execute `make` or `make all` in the terminal. This command builds the optimized production images (Frontend built and served statically) and starts the containers. The app will be securely accessible at `https://localhost:8080`.
+4. **Build and Run (Development Mode)**: Execute `make dev` in the terminal. This launches the development environment with hot-reloading (HMR) enabled, binding the frontend to port 3000 with local volume mounts. The app will be accessible at `http://localhost:3000` or `https://localhost:8080`.
+5. **Stop**: To stop the containers without removing persistent data, run `make down`.
+6. **Clean**: To stop the containers and prune dangling images, run `make clean`.
+7. **Clean Up (Deep Clean)**: To remove all containers, networks, volumes, and built images, run `make fclean`.
+8. **Rebuild**: To perform a deep clean and restart the production environment, run `make re`.
 
 # Resources
 
@@ -26,6 +29,13 @@ Here are some of the fundamental technologies and libraries we utilized to build
 - [Docker](https://www.docker.com/): A platform for developing, shipping, and running applications in containers. It simplified our deployment process and ensured environment consistency.
 - [python-chess](https://python-chess.readthedocs.io/): A chess library for Python. It handled our complex server-side legal move validation and formed the backbone of our custom AI integration.
 - [Socket.io / WebSockets](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API): The protocol used for real-time, bi-directional communication between the client and the server, enabling live moves and chat.
+- [SQLAlchemy 2.0 Documentation](https://docs.sqlalchemy.org/en/20/): The absolute standard for database manipulation in Python, which guided our ORM implementation and data integrity.
+- [Vite Documentation](https://vitejs.dev/): Essential for understanding Hot Module Replacement (HMR) and optimizing our React production builds.
+- [JWT.io (JSON Web Tokens)](https://jwt.io/): An excellent visual resource and debugger that helped us implement secure, stateless session authentication.
+- [Nginx Beginner's Guide](https://nginx.org/en/docs/beginners_guide.html): A classic reference that aided in configuring our reverse proxy and SSL termination architecture.
+
+## AI Usage Statement
+Artificial Intelligence assistants were utilized during the development of this project. Specifically, they were used to propose the initial project structure, define dependencies and compatible versions, assist in code restructuring, debug errors and undesired behavior, perform text translations for multilingual support, and help draft this documentation. This usage was conscious, peer-reviewed, and acted as a legitimate development tool to streamline coding and ensure best practices.
 
 # Team Information
 
@@ -54,7 +64,15 @@ Our workflow was organized through regular meetings, both in-person at the campu
 ## Database
 - **Engine**: PostgreSQL (16-alpine) - Chosen for its reliability, data integrity features, and excellent performance with relational data models like our user and match history structures.
 
+## Infrastructure & Security
+- **Containerization**: Docker & Docker Compose - Ensures consistent development and production environments, perfectly isolating the application architecture.
+- **Reverse Proxy**: Nginx (1.27-alpine) - Acts as the single entry point for all traffic, handling SSL termination (HTTPS) and dynamically routing requests to the frontend or backend via internal secure networks.
+- **Data Validation & Auth**: Pydantic & Passlib (Bcrypt) - Ensures strict incoming data validation, while passwords are cryptographically hashed using industry-standard bcrypt algorithms. JWT tokens secure the API.
+
 # Database Schema
+
+The database relies on three core entities strictly defined via SQLAlchemy ORM (`models.py`). This schema ensures data integrity and robust relational mapping using foreign keys and unique constraints.
+
 
 ```mermaid
 erDiagram
@@ -97,24 +115,56 @@ erDiagram
 
 # Features List
 
-## User Authentication and Management
-Users can securely sign up, log in, edit their profiles, and upload custom avatars. JWT tokens are used to maintain session security. 
+## Secure Profile Management
+- **Behavioral Description:** The user can create an account, customize their display name, upload a personal avatar, and manage security settings. The system secures the session and updates the user profile globally across the platform.
 - *Contributors:*
 
-## Real-time Multiplayer Chess
-The core feature allows users to challenge each other and play chess in real-time. It includes server-side validation of every move, time controls, and automatic detection of checkmates and draws.
+## Time-Control Matchmaking
+- **Behavioral Description:** The system allows the user to join a matchmaking queue by selecting between 5, 10, or 30-minute limits. The system automatically pairs players in the same queue and shuffles colors randomly upon game initialization.
 - *Contributors:*
 
-## Social System
-A comprehensive suite of social tools, including a real-time global chat, a friend request system, and live indicators to see which friends are currently online.
+## Real-Time Move Validation
+- **Behavioral Description:** When dragging pieces, the interface highlights valid destination squares and automatically rejects any illegal moves according to standard chess rules.
 - *Contributors:*
 
-## AI Opponent
-Users can practice offline by playing against a custom-built chess AI. The AI features multiple difficulty levels to cater to both beginners and advanced players.
+## AI Practice Mode
+- **Behavioral Description:** The user can start a local match against an AI opponent, configuring its difficulty (Easy, Medium, Hard) and time controls. The AI calculates board states and plays moves with simulated latency to mimic human behavior.
 - *Contributors:*
 
-## Leaderboard and Match History
-An integrated Elo rating system dynamically adjusts player rankings based on match outcomes. Users can view a global leaderboard and check their personal match history and statistics.
+## In-Game Clocks
+- **Behavioral Description:** The interface displays countdown timers representing each player's remaining time. The active player's clock counts down and pauses immediately when they register a move, subsequently starting the opponent's clock. A clock reaching zero automatically triggers a defeat by time.
+- *Contributors:*
+
+## Resignation & Draw Requests
+- **Behavioral Description:** Players can click buttons to resign the match (immediately awarding the win to the opponent) or offer a draw. If a draw is offered, the opponent receives an on-screen prompt to accept or decline the tie.
+- *Contributors:*
+
+## Live Reconnection Grace Period
+- **Behavioral Description:** If a player loses their connection during a match, the system triggers a 30-second countdown. If the player reconnects before the timer expires, the game resumes; otherwise, the match is awarded to the opponent.
+- *Contributors:*
+
+## Live Friend Management
+- **Behavioral Description:** The user can search for other players by username to send friend requests. The system manages these requests (accept, decline, unfriend) and updates a visual list displaying each friend's online/offline status in real-time.
+- *Contributors:*
+
+## Global In-Game Chat
+- **Behavioral Description:** Active players can type and send text messages through a chat interface during a match. The system processes and appends these messages to a scrollable log visible to both participants instantly.
+- *Contributors:*
+
+## Match History Archive
+- **Behavioral Description:** The system registers the outcome (win, loss, draw, resignation), game mode, date, and move count of every completed game. Users can review these records in a chronological list on their profile.
+- *Contributors:*
+
+## Dynamic Elo Leaderboard
+- **Behavioral Description:** After completing a human vs. human match, the system recalculates both players' Elo ratings based on the match outcome and the difference between their ratings. A global leaderboard ranks users by their current Elo.
+- *Contributors:*
+
+## Achievement Milestones
+- **Behavioral Description:** The system evaluates player statistics (e.g., first win, adding a friend, reaching 1250 Elo) and triggers on-screen notifications when milestones are reached, displaying unlocked badges permanently on the user's profile.
+- *Contributors:*
+
+## Hot Language Switching
+- **Behavioral Description:** The user can change the application's language (English or Spanish) via a dropdown selector. The system instantly translates all user interface texts without reloading the page.
 - *Contributors:*
 
 # Modules
