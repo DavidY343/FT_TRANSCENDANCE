@@ -314,6 +314,8 @@ htmlcov/
 # Local development database
 db.sqlite3
 
+# Uploads
+/backend/uploads/*
 
 # CUSTOM
 Db_diagram.png
