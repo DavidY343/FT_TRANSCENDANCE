@@ -4,7 +4,7 @@ import { useProfile } from './hooks/useProfile';
 import { ProfileSummary } from './components/ProfileSummary';
 import { ProfileEditForm } from './components/ProfileEditForm';
 import { ProfileAvatarForm } from './components/ProfileAvatarForm';
-import { fetchAchievements } from './hooks/profileApi';
+import { fetchAchievements, fetchUserAchievements } from './hooks/profileApi';
 import { getApiErrorMessage } from '../../api';
 import { useTranslation } from '../../contexts/LanguageContext';
 import './style/avatar.css';
@@ -14,7 +14,7 @@ import './style/profile.css';
 import './style/summary.css';
 import './style/achievements.css';
 
-function AchievementsPanel({ onError })
+export function AchievementsPanel({ userId, onError })
 {
 	const { t } = useTranslation();
 	const [achievements, setAchievements] = useState([]);
@@ -28,7 +28,7 @@ function AchievementsPanel({ onError })
 			try
 			{
 				setLoading(true);
-				const { data } = await fetchAchievements();
+				const { data } = userId ? await fetchUserAchievements(userId) : await fetchAchievements();
 
 				if (!cancelled)
 					setAchievements(Array.isArray(data) ? data : []);

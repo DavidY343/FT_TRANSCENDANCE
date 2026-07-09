@@ -32,7 +32,12 @@ export function ProfileSummary({ user })
 						alt={`${t('profile.summary.avatar_alt')} ${user?.display_name || user?.username || t('profile.summary.user')}`}
 					/>
 				) : (
-					<span>
+					<span
+						className="default-avatar"
+						style={{
+							filter: `hue-rotate(${((user?.username?.length || 0) * 47) % 360}deg)`,
+						}}
+					>
 						{user?.display_name?.[0] || user?.username?.[0] || '?'}
 					</span>
 				)}

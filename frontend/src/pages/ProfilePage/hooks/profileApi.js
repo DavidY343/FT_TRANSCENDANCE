@@ -23,3 +23,8 @@ export function fetchAchievements()
 {
 	return api.get('/users/me/achievements');
 }
+
+export function fetchUserAchievements(userId)
+{
+	return api.get(`/users/${userId}/achievements`);
+}

@@ -80,6 +80,7 @@ erDiagram
     USERS ||--o{ FRIENDSHIPS : "addressee"
     USERS ||--o{ GAMES : "white_player"
     USERS ||--o{ GAMES : "black_player"
+    USERS ||--o{ USER_ACHIEVEMENTS : "earns"
 
     USERS {
         int id PK
@@ -110,6 +111,12 @@ erDiagram
         int move_count
         datetime started_at
         datetime ended_at
+    }
+    USER_ACHIEVEMENTS {
+        int id PK
+        int user_id FK
+        string achievement_id
+        datetime unlocked_at
     }
 ```
 
@@ -208,6 +215,12 @@ The UI incorporates an internationalization system allowing users to switch betw
 
 ## Support for additional browsers (Minor: +1)
 The application ensures full compatibility across Chromium, Firefox, and WebKit (Safari). UI layout and WebSocket protocols are validated across these engines to guarantee consistent UX and stable connections.
+
+**Browser-specific limitations:**
+- **Firefox (Private Browsing / Strict Mode) & Brave:** Users may see a console warning such as *"Request for font 'Cantarell' blocked at visibility level 2"*. This is not an application error. It occurs because these browsers employ strict anti-fingerprinting shields that intercept CSS generic fallback font requests (like `sans-serif` or `system-ui`) to local OS fonts. Our CSS intentionally keeps these generic fallbacks to ensure graceful degradation across different operating systems.
+- **Safari / WebKit:** The `dvh` (dynamic viewport height) CSS unit may not be supported on older Safari versions (pre-15.4). The layout gracefully falls back to `vh` units. Additionally, WebSocket reconnection timing may vary slightly due to Safari's aggressive background tab throttling.
+- **Microsoft Edge:** As a Chromium-based browser, Edge behaves identically to Chrome with no known limitations. The application is fully functional and visually consistent.
+
 - *Justification:* Ensures a seamless experience for all users regardless of their preferred web browser.
 - *Contributors:* cde-la-r
 

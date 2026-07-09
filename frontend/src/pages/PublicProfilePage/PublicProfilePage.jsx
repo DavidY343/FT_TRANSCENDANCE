@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { api, getApiErrorMessage } from '../../api';
 import { useTranslation } from '../../contexts/LanguageContext';
 import { ProfileSummary } from '../ProfilePage/components/ProfileSummary';
+import { AchievementsPanel } from '../ProfilePage/ProfilePage';
+import '../ProfilePage/style/achievements.css';
 
 export default function PublicProfilePage()
 {
@@ -71,9 +73,12 @@ export default function PublicProfilePage()
 
 	return (
 		<section className="profile-layout">
-			<article className="card intro-card profile-card" style={{ display: 'block' }}>
-				<div style={{ display: 'flex', justifyContent: 'center' }}>
+			<article className="card intro-card profile-card" style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem', padding: 'clamp(1.5rem, 4vw, 2.5rem)' }}>
+				<div className="profile-left" style={{ margin: '0 auto', width: '100%', maxWidth: '400px', gridColumn: 'unset' }}>
 					<ProfileSummary user={user} />
+				</div>
+				<div style={{ width: '100%' }}>
+					<AchievementsPanel userId={id} onError={setError} />
 				</div>
 			</article>
 		</section>
