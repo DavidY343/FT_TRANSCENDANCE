@@ -117,7 +117,7 @@ erDiagram
 
 ## Secure Profile Management
 - **Behavioral Description:** The user can create an account, customize their display name, upload a personal avatar, and manage security settings. The system secures the session and updates the user profile globally across the platform.
-- *Contributors:*
+- *Contributors:* cde-la-r
 
 ## Time-Control Matchmaking
 - **Behavioral Description:** The system allows the user to join a matchmaking queue by selecting between 5, 10, or 30-minute limits. The system automatically pairs players in the same queue and shuffles colors randomly upon game initialization.
@@ -129,7 +129,7 @@ erDiagram
 
 ## AI Practice Mode
 - **Behavioral Description:** The user can start a local match against an AI opponent, configuring its difficulty (Easy, Medium, Hard) and time controls. The AI calculates board states and plays moves with simulated latency to mimic human behavior.
-- *Contributors:*
+- *Contributors:* cde-la-r
 
 ## In-Game Clocks
 - **Behavioral Description:** The interface displays countdown timers representing each player's remaining time. The active player's clock counts down and pauses immediately when they register a move, subsequently starting the opponent's clock. A clock reaching zero automatically triggers a defeat by time.
@@ -137,11 +137,11 @@ erDiagram
 
 ## Resignation & Draw Requests
 - **Behavioral Description:** Players can click buttons to resign the match (immediately awarding the win to the opponent) or offer a draw. If a draw is offered, the opponent receives an on-screen prompt to accept or decline the tie.
-- *Contributors:*
+- *Contributors:* cde-la-r
 
 ## Live Reconnection Grace Period
 - **Behavioral Description:** If a player loses their connection during a match, the system triggers a 30-second countdown. If the player reconnects before the timer expires, the game resumes; otherwise, the match is awarded to the opponent.
-- *Contributors:*
+- *Contributors:* cde-la-r
 
 ## Live Friend Management
 - **Behavioral Description:** The user can search for other players by username to send friend requests. The system manages these requests (accept, decline, unfriend) and updates a visual list displaying each friend's online/offline status in real-time.
@@ -153,11 +153,11 @@ erDiagram
 
 ## Match History Archive
 - **Behavioral Description:** The system registers the outcome (win, loss, draw, resignation), game mode, date, and move count of every completed game. Users can review these records in a chronological list on their profile.
-- *Contributors:*
+- *Contributors:* cde-la-r
 
 ## Dynamic Elo Leaderboard
 - **Behavioral Description:** After completing a human vs. human match, the system recalculates both players' Elo ratings based on the match outcome and the difference between their ratings. A global leaderboard ranks users by their current Elo.
-- *Contributors:*
+- *Contributors:* cde-la-r
 
 ## Achievement Milestones
 - **Behavioral Description:** The system evaluates player statistics (e.g., first win, adding a friend, reaching 1250 Elo) and triggers on-screen notifications when milestones are reached, displaying unlocked badges permanently on the user's profile.
@@ -165,7 +165,7 @@ erDiagram
 
 ## Hot Language Switching
 - **Behavioral Description:** The user can change the application's language (English or Spanish) via a dropdown selector. The system instantly translates all user interface texts without reloading the page.
-- *Contributors:*
+- *Contributors:* cde-la-r
 
 # Modules
 
@@ -199,22 +199,22 @@ Features secure signup and login flows (`AuthForm.jsx`), profile editing, and av
 ## Game statistics and match history (Minor: +1)
 The application tracks user game statistics, including wins and losses, and displays past matches alongside an Elo-based ranking system (`HistoryPage.jsx`, `LeaderboardPage.jsx`, `README-elo-rating.md`).
 - *Justification:* Provides players with a sense of progression and allows them to review past performances.
-- *Contributors:* 
+- *Contributors:* cde-la-r
 
 ## Support for multiple languages (Minor: +1)
 The UI incorporates an internationalization system allowing users to switch between at least three languages, with all user-facing text abstracted to support localization.
 - *Justification:* Broadens the accessibility of the application to a wider, international user base.
-- *Contributors:* 
+- *Contributors:* cde-la-r
 
 ## Support for additional browsers (Minor: +1)
 The application ensures full compatibility across Chromium, Firefox, and WebKit (Safari). UI layout and WebSocket protocols are validated across these engines to guarantee consistent UX and stable connections.
 - *Justification:* Ensures a seamless experience for all users regardless of their preferred web browser.
-- *Contributors:* 
+- *Contributors:* cde-la-r
 
 ## Introduce an AI Opponent (Major: +2)
 A custom chess AI is integrated via `ai_engine.py`. It provides human-like responses and different difficulty levels for single-player matches.
 - *Justification:* Allows users to practice or play when no other players are available for matchmaking.
-- *Contributors:* 
+- *Contributors:* cde-la-r
 
 ## Implement a complete web-based game (Major: +2)
 A fully functional online chess game with server-side legal move validation, win/loss/draw conditions, and an interactive board UI (`GameBoard.jsx`, `boardRules.js`).
@@ -224,7 +224,7 @@ A fully functional online chess game with server-side legal move validation, win
 ## Remote players (Major: +2)
 Two players on different machines can play against each other in real-time. The system includes server-authoritative state synchronization, clock management (`Clocks.jsx`), and robust disconnection/reconnection handling (`useDisconnectGraceCountdown.js`).
 - *Justification:* Ensures fair play by making the server the source of truth, preventing cheating via client-side manipulation.
-- *Contributors:* 
+- *Contributors:* cde-la-r
 
 ## A gamification system (Minor: +1)
 Users are rewarded with persistent achievements based on their in-game actions and overall progression. This feature is managed and rendered via `useAchievementToasts.js` and `AchievementToastContainer.jsx`.
@@ -237,6 +237,15 @@ Users are rewarded with persistent achievements based on their in-game actions a
 
 ## dyanex-m
 
-## jonjimen
-
 ## cde-la-r
+I joined the project in its advanced stages as the final developer. My primary goal was to polish the user experience, implement remaining core frontend mechanics, and ensure overall stability and security. 
+
+**Key Contributions:**
+- **UX & Gameplay Improvements:** Implemented the "Offer Draw" feature and integrated Standard Algebraic Notation for the move history. I also overhauled the AI game UX to provide immediate feedback for player moves instead of waiting for the AI calculation.
+- **Matchmaking & Connections:** Prevented edge cases like queuing for AI matches while waiting in the 1v1 lobby. I completely reworked the disconnection countdown logic, fixing a critical bug where countdowns wouldn't trigger correctly if a player intentionally logged out mid-game.
+- **Profile & Progression:** Built the public profile viewing functionality and designed a level progression system with a dynamic progress bar based on the user's Elo.
+- **Multi-language Support:** Implemented the full i18n system for English, Spanish, and French according to the subject's strict requirements.
+- **Security, Performance & Bug-hunting:** Updated Vite and core dependencies to resolve `npm audit` vulnerabilities. Cleaned up React console warnings, fixed CSS overflow issues during pawn promotion, and implemented session persistence across browser tabs (allowing seamless 1v1 testing via incognito mode). Finally, I audited and hardened the Docker infrastructure, explicitly isolating environment variables to enforce the Principle of Least Privilege and securing the Nginx reverse proxy.
+
+**Challenges Overcome:**
+The biggest challenge was wrapping my head around the complex WebSocket and state-management logic written by the rest of the team to fix the disconnection countdown bugs. It required carefully tracking component unmounts and session states to ensure the timer worked flawlessly regardless of how the user disconnected (closing tab, losing WiFi, or clicking logout).
