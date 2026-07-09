@@ -1,4 +1,5 @@
 COMPOSE = docker compose -f ./docker-compose.yml
+COMPOSE_DEV = $(COMPOSE) -f ./docker-compose.dev.yml
 
 GREEN   = \033[0;32m
 RED     = \033[0;31m
@@ -6,8 +7,12 @@ YELLOW  = \033[0;33m
 RESET   = \033[0m
 
 all:
-	@echo "$(GREEN)Starting containers and building...$(RESET)"
+	@echo "$(GREEN)Starting production environment...$(RESET)"
 	@$(COMPOSE) up --build
+
+dev:
+	@echo "$(GREEN)Starting development environment (Live Reload)...$(RESET)"
+	@$(COMPOSE_DEV) up --build
 
 down:
 	@echo "$(YELLOW)Shutting down containers...$(RESET)"
@@ -27,4 +32,4 @@ fclean:
 
 re: fclean all
 
-.PHONY: all down clean fclean re
+.PHONY: all dev down clean fclean re

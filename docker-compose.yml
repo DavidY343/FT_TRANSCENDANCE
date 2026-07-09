@@ -33,11 +33,6 @@ services:
       - ./backend/uploads:/app/uploads:z
 
   frontend:
-    volumes:
-    - ./frontend:/app:z
-    - /app/node_modules
-    ports:
-    - "3000:3000"
     build:
       context: ./frontend
     container_name: chess-frontend
