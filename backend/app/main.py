@@ -313,6 +313,84 @@ async def _forfeit_if_not_reconnected(game_id: int, disconnected_user_id: int):
             pass
 
 
+async def _process_ai_move(game_id: int, game_mode: str):
+    room = realtime_manager.get_room(game_id)
+    if not room or room.finished:
+        return
+        
+    think_start = perf_counter()
+    ai = ai_for_level(_ai_level_from_mode(game_mode))
+    board_copy = room.board.copy()
+    ai_move = await asyncio.to_thread(ai.choose_move, board_copy)
+
+    if room.finished:
+        return
+
+    think_elapsed_ms = int((perf_counter() - think_start) * 1000)
+
+    now = datetime.utcnow()
+    unaccounted_ms = int((now - room.last_clock_ts).total_seconds() * 1000)
+    
+    if think_elapsed_ms < 1000:
+        deduct_ms = unaccounted_ms + (1000 - think_elapsed_ms)
+    else:
+        deduct_ms = unaccounted_ms
+        
+    if deduct_ms > 0:
+        room.black_ms = max(0, room.black_ms - deduct_ms)
+
+    room.last_clock_ts = now
+
+    if room.black_ms <= 0:
+        game_over_payload = None
+        event_db = SessionLocal()
+        try:
+            game = event_db.get(Game, game_id)
+            if game and game.status != "finished":
+                game_over_payload = _finish_game(event_db, game, room, "white_win", "timeout")
+        finally:
+            try:
+                event_db.close()
+            except Exception:
+                pass
+
+        await realtime_manager.broadcast(game_id, {"type": "STATE_SYNC", "state": room.to_payload()})
+        if game_over_payload:
+            await realtime_manager.broadcast(game_id, game_over_payload)
+        return
+
+    if ai_move is not None:
+        room.board.push(ai_move)
+        room.last_clock_ts = datetime.utcnow()
+        next_fen = room.board.fen()
+        next_move_count = len(room.board.move_stack)
+        
+        game_over_payload = None
+        event_db = SessionLocal()
+        try:
+            game = event_db.get(Game, game_id)
+            if game and game.status != "finished":
+                game.status = "playing"
+                game.final_fen = next_fen
+                game.move_count = next_move_count
+                
+                if room.board.is_game_over(claim_draw=True):
+                    result, reason = _game_result_from_board(room.board)
+                    game_over_payload = _finish_game(event_db, game, room, result, reason)
+                else:
+                    event_db.add(game)
+                    event_db.commit()
+        finally:
+            try:
+                event_db.close()
+            except Exception:
+                pass
+                
+        await realtime_manager.broadcast(game_id, {"type": "STATE_SYNC", "state": room.to_payload()})
+        if game_over_payload:
+            await realtime_manager.broadcast(game_id, game_over_payload)
+
+
 @app.websocket("/ws/{game_id}")
 async def websocket_game(game_id: int, websocket: WebSocket, token: str | None = Query(default=None)):
     if not token:
@@ -551,56 +629,7 @@ async def websocket_game(game_id: int, websocket: WebSocket, token: str | None =
                 )
 
             if should_sync_before_ai:
-                think_start = perf_counter()
-                
-                ai = ai_for_level(_ai_level_from_mode(game_mode))
-                board_copy = room.board.copy()
-                ai_move = await asyncio.to_thread(ai.choose_move, board_copy)
-                
-                think_elapsed_ms = int((perf_counter() - think_start) * 1000)
-
-                now = datetime.utcnow()
-                unaccounted_ms = int((now - room.last_clock_ts).total_seconds() * 1000)
-                
-                if think_elapsed_ms < 1000:
-                    deduct_ms = unaccounted_ms + (1000 - think_elapsed_ms)
-                else:
-                    deduct_ms = unaccounted_ms
-                    
-                if deduct_ms > 0:
-                    room.black_ms = max(0, room.black_ms - deduct_ms)
-
-                room.last_clock_ts = now
-
-                if room.black_ms <= 0:
-                    game_over_payload = None
-                    event_db = SessionLocal()
-                    try:
-                        game = event_db.get(Game, game_id)
-                        if game and game.status != "finished":
-                            game_over_payload = _finish_game(event_db, game, room, "white_win", "timeout")
-                    finally:
-                        try:
-                            event_db.close()
-                        except Exception:
-                            pass
-
-                    await realtime_manager.broadcast(
-                        game_id,
-                        {
-                            "type": "STATE_SYNC",
-                            "state": room.to_payload(),
-                        },
-                    )
-                    if game_over_payload:
-                        await realtime_manager.broadcast(game_id, game_over_payload)
-                    continue
-
-                if ai_move is not None:
-                    room.board.push(ai_move)
-                    room.last_clock_ts = datetime.utcnow()
-                    next_fen = room.board.fen()
-                    next_move_count = len(room.board.move_stack)
+                asyncio.create_task(_process_ai_move(game_id, game_mode))
 
             game_over_payload = None
             event_db = SessionLocal()
