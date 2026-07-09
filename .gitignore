@@ -318,6 +318,13 @@ db.sqlite3
 # CUSTOM
 Db_diagram.png
 
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
+
 # Manu
 GUIDE
 .env
@@ -333,10 +340,4 @@ backend/uploads/
 frontend/dist/
 .antigravitycli/
 en.subject.pdf
-
-# Playwright
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
-/playwright/.auth/
+en.subject.txt
