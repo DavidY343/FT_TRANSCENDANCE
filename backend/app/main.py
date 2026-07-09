@@ -559,10 +559,18 @@ async def websocket_game(game_id: int, websocket: WebSocket, token: str | None =
                 
                 think_elapsed_ms = int((perf_counter() - think_start) * 1000)
 
-                if think_elapsed_ms > 0:
-                    room.black_ms = max(0, room.black_ms - think_elapsed_ms)
+                now = datetime.utcnow()
+                unaccounted_ms = int((now - room.last_clock_ts).total_seconds() * 1000)
+                
+                if think_elapsed_ms < 1000:
+                    deduct_ms = unaccounted_ms + (1000 - think_elapsed_ms)
+                else:
+                    deduct_ms = unaccounted_ms
+                    
+                if deduct_ms > 0:
+                    room.black_ms = max(0, room.black_ms - deduct_ms)
 
-                room.last_clock_ts = datetime.utcnow()
+                room.last_clock_ts = now
 
                 if room.black_ms <= 0:
                     game_over_payload = None
