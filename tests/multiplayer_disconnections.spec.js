@@ -126,10 +126,6 @@ test.describe('Edge Cases in Connections', () => {
         // Let's create a new page for A and ensure they don't have an active game anymore
         const pageA_reconnected = await contextA.newPage();
         await pageA_reconnected.goto('/');
-        await pageA_reconnected.waitForURL('**/login', { timeout: 15000 });
-        await pageA_reconnected.locator('#login-email').fill(userA.email);
-        await pageA_reconnected.locator('#login-password').fill(userA.pass);
-        await pageA_reconnected.locator('button.submit-btn').click();
         await pageA_reconnected.waitForURL('**/lobby', { timeout: 15000 });
 
         // They should NOT see the ActiveGameCard taking over the screen

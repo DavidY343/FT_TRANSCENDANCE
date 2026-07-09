@@ -97,14 +97,7 @@ test.describe('1v1 Multiplayer Gameplay, Real-Time Sync, and Disconnections', ()
 		const pageA_reconnected = await contextA.newPage();
 		await pageA_reconnected.goto('/');
 		
-		// Need to log in again since sessionStorage is cleared when the tab is closed
-		await pageA_reconnected.waitForURL('**/login', { timeout: 15000 });
-		await pageA_reconnected.locator('#login-email').fill(userA.email);
-		await pageA_reconnected.locator('#login-password').fill(userA.pass);
-		const submitLoginA = pageA_reconnected.locator('button.submit-btn');
-		await expect(submitLoginA).toBeEnabled();
-		await submitLoginA.click();
-
+		// Since tokens are now stored in localStorage, the user will be automatically logged in and redirected to lobby
 		await pageA_reconnected.waitForURL('**/lobby', { timeout: 15000 });
 		
 		// They should see the ActiveGameCard taking over the screen and click "Resume"
