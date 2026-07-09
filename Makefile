@@ -27,14 +27,4 @@ fclean:
 
 re: fclean all
 
-test:
-	@echo "$(YELLOW)Verifying website availability...$(RESET)"
-	@if curl -s -k --connect-timeout 2 https://127.0.0.1:8080 > /dev/null; then \
-		echo "$(GREEN)Ready! Running tests...$(RESET)"; \
-		npx playwright test; \
-	else \
-		echo "$(RED)Error: The website is down. Please run 'make' before running the tests.$(RESET)"; \
-		exit 1; \
-	fi
-
-.PHONY: all down clean fclean re test
+.PHONY: all down clean fclean re
