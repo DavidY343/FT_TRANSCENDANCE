@@ -23,6 +23,19 @@
 	object-fit: cover;
 }
 
+.profile-avatar .default-avatar
+{
+	width: 100%;
+	height: 100%;
+	display: grid;
+	place-items: center;
+	background: url('/favicon.ico') center / 60% no-repeat, var(--chess-light);
+	font-size: 4rem;
+	font-weight: 800;
+	color: rgba(0, 0, 0, 0.6);
+	text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
+}
+
 .profile-avatar-form
 {
 	width: 100%;
