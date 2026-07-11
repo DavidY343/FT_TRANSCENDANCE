@@ -1,4 +1,4 @@
-*This project has been created as part of the 42 curriculum by jrubio-m, dyanex-m, jonjimen, cde-la-r.*
+*This project has been created as part of the 42 curriculum by jrubio-m, dyanez-m, jonjimen, cde-la-r.*
 
 # Description
 
@@ -42,7 +42,7 @@ Artificial Intelligence assistants were utilized during the development of this 
 - Product Owner (PO): 
 - Project Manager (PM): 
 - Technical Lead (TL): 
-- Developers (Devs): jrubio-m, dyanex-m, jonjimen, cde-la-r.
+- Developers (Devs): jrubio-m, dyanez-m, jonjimen, cde-la-r.
 
 # Project Management
 
@@ -60,6 +60,7 @@ Our workflow was organized through regular meetings, both in-person at the campu
 - **Framework**: React (18.3.1) - Selected for its component-based architecture, which makes building interactive UI elements like the game board and chat very manageable.
 - **Build Tool**: Vite (6.4.3) - Used for its incredibly fast hot module replacement (HMR) and optimized production builds.
 - **Chess UI**: react-chessboard (4.7.2) - A customizable and responsive React component that handles the visual representation of the board and piece dragging mechanics.
+- **Styling Architecture**: Hybrid approach using **CSS Modules** for scoped structural layouts and **CSS-in-JS (Styled Components)** for highly dynamic, state-dependent UI elements.
 
 ## Database
 - **Engine**: PostgreSQL (16-alpine) - Chosen for its reliability, data integrity features, and excellent performance with relational data models like our user and match history structures.
@@ -259,7 +260,7 @@ I focused mainly on the frontend architecture and user experience, building the 
 
 **Challenges Overcome:**
 The main challenge was coordinating a fast-moving frontend with backend game state, authentication, WebSocket events, and multiple user flows at once. The game room in particular required careful state management because board interaction, clocks, chat, reconnect handling, modals, and server updates all had to stay synchronized without making the UI feel unstable or confusing.
-## dyanex-m
+## dyanez-m
 
 ## cde-la-r
 I joined the project in its advanced stages as the final developer. My primary goal was to polish the user experience, implement remaining core frontend mechanics, and ensure overall stability and security. 
