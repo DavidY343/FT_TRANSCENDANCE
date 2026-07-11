@@ -3,6 +3,7 @@ import { useTranslation } from '../../../contexts/LanguageContext';
 import cardsStyles from '../../../styles/cards/cards.module.css';
 import buttonStyles from '../../../styles/buttons/button.module.css';
 import friendsStyles from '../style/friends.module.css';
+import { StatusBadge } from '../../../components/StatusBadge';
 
 export function FriendsListCard({
 	friends,
@@ -51,9 +52,10 @@ export function FriendsListCard({
 									</Link>
 								</span>
 
-								<span className={friend.online ? friendsStyles.friendOnline : friendsStyles.friendOffline}>
-									{friend.online ? t('friends.list.status_online') : t('friends.list.status_offline')}
-								</span>
+								<StatusBadge 
+									isOnline={friend.online} 
+									text={friend.online ? t('friends.list.status_online') : t('friends.list.status_offline')} 
+								/>
 							</div>
 
 							<button

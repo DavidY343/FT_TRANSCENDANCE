@@ -3,6 +3,7 @@ import { useTranslation } from '../../../contexts/LanguageContext';
 import cardsStyles from '../../../styles/cards/cards.module.css';
 import buttonStyles from '../../../styles/buttons/button.module.css';
 import friendsStyles from '../style/friends.module.css';
+import { StatusBadge } from '../../../components/StatusBadge';
 
 export function RequestsCard({
 	incomingRequests,
@@ -71,9 +72,10 @@ export function RequestsCard({
 											</Link>
 										</span>
 
-										<span className={user.online ? friendsStyles.friendOnline : friendsStyles.friendOffline}>
-											{user.online ? t('friends.requests.status_online') : t('friends.requests.status_offline')}
-										</span>
+										<StatusBadge 
+											isOnline={user.online} 
+											text={user.online ? t('friends.requests.status_online') : t('friends.requests.status_offline')} 
+										/>
 									</div>
 
 									<div className={`${friendsStyles.friendActions}`}>
@@ -134,9 +136,10 @@ export function RequestsCard({
 											</Link>
 										</span>
 
-										<span className={user.online ? friendsStyles.friendOnline : friendsStyles.friendOffline}>
-											{user.online ? t('friends.requests.status_online') : t('friends.requests.status_offline')}
-										</span>
+										<StatusBadge 
+											isOnline={user.online} 
+											text={user.online ? t('friends.requests.status_online') : t('friends.requests.status_offline')} 
+										/>
 									</div>
 
 									<span className={`${friendsStyles.friendPending}`}>

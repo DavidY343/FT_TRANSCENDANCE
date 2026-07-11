@@ -125,15 +125,7 @@
 	color: var(--text-muted);
 }
 
-.friendOnline
-{
-	color: #86efac;
-}
 
-.friendOffline
-{
-	color: #d1d5db;
-}
 
 .friendActions
 {
