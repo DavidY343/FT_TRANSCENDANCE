@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from '../../contexts/LanguageContext';
+import buttonStyles from '../../styles/buttons/button.module.css';
+import menuStyles from '../../styles/buttons/menu.module.css';
 
 export function MenuDisplay({current})
 {
@@ -27,15 +29,15 @@ export function MenuDisplay({current})
 	}, []);
 	
 	return (
-		<details className="nav-menu" ref={detailsRef}>
-			<summary className="btn nav-btn">
+		<details className={`${menuStyles.navMenu}`} ref={detailsRef}>
+			<summary className={`${buttonStyles.btn} ${buttonStyles.navBtn}`}>
 				{t('menu.title')}
 			</summary>
 
-			<div className="nav-menu-panel">
+			<div className={`${menuStyles.navMenuPanel}`}>
 				{visibleLinks.map((link) => (
 					<Link
-						className="nav-menu-link"
+						className={`${menuStyles.navMenuLink}`}
 						key={link.to}
 						to={link.to}
 					>

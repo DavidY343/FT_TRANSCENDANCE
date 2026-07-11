@@ -1,5 +1,8 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from '../../../contexts/LanguageContext';
+import cardsStyles from '../../../styles/cards/cards.module.css';
+import introCardsStyles from '../../../styles/cards/intro-cards.module.css';
+import buttonStyles from '../../../styles/buttons/button.module.css';
 
 /*
 	prettyResult → Convierte el resultado interno en un texto legible.
@@ -111,7 +114,7 @@ export function HistoryListCard({ games, loading, error, onRetry })
 	if (loading)
 	{
 		return (
-			<aside className="card panel-card history-panel">
+			<aside className={`${cardsStyles.card} ${cardsStyles.panelCard} history-panel`}>
 				<p className="history-empty" aria-live="polite">
 					{t('history.list.loading')}
 				</p>
@@ -121,13 +124,13 @@ export function HistoryListCard({ games, loading, error, onRetry })
 	if (error)
 	{
 		return (
-			<aside className="card panel-card history-panel">
-				<p className="form-error" role="alert">
+			<aside className={`${cardsStyles.card} ${cardsStyles.panelCard} history-panel`}>
+				<p className={`${introCardsStyles.formError}`} role="alert">
 					{error}
 				</p>
 
 				<button
-					className="btn"
+					className={`${buttonStyles.btn}`}
 					type="button"
 					onClick={onRetry}
 				>
@@ -144,8 +147,8 @@ export function HistoryListCard({ games, loading, error, onRetry })
 		);
 
 	return (
-		<aside className="card panel-card history-panel">
-			<h3 className="panel-title">
+		<aside className={`${cardsStyles.card} ${cardsStyles.panelCard} history-panel`}>
+			<h3 className={`${cardsStyles.panelTitle}`}>
 				{t('history.list.timeline')}
 			</h3>
 			<ul className="history-list">

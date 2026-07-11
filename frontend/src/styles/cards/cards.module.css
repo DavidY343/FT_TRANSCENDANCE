@@ -9,12 +9,12 @@
 	box-shadow: 0 24px 60px var(--shadow);
 }
 
-.auth-card, .form-card, .panel-card
+.authCard, .formCard, .panelCard
 {
 	width: 100%;
 }
 
-.panel-title
+.panelTitle
 {
 	margin: 0;
 	color: var(--text);
@@ -22,7 +22,7 @@
 	line-height: 1.1;
 }
 
-.panel-title-large
+.panelTitleLarge
 {
 	font-size: clamp(2rem, 4vw, 2.7rem);
 	padding: 4rem 1rem;

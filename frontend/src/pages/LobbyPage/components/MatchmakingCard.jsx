@@ -1,4 +1,7 @@
 import { useTranslation } from '../../../contexts/LanguageContext';
+import cardsStyles from '../../../styles/cards/cards.module.css';
+import buttonStyles from '../../../styles/buttons/button.module.css';
+import layoutStyles from '../../../styles/layout/layout.module.css';
 
 export function MatchmakingCard({
 	status,
@@ -15,7 +18,7 @@ export function MatchmakingCard({
 	const disableLeave = !waiting || actionState !== 'idle';
 
 	return (
-		<article className="card lobby-action-card">
+		<article className={`${cardsStyles.card} lobby-action-card`}>
 			<h3 className="lobby-card-title lobby-card-play">
 				{t('lobby.matchmaking.title')}
 			</h3>
@@ -24,7 +27,7 @@ export function MatchmakingCard({
 				{t('lobby.matchmaking.copy')}
 			</p>
 
-			<label className="lab" htmlFor="matchmaking-time-control">
+			<label className={`${layoutStyles.lab}`} htmlFor="matchmaking-time-control">
 				{t('lobby.matchmaking.time_label')}
 			</label>
 
@@ -41,7 +44,7 @@ export function MatchmakingCard({
 
 			<div className="lobby-card-actions">
 				<button
-					className="btn"
+					className={`${buttonStyles.btn}`}
 					type="button"
 					onClick={onJoin}
 					disabled={disableJoin}
@@ -50,7 +53,7 @@ export function MatchmakingCard({
 				</button>
 
 				<button
-					className="btn"
+					className={`${buttonStyles.btn}`}
 					type="button"
 					onClick={onLeave}
 					disabled={disableLeave}

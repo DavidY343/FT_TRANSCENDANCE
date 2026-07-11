@@ -1,5 +1,7 @@
 import { useTranslation } from '../../contexts/LanguageContext';
 import './style/legal.css';
+import cardsStyles from '../../styles/cards/cards.module.css';
+import introCardsStyles from '../../styles/cards/intro-cards.module.css';
 
 export default function TermsPage()
 {
@@ -7,10 +9,10 @@ export default function TermsPage()
 
 	return (
 		<section className="legal-page">
-			<div className="card intro-card legal-card">
+			<div className={`${cardsStyles.card} ${introCardsStyles.introCard} legal-card`}>
 				<header className="legal-header">
-					<p className="section-kicker">{t('legal.terms.kicker')}</p>
-					<h1 className="intro-title">{t('legal.terms.title')}</h1>
+					<p className={`${introCardsStyles.sectionKicker}`}>{t('legal.terms.kicker')}</p>
+					<h1 className={`${introCardsStyles.introTitle}`}>{t('legal.terms.title')}</h1>
 					<p className="legal-intro">
 						{t('legal.terms.intro1')}
 						<strong> {t('legal.terms.intro_strong')}</strong>{t('legal.terms.intro2')}

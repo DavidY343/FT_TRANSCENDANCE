@@ -1,4 +1,4 @@
-.toast-container
+.toastContainer
 {
 	position: fixed;
 	right: clamp(1rem, 3vw, 2rem);
@@ -10,7 +10,7 @@
 	pointer-events: none;
 }
 
-.achievement-toast
+.achievementToast
 {
 	display: flex;
 	align-items: center;
@@ -25,25 +25,25 @@
 	pointer-events: auto;
 }
 
-.achievement-toast-hide
+.achievementToastHide
 {
 	animation: toast-slide-out 220ms ease-in both;
 }
 
-.toast-emoji
+.toastEmoji
 {
 	font-size: 1.8rem;
 	line-height: 1;
 }
 
-.toast-content
+.toastContent
 {
 	min-width: 0;
 	display: grid;
 	gap: 0.15rem;
 }
 
-.toast-kicker
+.toastKicker
 {
 	color: var(--btn-soft);
 	font-size: 0.72rem;
@@ -51,12 +51,12 @@
 	text-transform: uppercase;
 }
 
-.toast-title
+.toastTitle
 {
 	font-size: 0.95rem;
 }
 
-.toast-desc
+.toastDesc
 {
 	margin: 0;
 	color: var(--text-soft);

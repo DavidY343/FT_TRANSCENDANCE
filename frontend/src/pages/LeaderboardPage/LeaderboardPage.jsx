@@ -5,6 +5,9 @@ import { api, getApiErrorMessage } from '../../api';
 import { useTranslation } from '../../contexts/LanguageContext';
 
 import './style/leaderboard.css';
+import cardsStyles from '../../styles/cards/cards.module.css';
+import introCardsStyles from '../../styles/cards/intro-cards.module.css';
+import buttonStyles from '../../styles/buttons/button.module.css';
 
 /*
 	LeaderboardRow → Representa una posición individual del ranking.
@@ -115,10 +118,10 @@ export default function LeaderboardPage()
 
 	return (
 		<section className="leaderboard-layout">
-			<aside className="card intro-card leaderboard-hero">
-				<p className="section-kicker">{t('leaderboard.kicker')}</p>
+			<aside className={`${cardsStyles.card} ${introCardsStyles.introCard} leaderboard-hero`}>
+				<p className={`${introCardsStyles.sectionKicker}`}>{t('leaderboard.kicker')}</p>
 
-				<h2 className="intro-title">
+				<h2 className={`${introCardsStyles.introTitle}`}>
 					{t('leaderboard.title')}
 				</h2>
 
@@ -127,12 +130,12 @@ export default function LeaderboardPage()
 				</p>
 
 				<div className="leaderboard-stats">
-					<div className="info-note">
+					<div className={`${introCardsStyles.infoNote}`}>
 						<span>{t('leaderboard.players_count')}</span>
 						<p>{rows.length}</p>
 					</div>
 
-					<div className="info-note">
+					<div className={`${introCardsStyles.infoNote}`}>
 						<span>{t('leaderboard.top_rating')}</span>
 						<p>{topRating || '-'}</p>
 					</div>
@@ -145,8 +148,8 @@ export default function LeaderboardPage()
 
 			</aside>
 
-			<aside className="card panel-card leaderboard-panel">
-				<h3 className="panel-title">
+			<aside className={`${cardsStyles.card} ${cardsStyles.panelCard} leaderboard-panel`}>
+				<h3 className={`${cardsStyles.panelTitle}`}>
 					{t('leaderboard.standings')}
 				</h3>
 
@@ -156,12 +159,12 @@ export default function LeaderboardPage()
 					</p>
 				) : error ? (
 					<div>
-						<p className="form-error" role="alert">
+						<p className={`${introCardsStyles.formError}`} role="alert">
 							{error}
 						</p>
 
 						<button
-							className="btn"
+							className={`${buttonStyles.btn}`}
 							type="button"
 							onClick={loadLeaderboard}
 						>

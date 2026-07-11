@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from '../../../contexts/LanguageContext';
+import cardsStyles from '../../../styles/cards/cards.module.css';
+import buttonStyles from '../../../styles/buttons/button.module.css';
 
 export function SearchCard({
 	query,
@@ -16,8 +18,8 @@ export function SearchCard({
 	const { t } = useTranslation();
 
 	return (
-		<article className="card panel-card">
-			<h2 className="panel-title">
+		<article className={`${cardsStyles.card} ${cardsStyles.panelCard}`}>
+			<h2 className={`${cardsStyles.panelTitle}`}>
 				{t('friends.search.title')}
 			</h2>
 
@@ -31,7 +33,7 @@ export function SearchCard({
 				/>
 
 				<button
-					className="btn"
+					className={`${buttonStyles.btn}`}
 					type="submit"
 					disabled={searching}
 				>
@@ -71,7 +73,7 @@ export function SearchCard({
 							</div>
 
 							<button
-								className="btn"
+								className={`${buttonStyles.btn}`}
 								type="button"
 								disabled={actionLoading[user.id]}
 								onClick={() => onSendRequest(user.id)}

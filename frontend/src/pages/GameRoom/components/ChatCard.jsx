@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useTranslation } from '../../../contexts/LanguageContext';
+import cardsStyles from '../../../styles/cards/cards.module.css';
+import buttonStyles from '../../../styles/buttons/button.module.css';
 
 function getChatAuthor(chatMessage, room, t)
 {
@@ -62,7 +64,7 @@ export function ChatCard({ room })
 	}, [room.chatMessages.length]);
 
 	return (
-		<aside className="card game-chat-card">
+		<aside className={`${cardsStyles.card} game-chat-card`}>
 			<h2 className="card-title">
 				{t('chat.title')}
 			</h2>
@@ -123,7 +125,7 @@ export function ChatCard({ room })
 							onChange={(event) => room.setChatMessage(event.target.value)}
 							disabled={room.wsStatus !== 'connected'}
 						/>
-						<button className="btn" type="submit" disabled={room.wsStatus !== 'connected'}>
+						<button className={`${buttonStyles.btn}`} type="submit" disabled={room.wsStatus !== 'connected'}>
 							{t('chat.send')}
 						</button>
 					</form>

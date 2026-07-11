@@ -2,6 +2,8 @@ import { useDisconnectGraceCountdown } from '../hooks/useDisconnectGraceCountdow
 import { useModalA11y } from '../../../hooks/useModalA11y';
 
 import { useTranslation } from '../../../contexts/LanguageContext';
+import cardsStyles from '../../../styles/cards/cards.module.css';
+import introCardsStyles from '../../../styles/cards/intro-cards.module.css';
 
 export function DisconnectGraceModal({ room })
 {
@@ -24,8 +26,8 @@ export function DisconnectGraceModal({ room })
 		return (null);
 
 	return (
-		<div className="card result-card disconnect-grace-card" role="dialog" aria-modal="true" ref={modalRef} tabIndex="-1">
-			<p className="section-kicker">
+		<div className={`${cardsStyles.card} result-card disconnect-grace-card`} role="dialog" aria-modal="true" ref={modalRef} tabIndex="-1">
+			<p className={`${introCardsStyles.sectionKicker}`}>
 				{t('grace.opponent_disconnected')}
 			</p>
 

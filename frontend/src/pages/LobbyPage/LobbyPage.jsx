@@ -7,6 +7,8 @@ import { MatchmakingCard } from './components/MatchmakingCard';
 import { useLobby } from './hooks/useLobby';
 import { useModalA11y } from '../../hooks/useModalA11y';
 import './style/lobby.css';
+import cardsStyles from '../../styles/cards/cards.module.css';
+import buttonStyles from '../../styles/buttons/button.module.css';
 
 
 export default function LobbyPage()
@@ -20,7 +22,7 @@ export default function LobbyPage()
 		<section className="lobby-layout">
 			{lobby.confirmResignModal && (
 				<div className="confirm-backdrop" role="dialog" aria-modal="true" ref={modalRef} tabIndex="-1">
-					<div className="card confirm-card">
+					<div className={`${cardsStyles.card} confirm-card`}>
 						<p className="confirm-text">
 							{t('lobby.confirm_resign')}
 						</p>
@@ -28,7 +30,7 @@ export default function LobbyPage()
 						<div className="confirm-actions">
 							<button
 								type="button"
-								className="btn confirm-button"
+								className={`${buttonStyles.btn} confirm-button`}
 								onClick={lobby.cancelResign}
 								ref={cancelBtnRef}
 							>
@@ -37,7 +39,7 @@ export default function LobbyPage()
 
 							<button
 								type="button"
-								className="btn confirm-btn confirm-btn-danger"
+								className={`${buttonStyles.btn} confirm-btn ${buttonStyles.confirmBtnDanger}`}
 								onClick={lobby.resignActiveGame}
 							>
 								{t('lobby.resign')}

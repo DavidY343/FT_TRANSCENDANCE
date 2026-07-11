@@ -13,6 +13,9 @@ import './style/messages.css';
 import './style/profile.css';
 import './style/summary.css';
 import './style/achievements.css';
+import cardsStyles from '../../styles/cards/cards.module.css';
+import introCardsStyles from '../../styles/cards/intro-cards.module.css';
+import buttonStyles from '../../styles/buttons/button.module.css';
 
 export function AchievementsPanel({ userId, onError })
 {
@@ -55,7 +58,7 @@ export function AchievementsPanel({ userId, onError })
 	return (
 		<div className="achievements-panel">
 			<header className="achievements-header">
-				<p className="section-kicker">{t('profile.achievements.kicker')}</p>
+				<p className={`${introCardsStyles.sectionKicker}`}>{t('profile.achievements.kicker')}</p>
 				<h2 className="card-title">{t('profile.achievements.title')}</h2>
 				<p>{t('profile.achievements.copy')}</p>
 			</header>
@@ -97,7 +100,7 @@ export default function ProfilePage()
 
 	if (profile.loading)
 		return (
-			<section className="card profile-card">
+			<section className={`${cardsStyles.card} profile-card`}>
 				<p>{t('profile.loading')}</p>
 			</section>
 		);
@@ -105,13 +108,13 @@ export default function ProfilePage()
 	{
 		return (
 			<section className="profile-layout">
-				<article className="card profile-card">
-					<p className="form-error" role="alert">
+				<article className={`${cardsStyles.card} profile-card`}>
+					<p className={`${introCardsStyles.formError}`} role="alert">
 						{profile.error}
 					</p>
 
 					<button
-						className="btn"
+						className={`${buttonStyles.btn}`}
 						type="button"
 						onClick={profile.loadProfile}
 					>
@@ -124,7 +127,7 @@ export default function ProfilePage()
 
 	return (
 		<section className="profile-layout">
-			<article className="card intro-card profile-card">
+			<article className={`${cardsStyles.card} ${introCardsStyles.introCard} profile-card`}>
 				<div className="profile-tabs">
 					<button
 						className={`profile-tab-btn${activeTab === 'settings' ? ' profile-tab-btn-active' : ''}`}
@@ -143,7 +146,7 @@ export default function ProfilePage()
 				</div>
 
 				{profile.error && (
-					<p className="form-error">
+					<p className={`${introCardsStyles.formError}`}>
 						{profile.error}
 					</p>
 				)}
@@ -156,7 +159,7 @@ export default function ProfilePage()
 
 				{activeTab === 'settings' ? (
 					<>
-						<p className="section-kicker">
+						<p className={`${introCardsStyles.sectionKicker}`}>
 							{t('profile.settings.kicker')}
 						</p>
 

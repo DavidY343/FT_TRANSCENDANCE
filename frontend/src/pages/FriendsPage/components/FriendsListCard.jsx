@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from '../../../contexts/LanguageContext';
+import cardsStyles from '../../../styles/cards/cards.module.css';
+import buttonStyles from '../../../styles/buttons/button.module.css';
 
 export function FriendsListCard({
 	friends,
@@ -12,8 +14,8 @@ export function FriendsListCard({
 	const { t } = useTranslation();
 
 	return (
-		<article className="card panel-card">
-			<h2 className="panel-title">
+		<article className={`${cardsStyles.card} ${cardsStyles.panelCard}`}>
+			<h2 className={`${cardsStyles.panelTitle}`}>
 				{t('friends.list.title')}
 			</h2>
 
@@ -54,7 +56,7 @@ export function FriendsListCard({
 							</div>
 
 							<button
-								className="btn"
+								className={`${buttonStyles.btn}`}
 								type="button"
 								disabled={actionLoading[friend.id]}
 								onClick={() => onRequestRemoveFriend(friend)}

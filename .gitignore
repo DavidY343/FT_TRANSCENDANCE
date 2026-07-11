@@ -344,3 +344,4 @@ frontend/dist/
 en.subject.pdf
 en.subject.txt
 project_audit.md
+/*.py

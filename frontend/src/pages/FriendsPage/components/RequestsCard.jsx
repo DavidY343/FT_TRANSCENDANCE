@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from '../../../contexts/LanguageContext';
+import cardsStyles from '../../../styles/cards/cards.module.css';
+import buttonStyles from '../../../styles/buttons/button.module.css';
 
 export function RequestsCard({
 	incomingRequests,
@@ -15,13 +17,13 @@ export function RequestsCard({
 	const { t } = useTranslation();
 
 	return (
-		<article className="card panel-card">
+		<article className={`${cardsStyles.card} ${cardsStyles.panelCard}`}>
 			<div className="friends-card-header">
-				<h2 className="panel-title">
+				<h2 className={`${cardsStyles.panelTitle}`}>
 					{t('friends.requests.title')}
 				</h2>
 				<button
-					className="btn friends-refresh-btn"
+					className={`${buttonStyles.btn} friends-refresh-btn`}
 					type="button"
 					disabled={loading}
 					onClick={onRefresh}
@@ -75,7 +77,7 @@ export function RequestsCard({
 
 									<div className="friend-actions">
 										<button
-											className="btn"
+											className={`${buttonStyles.btn}`}
 											type="button"
 											disabled={actionLoading[request.requester_id]}
 											onClick={() => onAccept(request.requester_id)}
@@ -84,7 +86,7 @@ export function RequestsCard({
 										</button>
 
 										<button
-											className="btn"
+											className={`${buttonStyles.btn}`}
 											type="button"
 											disabled={actionLoading[request.requester_id]}
 											onClick={() => onReject(request.requester_id)}

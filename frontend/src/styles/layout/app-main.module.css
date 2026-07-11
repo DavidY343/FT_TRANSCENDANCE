@@ -3,7 +3,7 @@ APP MAIN
 	- Remaining space between top bar and footer
 	- Contain the main content of the app
 */
-.app-main
+.appMain
 {
 	display: flex;
 	flex: 1;
@@ -14,7 +14,7 @@ APP MAIN
 	min-height: 0;
 }
 
-.main-content
+.mainContent
 {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));

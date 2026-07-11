@@ -1,5 +1,7 @@
 import { useModalA11y } from '../../../hooks/useModalA11y';
 import { useTranslation } from '../../../contexts/LanguageContext';
+import cardsStyles from '../../../styles/cards/cards.module.css';
+import buttonStyles from '../../../styles/buttons/button.module.css';
 
 export function RemoveFriendModal({
 	friend,
@@ -25,10 +27,10 @@ export function RemoveFriendModal({
 	return (
 		<div className="friends-modal-backdrop" role="dialog" aria-modal="true" ref={modalRef} tabIndex="-1">
 			<div
-				className="card friends-modal-card"
+				className={`${cardsStyles.card} friends-modal-card`}
 				aria-labelledby="remove-friend-title"
 			>
-				<h2 id="remove-friend-title" className="panel-title">
+				<h2 id="remove-friend-title" className={`${cardsStyles.panelTitle}`}>
 					{t('friends.modal.title')}
 				</h2>
 
@@ -38,7 +40,7 @@ export function RemoveFriendModal({
 
 				<div className="friends-modal-actions">
 					<button
-						className="btn"
+						className={`${buttonStyles.btn}`}
 						type="button"
 						disabled={actionLoading[friend.id]}
 						onClick={onCancel}
@@ -48,7 +50,7 @@ export function RemoveFriendModal({
 					</button>
 
 					<button
-						className="btn friends-danger-btn"
+						className={`${buttonStyles.btn} friends-danger-btn`}
 						type="button"
 						disabled={actionLoading[friend.id]}
 						onClick={onConfirm}

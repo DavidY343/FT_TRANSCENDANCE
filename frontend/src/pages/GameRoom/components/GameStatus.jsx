@@ -1,4 +1,5 @@
 import { useTranslation } from '../../../contexts/LanguageContext';
+import buttonStyles from '../../../styles/buttons/button.module.css';
 
 export function GameStatus({ room })
 {
@@ -17,7 +18,7 @@ export function GameStatus({ room })
 		return (
 			<div className="game-status game-status-error">
 				<p>{room.error}</p>
-				<button className="btn" type="button" onClick={room.reload}>
+				<button className={`${buttonStyles.btn}`} type="button" onClick={room.reload}>
 					{t('action.retry')}
 				</button>
 			</div>

@@ -2,6 +2,7 @@ import { useTranslation } from '../../../../contexts/LanguageContext';
 import { GameBoard } from "./GameBoard";
 import { Actions } from "./Actions";
 import { Clocks } from "./Clocks";
+import cardsStyles from '../../../../styles/cards/cards.module.css';
 
 export function BoardArea({ room })
 {
@@ -29,7 +30,7 @@ export function BoardArea({ room })
 				}}
 			/>
 
-			<section className="card board-card">
+			<section className={`${cardsStyles.card} board-card`}>
 				<div className="moves-strip">
 					<span>
 						{state?.is_check ? t('game.check') : t('game.move')}

@@ -1,6 +1,6 @@
-@import './app-topbar.css';
-@import './app-main.css';
-@import './app-footer.css';
+@import './app-topbar.module.css';
+@import './app-main.module.css';
+@import './app-footer.module.css';
 
 /*
 APP STRUCTURE
@@ -11,7 +11,7 @@ APP STRUCTURE
 		|-FOOTER-|
 	- give each row the size it needs
 */ 
-.app-layout
+.appLayout
 {
 	min-height: 100dvh;
 	display: flex;

@@ -1,14 +1,16 @@
 import { LobbyStatusStrip } from './LobbyStatusStrip';
 import { useTranslation } from '../../../contexts/LanguageContext';
+import cardsStyles from '../../../styles/cards/cards.module.css';
+import introCardsStyles from '../../../styles/cards/intro-cards.module.css';
 
 export function LobbyHero({ status, position, timeMinutes, error })
 {
 	const { t } = useTranslation();
 	return (
-		<article className="card intro-card lobby-hero">
+		<article className={`${cardsStyles.card} ${introCardsStyles.introCard} lobby-hero`}>
 			<div>
-				<p className="section-kicker">{t('lobby.hero.kicker')}</p>
-				<h2 className="intro-title">
+				<p className={`${introCardsStyles.sectionKicker}`}>{t('lobby.hero.kicker')}</p>
+				<h2 className={`${introCardsStyles.introTitle}`}>
 					{t('lobby.hero.title')}
 				</h2>
 				<p>
@@ -23,7 +25,7 @@ export function LobbyHero({ status, position, timeMinutes, error })
 			/>
 
 			{error && (
-				<p className="form-error" aria-live="polite">
+				<p className={`${introCardsStyles.formError}`} aria-live="polite">
 					{error}
 				</p>
 			)}

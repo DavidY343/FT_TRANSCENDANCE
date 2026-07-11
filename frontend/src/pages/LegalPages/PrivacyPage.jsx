@@ -1,5 +1,7 @@
 import { useTranslation } from '../../contexts/LanguageContext';
 import './style/legal.css';
+import cardsStyles from '../../styles/cards/cards.module.css';
+import introCardsStyles from '../../styles/cards/intro-cards.module.css';
 
 export default function PrivacyPage()
 {
@@ -7,10 +9,10 @@ export default function PrivacyPage()
 
 	return (
 		<section className="legal-page">
-			<div className="card intro-card legal-card">
+			<div className={`${cardsStyles.card} ${introCardsStyles.introCard} legal-card`}>
 				<header className="legal-header">
-					<p className="section-kicker">{t('legal.privacy.kicker')}</p>
-					<h1 className="intro-title">{t('legal.privacy.title')}</h1>
+					<p className={`${introCardsStyles.sectionKicker}`}>{t('legal.privacy.kicker')}</p>
+					<h1 className={`${introCardsStyles.introTitle}`}>{t('legal.privacy.title')}</h1>
 					<p className="legal-intro">
 						{t('legal.privacy.intro1')}
 						<strong> {t('legal.privacy.intro_strong')}</strong> {t('legal.privacy.intro2')}

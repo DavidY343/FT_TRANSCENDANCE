@@ -3,16 +3,18 @@ import { clearTokens } from "../../api";
 import { clearStoredAchievements } from '../../hooks/useAchievementToasts';
 import { MenuDisplay } from "./MenuDisplay";
 import { useTranslation } from '../../contexts/LanguageContext';
+import buttonStyles from '../../styles/buttons/button.module.css';
+import appTopbarStyles from '../../styles/layout/app-topbar.module.css';
 
 function BrandBlock()
 {
 	const { t } = useTranslation();
 	return (
-		<div className="brand-block">
-			<h1 className="brand-title">
+		<div className={`${appTopbarStyles.brandBlock}`}>
+			<h1 className={`${appTopbarStyles.brandTitle}`}>
 				{t('topbar.brandTitle')}
 			</h1>
-			<p className="brand-subtitle">
+			<p className={`${appTopbarStyles.brandSubtitle}`}>
 				{t('topbar.brandSubtitle')}
 			</p>
 		</div>
@@ -78,10 +80,10 @@ function TopNav(props)
 	if (props.authed)
 	{
 		return (
-			<nav className="top-nav">
+			<nav className={`${appTopbarStyles.topNav}`}>
 				<LanguageSelector />
 				<MenuDisplay current={props.current}/>
-				<button className="btn nav-btn" onClick={handleLogout}>
+				<button className={`${buttonStyles.btn} ${buttonStyles.navBtn}`} onClick={handleLogout}>
 					{t('topbar.logout')}
 				</button>
 			</nav>
@@ -90,12 +92,12 @@ function TopNav(props)
 
 	else 
 		return (
-			<nav className="top-nav">
+			<nav className={`${appTopbarStyles.topNav}`}>
 				<LanguageSelector />
-				<Link className="btn nav-btn" to="/login">
+				<Link className={`${buttonStyles.btn} ${buttonStyles.navBtn}`} to="/login">
 					{t('topbar.login')}
 				</Link>
-				<Link className="btn nav-btn" to="/register">
+				<Link className={`${buttonStyles.btn} ${buttonStyles.navBtn}`} to="/register">
 					{t('topbar.register')}
 				</Link>
 			</nav>
@@ -105,7 +107,7 @@ function TopNav(props)
 export default function TopBar(props)
 {
 	return (
-		<header className="topbar">
+		<header className={`${appTopbarStyles.topbar}`}>
 			<BrandBlock/>
 			<TopNav current={props.current} authed={props.authed}/>
 		</header>

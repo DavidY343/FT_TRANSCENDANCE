@@ -1,5 +1,5 @@
 import { useTranslation } from '../contexts/LanguageContext';
-import './style/achievement-toast.css';
+import achievementToastStyles from './style/achievement-toast.module.css';
 export function AchievementToastContainer({ toasts })
 {
 	const { t } = useTranslation();
@@ -7,19 +7,19 @@ export function AchievementToastContainer({ toasts })
 		return null;
 
 	return (
-		<div className="toast-container" aria-live="polite" aria-atomic="false">
+		<div className={`${achievementToastStyles.toastContainer}`} aria-live="polite" aria-atomic="false">
 			{toasts.map((toast) => (
 				<article
 					key={toast.toastId}
-					className={`achievement-toast${toast.hiding ? ' achievement-toast-hide' : ''}`}
+					className={`${achievementToastStyles.achievementToast}${toast.hiding ? ` ${achievementToastStyles.achievementToastHide}` : ''}`}
 				>
-					<span className="toast-emoji" aria-hidden="true">
+					<span className={`${achievementToastStyles.toastEmoji}`} aria-hidden="true">
 						{toast.emoji}
 					</span>
-					<div className="toast-content">
-						<span className="toast-kicker">{t('toast.achievementUnlocked')}</span>
-						<strong className="toast-title">{toast.title}</strong>
-						<p className="toast-desc">{toast.description}</p>
+					<div className={`${achievementToastStyles.toastContent}`}>
+						<span className={`${achievementToastStyles.toastKicker}`}>{t('toast.achievementUnlocked')}</span>
+						<strong className={`${achievementToastStyles.toastTitle}`}>{toast.title}</strong>
+						<p className={`${achievementToastStyles.toastDesc}`}>{toast.description}</p>
 					</div>
 				</article>
 			))}

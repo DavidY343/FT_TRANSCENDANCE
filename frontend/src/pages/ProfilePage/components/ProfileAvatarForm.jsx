@@ -1,4 +1,5 @@
 import { useTranslation } from '../../../contexts/LanguageContext';
+import buttonStyles from '../../../styles/buttons/button.module.css';
 
 export function ProfileAvatarForm({ profile })
 {
@@ -17,7 +18,7 @@ export function ProfileAvatarForm({ profile })
 			<p id="profile-avatar-help" className="profile-avatar-help">
 				{t('profile.avatar.help')}
 			</p>
-			<label className="btn profile-avatar-button" htmlFor="profile-avatar">
+			<label className={`${buttonStyles.btn} profile-avatar-button`} htmlFor="profile-avatar">
 				{profile.uploading ? t('profile.avatar.uploading') : t('profile.avatar.change_btn')}
 			</label>
 

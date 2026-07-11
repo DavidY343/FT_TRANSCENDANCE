@@ -4,12 +4,12 @@
  */
 
 
-.auth-card
+.authCard
 {
 	min-height: 100%;
 }
 
-.intro-card
+.introCard
 {
 	display: flex;
 	flex-direction: column;
@@ -31,7 +31,7 @@
 	-inset: 0: makes it cover the full card: top, right, bottom and left
 	-border-top: draws the colored top line, and pointer-events lets clicks pass through
 */
-.intro-card::before
+.introCard::before
 {
 	content: "";
 	position: absolute;
@@ -40,7 +40,7 @@
 	pointer-events: none;
 }
 
-.section-kicker
+.sectionKicker
 {
 	margin: 0 0 0.75rem;
 	color: var(--text-soft);
@@ -50,7 +50,7 @@
 	text-transform: uppercase;
 }
 
-.intro-title
+.introTitle
 {
 	margin: 0;
 	color: var(--text);
@@ -58,7 +58,7 @@
 	line-height: 1.05;
 }
 
-.intro-card p
+.introCard p
 {
 	margin: 1rem 0 0;
 	color: var(--text-soft);
@@ -66,27 +66,27 @@
 	line-height: 1.7;
 }
 
-.info-note
+.infoNote
 {
 	border-left: 3px solid var(--chess-light);
 	padding: 0.98rem 1rem;
 	background: var(--bg);
 }
 
-.info-note span
+.infoNote span
 {
 	display: block;
 	color: var(--text);
 	font-weight: 700;
 }
 
-.info-note p
+.infoNote p
 {
 	margin-top: 0.35rem;
 	font-size: 1.2rem;
 }
 
-.form-error
+.formError
 {
 	margin: 1rem 0 0;
 	border-radius: 8px;
@@ -96,7 +96,7 @@
 	border: 1px solid rgba(255, 120, 120, 0.24);
 }
 
-.auth-switch
+.authSwitch
 {
 	font-size: 1.2rem;
 	margin: 1.25rem 0 0;

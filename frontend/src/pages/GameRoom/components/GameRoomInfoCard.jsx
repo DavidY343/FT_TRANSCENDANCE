@@ -1,6 +1,8 @@
 import { GameStatus } from "./GameStatus";
 
 import { useTranslation } from '../../../contexts/LanguageContext';
+import cardsStyles from '../../../styles/cards/cards.module.css';
+import introCardsStyles from '../../../styles/cards/intro-cards.module.css';
 
 export function GameRoomInfoCard({ gameId, room })
 {
@@ -27,7 +29,7 @@ export function GameRoomInfoCard({ gameId, room })
 	const wsStatus = room?.wsStatus;
 
 	return (
-		<aside className="card intro-card">
+		<aside className={`${cardsStyles.card} ${introCardsStyles.introCard}`}>
 			<h2 className="card-title">
 				{t('game.room_number')}#{gameId}
 			</h2>
@@ -50,11 +52,11 @@ export function GameRoomInfoCard({ gameId, room })
 			<GameStatus room={room}/>
 
 			<div className="game-room-info-notes">
-				<div className="info-note">
+				<div className={`${introCardsStyles.infoNote}`}>
 					<span>{t('info.duration')}</span>
 					<p>{state?.time_control_minutes || '-'} {t('info.min')}</p>
 				</div>
-				<div className="info-note">
+				<div className={`${introCardsStyles.infoNote}`}>
 					<span>{t('info.opponent')}</span>
 					<p> {opponentLabel} </p>
 				</div>

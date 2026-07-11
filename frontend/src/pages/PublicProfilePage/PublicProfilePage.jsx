@@ -5,6 +5,9 @@ import { useTranslation } from '../../contexts/LanguageContext';
 import { ProfileSummary } from '../ProfilePage/components/ProfileSummary';
 import { AchievementsPanel } from '../ProfilePage/ProfilePage';
 import '../ProfilePage/style/achievements.css';
+import cardsStyles from '../../styles/cards/cards.module.css';
+import introCardsStyles from '../../styles/cards/intro-cards.module.css';
+import buttonStyles from '../../styles/buttons/button.module.css';
 
 export default function PublicProfilePage()
 {
@@ -48,7 +51,7 @@ export default function PublicProfilePage()
 	{
 		return (
 			<section className="profile-layout">
-				<article className="card profile-card">
+				<article className={`${cardsStyles.card} profile-card`}>
 					<p>{t('profile.loading')}</p>
 				</article>
 			</section>
@@ -59,11 +62,11 @@ export default function PublicProfilePage()
 	{
 		return (
 			<section className="profile-layout">
-				<article className="card profile-card">
-					<p className="form-error" role="alert">
+				<article className={`${cardsStyles.card} profile-card`}>
+					<p className={`${introCardsStyles.formError}`} role="alert">
 						{error || "User not found"}
 					</p>
-					<button className="btn" type="button" onClick={() => navigate(-1)} style={{ marginTop: '1rem' }}>
+					<button className={`${buttonStyles.btn}`} type="button" onClick={() => navigate(-1)} style={{ marginTop: '1rem' }}>
 						{t('action.cancel') || 'Go back'}
 					</button>
 				</article>
@@ -73,7 +76,7 @@ export default function PublicProfilePage()
 
 	return (
 		<section className="profile-layout">
-			<article className="card intro-card profile-card" style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem', padding: 'clamp(1.5rem, 4vw, 2.5rem)' }}>
+			<article className={`${cardsStyles.card} ${introCardsStyles.introCard} profile-card`} style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem', padding: 'clamp(1.5rem, 4vw, 2.5rem)' }}>
 				<div className="profile-left" style={{ margin: '0 auto', width: '100%', maxWidth: '400px', gridColumn: 'unset' }}>
 					<ProfileSummary user={user} />
 				</div>

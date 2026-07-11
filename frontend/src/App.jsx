@@ -20,6 +20,8 @@ import HistoryPage from './pages/HistoryPage/HistoryPage';
 import LeaderboardPage from './pages/LeaderboardPage/LeaderboardPage';
 import Footer from "./components/Footer.jsx"
 import TopBar from './components/top-bar/TopBar.jsx';
+import layoutStyles from './styles/layout/layout.module.css';
+import appMainStyles from './styles/layout/app-main.module.css';
 
 function PrivateRoute({ children })
 {
@@ -57,10 +59,10 @@ export default function App()
 
 	usePresenceHeartbeat(isAuthed);
 	return (
-		<div className="app-layout">
+		<div className={`${layoutStyles.appLayout}`}>
 			<TopBar current={location.pathname} authed={isAuthed} />
-			<main className="app-main">
-				<div className="main-content">
+			<main className={`${appMainStyles.appMain}`}>
+				<div className={`${appMainStyles.mainContent}`}>
 					<Routes>
 						<Route path="/" element={<Navigate to="/lobby" replace />} />
 						<Route

@@ -12,33 +12,33 @@
 	
 }
 
-.brand-block
+.brandBlock
 {
 	gap: 0.15rem;
 	display: flex;
 	flex-direction: column;
 }
 
-.brand-title,
-.brand-subtitle
+.brandTitle,
+.brandSubtitle
 {
 	margin: 0;
 }
 
-.brand-title
+.brandTitle
 {
 	font-size: clamp(1.5rem, 2.5vw, 3rem);
 	font-weight: 700;
 	color: var(--text);
 }
 
-.brand-subtitle
+.brandSubtitle
 {
 	color: var(--text-soft);
 	font-size: clamp(1rem, 1.5vw, 1.5rem);
 }
 
-.top-nav
+.topNav
 {
 	display: flex;
 	align-items: center;

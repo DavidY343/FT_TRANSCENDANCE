@@ -1,4 +1,5 @@
 import { useTranslation } from '../../../../contexts/LanguageContext';
+import buttonStyles from '../../../../styles/buttons/button.module.css';
 
 export function Actions({ room })
 {
@@ -19,7 +20,7 @@ export function Actions({ room })
 		<div className="game-room-actions">
 			<button
 				type="button"
-				className="btn"
+				className={`${buttonStyles.btn}`}
 				onClick={room.requestResign}
 			>
 				{t('action.resign')}
@@ -28,7 +29,7 @@ export function Actions({ room })
 			{!isAi && !drawOfferedBy && (
 				<button
 					type="button"
-					className="btn"
+					className={`${buttonStyles.btn}`}
 					onClick={room.offerDraw}
 				>
 					{t('action.offer_draw')}
@@ -38,7 +39,7 @@ export function Actions({ room })
 			{!isAi && hasOfferedDraw && (
 				<button
 					type="button"
-					className="btn"
+					className={`${buttonStyles.btn}`}
 					disabled
 				>
 					{t('action.draw_offered')}
@@ -49,7 +50,7 @@ export function Actions({ room })
 				<>
 					<button
 						type="button"
-						className="btn"
+						className={`${buttonStyles.btn}`}
 						style={{ backgroundColor: '#2ecc71', color: 'white' }}
 						onClick={room.acceptDraw}
 					>
@@ -57,7 +58,7 @@ export function Actions({ room })
 					</button>
 					<button
 						type="button"
-						className="btn"
+						className={`${buttonStyles.btn}`}
 						style={{ backgroundColor: '#e74c3c', color: 'white' }}
 						onClick={room.declineDraw}
 					>

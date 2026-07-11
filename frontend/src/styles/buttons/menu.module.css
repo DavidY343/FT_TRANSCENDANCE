@@ -1,17 +1,17 @@
-.nav-menu {
+.navMenu {
 	position: relative;
 }
 
-.nav-menu summary {
+.navMenu summary {
 	list-style: none;
 	cursor: pointer;
 }
 
-.nav-menu summary::-webkit-details-marker {
+.navMenu summary::-webkit-details-marker {
 	display: none;
 }
 
-.nav-menu-panel {
+.navMenuPanel {
 	position: absolute;
 	right: 0;
 	top: calc(100% + 0.5rem);
@@ -27,7 +27,7 @@
 	z-index: 20;
 }
 
-.nav-menu-link {
+.navMenuLink {
 	padding: 0.65rem 0.75rem;
 	border-radius: 8px;
 	color: var(--text);
@@ -35,11 +35,11 @@
 	text-align: center;
 }
 
-.nav-menu-link:hover {
+.navMenuLink:hover {
 	background: var(--light);
 }
 
-.nav-menu-link.nav-menu-link-active
+.navMenuLink.navMenuLinkActive
 {
 	background: var(--chess-light);
 }

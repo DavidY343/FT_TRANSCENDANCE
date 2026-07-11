@@ -1,6 +1,8 @@
 import { useModalA11y } from '../../../hooks/useModalA11y';
 
 import { useTranslation } from '../../../contexts/LanguageContext';
+import cardsStyles from '../../../styles/cards/cards.module.css';
+import buttonStyles from '../../../styles/buttons/button.module.css';
 
 export function ConfirmModal({ room })
 {
@@ -13,7 +15,7 @@ export function ConfirmModal({ room })
 
 	return (
 		<div className="confirm-backdrop" role="dialog" aria-modal="true" ref={modalRef} tabIndex="-1">
-			<div className="card confirm-card">
+			<div className={`${cardsStyles.card} confirm-card`}>
 				<p className="confirm-text">
 					{t('confirm.resign_question')}
 				</p>
@@ -21,7 +23,7 @@ export function ConfirmModal({ room })
 				<div className="confirm-actions">
 					<button
 						type="button"
-						className="btn confirm-button"
+						className={`${buttonStyles.btn} confirm-button`}
 						onClick={room.cancelAction}
 						ref={cancelBtnRef}
 					>
@@ -30,7 +32,7 @@ export function ConfirmModal({ room })
 
 					<button
 						type="button"
-						className="btn confirm-btn confirm-btn-danger"
+						className={`${buttonStyles.btn} confirm-btn ${buttonStyles.confirmBtnDanger}`}
 						onClick={room.confirmResign}
 					>
 						{t('action.resign')}

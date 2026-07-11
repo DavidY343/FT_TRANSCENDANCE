@@ -1,4 +1,7 @@
 import { useTranslation } from '../../../contexts/LanguageContext';
+import cardsStyles from '../../../styles/cards/cards.module.css';
+import buttonStyles from '../../../styles/buttons/button.module.css';
+import layoutStyles from '../../../styles/layout/layout.module.css';
 
 export function AiGameCard({
 	status,
@@ -14,7 +17,7 @@ export function AiGameCard({
 	const disableActions = status === 'waiting' || actionState !== 'idle';
 
 	return (
-		<article className="card lobby-action-card">
+		<article className={`${cardsStyles.card} lobby-action-card`}>
 
 			<h3 className="lobby-card-title lobby-card-play">
 				{t('lobby.ai.title')}
@@ -24,7 +27,7 @@ export function AiGameCard({
 				{t('lobby.ai.copy')}
 			</p>
 
-			<label className="lab" htmlFor="ai-difficulty">
+			<label className={`${layoutStyles.lab}`} htmlFor="ai-difficulty">
 				{t('lobby.ai.difficulty_label')}
 			</label>
 
@@ -39,7 +42,7 @@ export function AiGameCard({
 				<option value="hard">{t('lobby.ai.diff_hard')}</option>
 			</select>
 
-			<label className="lab" htmlFor="ai-time-control">
+			<label className={`${layoutStyles.lab}`} htmlFor="ai-time-control">
 				{t('lobby.ai.time_label')}
 			</label>
 
@@ -55,7 +58,7 @@ export function AiGameCard({
 			</select>
 
 			<div className="lobby-card-actions">
-				<button className="btn" type="button" onClick={onPlay} disabled={disableActions}>
+				<button className={`${buttonStyles.btn}`} type="button" onClick={onPlay} disabled={disableActions}>
 					{t('lobby.ai.start_btn')}
 				</button>
 			</div>

@@ -4,6 +4,8 @@ import { HistoryListCard } from './components/HistoryListCard';
 import { useTranslation } from '../../contexts/LanguageContext';
 
 import './style/history.css';
+import cardsStyles from '../../styles/cards/cards.module.css';
+import introCardsStyles from '../../styles/cards/intro-cards.module.css';
 
 /*
 	HistoryPage → Gestiona y muestra el historial de partidas del usuario.
@@ -67,10 +69,10 @@ export default function HistoryPage()
 
 	return (
 		<section className="history-layout">
-			<aside className="card intro-card history-hero">
-				<p className="section-kicker">{t('history.kicker')}</p>
+			<aside className={`${cardsStyles.card} ${introCardsStyles.introCard} history-hero`}>
+				<p className={`${introCardsStyles.sectionKicker}`}>{t('history.kicker')}</p>
 
-				<h2 className="intro-title">
+				<h2 className={`${introCardsStyles.introTitle}`}>
 					{t('history.title')}
 				</h2>
 
@@ -79,12 +81,12 @@ export default function HistoryPage()
 				</p>
 
 				<div className="history-stats">
-					<div className="info-note">
+					<div className={`${introCardsStyles.infoNote}`}>
 						<span>{t('history.total_games')}</span>
 						<p>{games.length}</p>
 					</div>
 
-					<div className="info-note">
+					<div className={`${introCardsStyles.infoNote}`}>
 						<span>{t('history.last_result')}</span>
 						<p>{games[0]?.result_for_me?.replaceAll('_', ' ') || '-'}</p>
 					</div>

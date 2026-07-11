@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from '../../../contexts/LanguageContext';
+import cardsStyles from '../../../styles/cards/cards.module.css';
+import buttonStyles from '../../../styles/buttons/button.module.css';
+import layoutStyles from '../../../styles/layout/layout.module.css';
+import introCardsStyles from '../../../styles/cards/intro-cards.module.css';
 
 export function RegisterForm({
 	form,
@@ -16,13 +20,13 @@ export function RegisterForm({
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
 	return (
-		<section className="card auth-card form-card">
-			<h2 className="panel-title panel-title-large">
+		<section className={`${cardsStyles.card} ${cardsStyles.authCard} ${cardsStyles.formCard}`}>
+			<h2 className={`${cardsStyles.panelTitle} ${cardsStyles.panelTitleLarge}`}>
 				{t('auth.register.title')}
 			</h2>
 
 			<form className="form-container" onSubmit={onSubmit} noValidate>
-				<label className="lab" htmlFor="register-email">{t('auth.register.emailLabel')}</label>
+				<label className={`${layoutStyles.lab}`} htmlFor="register-email">{t('auth.register.emailLabel')}</label>
 				<input
 					className={errorField === 'email' ? 'input-error' : ''}
 					aria-describedby={error ? 'register-form-error' : undefined}
@@ -36,7 +40,7 @@ export function RegisterForm({
 					required
 				/>
 
-				<label className="lab" htmlFor="register-username">{t('auth.register.usernameLabel')}</label>
+				<label className={`${layoutStyles.lab}`} htmlFor="register-username">{t('auth.register.usernameLabel')}</label>
 				<input
 					className={errorField === 'username' ? 'input-error' : ''}
 					aria-describedby={error ? 'register-form-error' : undefined}
@@ -49,7 +53,7 @@ export function RegisterForm({
 					required
 				/>
 
-				<label className="lab" htmlFor="register-display-name">{t('auth.register.displayNameLabel')}</label>
+				<label className={`${layoutStyles.lab}`} htmlFor="register-display-name">{t('auth.register.displayNameLabel')}</label>
 				<input
 					className={errorField === 'display_name' ? 'input-error' : ''}
 					aria-describedby={error ? 'register-form-error' : undefined}
@@ -62,7 +66,7 @@ export function RegisterForm({
 					required
 				/>
 
-				<label className="lab" htmlFor="register-password">{t('auth.register.passwordLabel')}</label>
+				<label className={`${layoutStyles.lab}`} htmlFor="register-password">{t('auth.register.passwordLabel')}</label>
 				<div style={{ position: 'relative', width: '100%' }}>
 					<input
 						className={errorField === 'password' ? 'input-error' : ''}
@@ -97,7 +101,7 @@ export function RegisterForm({
 					</button>
 				</div>
 
-				<label className="lab" htmlFor="register-confirm-password">{t('auth.register.confirmPasswordLabel')}</label>
+				<label className={`${layoutStyles.lab}`} htmlFor="register-confirm-password">{t('auth.register.confirmPasswordLabel')}</label>
 				<div style={{ position: 'relative', width: '100%' }}>
 					<input
 						className={errorField === 'confirm_password' ? 'input-error' : ''}
@@ -132,18 +136,18 @@ export function RegisterForm({
 					</button>
 				</div>
 
-				<button className="btn submit-btn" disabled={submitting || !form.email || !form.username || !form.display_name || !form.password || !form.confirm_password || form.password !== form.confirm_password}>
+				<button className={`${buttonStyles.btn} ${buttonStyles.submitBtn}`} disabled={submitting || !form.email || !form.username || !form.display_name || !form.password || !form.confirm_password || form.password !== form.confirm_password}>
 					{submitting ? t('auth.register.submitting') : t('auth.register.submit')}
 				</button>
 			</form>
 
 			{error && (
-				<p className="form-error" id="register-form-error" aria-live="polite">
+				<p className={`${introCardsStyles.formError}`} id="register-form-error" aria-live="polite">
 					{error}
 				</p>
 			)}
 
-			<p className="auth-switch">
+			<p className={`${introCardsStyles.authSwitch}`}>
 				{t('auth.register.alreadyHaveAccount')} <Link className='auth-link' to="/login">{t('auth.register.signInLink')}</Link>
 			</p>
 		</section>
@@ -165,13 +169,13 @@ export function LoginForm({
 	const [showPassword, setShowPassword] = useState(false);
 
 	return (
-		<section className="card auth-card form-card">
-			<h2 className="panel-title panel-title-large">
+		<section className={`${cardsStyles.card} ${cardsStyles.authCard} ${cardsStyles.formCard}`}>
+			<h2 className={`${cardsStyles.panelTitle} ${cardsStyles.panelTitleLarge}`}>
 				{t('auth.login.title')}
 			</h2>
 
 			<form className="form-container" onSubmit={onSubmit} noValidate>
-				<label className="lab" htmlFor="login-email">{t('auth.login.emailLabel')}</label>
+				<label className={`${layoutStyles.lab}`} htmlFor="login-email">{t('auth.login.emailLabel')}</label>
 				<input
 					className={errorField === 'email' ? 'input-error' : ''}
 					aria-describedby={error ? 'login-form-error' : undefined}
@@ -184,7 +188,7 @@ export function LoginForm({
 					placeholder={t('auth.login.emailPlaceholder')}
 					required
 				/>
-				<label className="lab" htmlFor="login-password">{t('auth.login.passwordLabel')}</label>
+				<label className={`${layoutStyles.lab}`} htmlFor="login-password">{t('auth.login.passwordLabel')}</label>
 				<div style={{ position: 'relative', width: '100%' }}>
 					<input
 						className={errorField === 'password' ? 'input-error' : ''}
@@ -219,18 +223,18 @@ export function LoginForm({
 					</button>
 				</div>
 
-				<button className="btn submit-btn" disabled={submitting || !email || !password}>
+				<button className={`${buttonStyles.btn} ${buttonStyles.submitBtn}`} disabled={submitting || !email || !password}>
 					{submitting ? t('auth.login.submitting') : t('auth.login.submit')}
 				</button>
 			</form>
 
 			{error && (
-				<p className="form-error" id="login-form-error" aria-live="polite">
+				<p className={`${introCardsStyles.formError}`} id="login-form-error" aria-live="polite">
 					{error}
 				</p>
 			)}
 
-			<p className="auth-switch">
+			<p className={`${introCardsStyles.authSwitch}`}>
 				{t('auth.login.noAccount')} <Link className="auth-link" to="/register">{t('auth.login.registerLink')}</Link>
 			</p>
 		</section>

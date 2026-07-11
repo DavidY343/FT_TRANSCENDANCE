@@ -1,4 +1,7 @@
 import { useTranslation } from '../../../contexts/LanguageContext';
+import cardsStyles from '../../../styles/cards/cards.module.css';
+import introCardsStyles from '../../../styles/cards/intro-cards.module.css';
+import buttonStyles from '../../../styles/buttons/button.module.css';
 
 export function ActiveGameCard({
 	activeGameId,
@@ -9,8 +12,8 @@ export function ActiveGameCard({
 {
 	const { t } = useTranslation();
 	return (
-		<article className="card lobby-action-card">
-			<p className="section-kicker">{t('lobby.active.kicker')}</p>
+		<article className={`${cardsStyles.card} lobby-action-card`}>
+			<p className={`${introCardsStyles.sectionKicker}`}>{t('lobby.active.kicker')}</p>
 
 			<h3 className="lobby-card-title">
 				{t('lobby.active.title')}
@@ -21,11 +24,11 @@ export function ActiveGameCard({
 			</p>
 
 			<div className="lobby-card-actions">
-				<button className="btn" type="button" onClick={onResume} disabled={actionState !== 'idle'}>
+				<button className={`${buttonStyles.btn}`} type="button" onClick={onResume} disabled={actionState !== 'idle'}>
 					{t('lobby.active.resume_btn')} #{activeGameId}
 				</button>
 				<button
-					className="btn"
+					className={`${buttonStyles.btn}`}
 					type="button"
 					onClick={onResign}
 					disabled={actionState !== 'idle'}
