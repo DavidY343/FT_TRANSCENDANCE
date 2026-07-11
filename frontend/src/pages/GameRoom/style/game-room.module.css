@@ -1,12 +1,4 @@
-@import './board.css';
-@import './chat.css';
-@import './clocks.css';
-@import './confirm.css';
-@import './result.css';
-@import './game-error.css';
-@import './disconnect-grace.css';
-
-.game-room
+.gameRoom
 {
 	display: grid;
 	grid-template-columns: minmax(220px, 260px) minmax(560px, 720px) minmax(300px, 360px);
@@ -19,13 +11,13 @@
 	padding: 0.75rem;
 }
 
-.game-room .card
+.gameRoom .card
 {
 	border-radius: 14px;
 	padding: 1rem;
 }
 
-.game-board-area
+.gameBoardArea
 {
 	display: grid;
 	gap: 0.75rem;
@@ -33,7 +25,7 @@
 	width: 100%;
 }
 
-.clocks-banner
+.clocksBanner
 {
 	width: 100%;
 	display: grid;
@@ -42,7 +34,7 @@
 }
 
 
-.moves-strip
+.movesStrip
 {
 	width: 100%;
 	border: 1px solid rgb(255 255 255 / 0.06);
@@ -56,7 +48,7 @@
 	background: rgb(0 0 0 / 0.16);
 }
 
-.moves-strip span
+.movesStrip span
 {
 	display: block;
 	color: var(--text-muted);
@@ -65,33 +57,33 @@
 	text-transform: uppercase;
 }
 
-.moves-strip strong
+.movesStrip strong
 {
 	color: var(--text);
 	font-size: 0.9rem;
 	font-weight: 800;
 }
 
-.game-info-card
+.gameInfoCard
 {
 	position: sticky;
 	top: 0.75rem;
 	width: 100%;
 }
 
-.game-room-info-notes
+.gameRoomInfoNotes
 {
 	display: grid;
 	grid-template-columns: 1fr;
 	gap: 0.75rem;
 }
 
-.game-room-info-notes .info-note
+.gameRoomInfoNotes .infoNote
 {
 	min-width: 0;
 }
 
-.game-info-column
+.gameInfoColumn
 {
 	position: sticky;
 	top: 0.75rem;
@@ -101,8 +93,55 @@
 	width: 100%;
 }
 
-.game-info-column > .card
+.gameInfoColumn > .card
 {
 	width: 100%;
 	min-width: 0;
+}
+@media (max-width: 1100px) {
+	.gameRoom {
+		grid-template-columns: 1fr;
+		justify-items: center;
+		padding: 0.75rem;
+	}
+	.gameBoardArea {
+		width: min(100%, 720px);
+		justify-self: center;
+	}
+	.clocksBanner {
+		width: min(100%, 720px);
+		justify-self: center;
+	}
+	.gameInfoCard {
+		position: static;
+	}
+	.gameRoomInfoNotes {
+		width: min(100%, 720px);
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 760px) {
+	.clocksBanner {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 0.5rem;
+	}
+	.gameRoomInfoNotes {
+		gap: 0.5rem;
+	}
+	.gameRoomInfoNotes .infoNote {
+		padding: 0.65rem 0.7rem;
+	}
+	.gameRoomInfoNotes .infoNote p {
+		font-size: 0.9rem;
+		line-height: 1.35;
+	}
+}
+
+@media (max-width: 420px) {
+	.movesStrip {
+		flex-direction: column;
+		align-items: stretch;
+		text-align: left;
+	}
 }

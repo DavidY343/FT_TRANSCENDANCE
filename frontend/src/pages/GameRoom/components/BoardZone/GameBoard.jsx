@@ -1,6 +1,7 @@
 import { Chessboard } from "react-chessboard";
 
 import { isOwnPiece } from '../../hooks/gameBoardHooks/boardRules';
+import boardStyles from '../../style/board.module.css';
 
 export function GameBoard({ room })
 {
@@ -15,7 +16,7 @@ export function GameBoard({ room })
 	}
 
 	return (
-		<div className="chessboard">
+		<div className={`${boardStyles.chessboard}`}>
 			<Chessboard
 				position={state?.fen || 'start'}
 				boardOrientation={room?.myColor || 'white'}

@@ -1,9 +1,9 @@
-.disconnect-grace-card
+.disconnectGraceCard
 {
 	border-color: #d9fecac6;
 }
 
-.disconnect-grace-title
+.disconnectGraceTitle
 {
 	margin: 0;
 	color: #d9feca;
@@ -12,7 +12,7 @@
 	line-height: 1;
 }
 
-.disconnect-grace-copy
+.disconnectGraceCopy
 {
 	margin: 0;
 	color: var(--text-soft);

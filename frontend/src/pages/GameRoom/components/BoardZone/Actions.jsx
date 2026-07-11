@@ -1,5 +1,6 @@
 import { useTranslation } from '../../../../contexts/LanguageContext';
 import buttonStyles from '../../../../styles/buttons/button.module.css';
+import boardStyles from '../../style/board.module.css';
 
 export function Actions({ room })
 {
@@ -17,7 +18,7 @@ export function Actions({ room })
 		return null;
 
 	return (
-		<div className="game-room-actions">
+		<div className={`${boardStyles.gameRoomActions}`}>
 			<button
 				type="button"
 				className={`${buttonStyles.btn}`}

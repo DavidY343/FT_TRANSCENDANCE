@@ -9,6 +9,7 @@ import { useModalA11y } from '../../hooks/useModalA11y';
 import cardsStyles from '../../styles/cards/cards.module.css';
 import buttonStyles from '../../styles/buttons/button.module.css';
 import lobbyStyles from './style/lobby.module.css';
+import confirmStyles from '../GameRoom/style/confirm.module.css';
 
 
 export default function LobbyPage()
@@ -21,13 +22,13 @@ export default function LobbyPage()
 	return (
 		<section className={`${lobbyStyles.lobbyLayout}`}>
 			{lobby.confirmResignModal && (
-				<div className="confirm-backdrop" role="dialog" aria-modal="true" ref={modalRef} tabIndex="-1">
-					<div className={`${cardsStyles.card} confirm-card`}>
+				<div className={`${confirmStyles.confirmBackdrop}`} role="dialog" aria-modal="true" ref={modalRef} tabIndex="-1">
+					<div className={`${cardsStyles.card} ${confirmStyles.confirmCard}`}>
 						<p className="confirm-text">
 							{t('lobby.confirm_resign')}
 						</p>
 
-						<div className="confirm-actions">
+						<div className={`${confirmStyles.confirmActions}`}>
 							<button
 								type="button"
 								className={`${buttonStyles.btn} confirm-button`}

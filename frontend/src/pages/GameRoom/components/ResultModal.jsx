@@ -3,6 +3,7 @@ import { useModalA11y } from '../../../hooks/useModalA11y';
 import { useTranslation } from '../../../contexts/LanguageContext';
 import cardsStyles from '../../../styles/cards/cards.module.css';
 import buttonStyles from '../../../styles/buttons/button.module.css';
+import resultStyles from '../style/result.module.css';
 
 export function ResultModal({ room })
 {
@@ -22,8 +23,8 @@ export function ResultModal({ room })
 	}[room.gameResult];
 
 	return (
-		<div className={`${cardsStyles.card} result-card result-modal-card`} role="dialog" aria-modal="true" ref={modalRef} tabIndex="-1">
-			<h2 className={`result-title result-title-${room.gameResult}`}>
+		<div className={`${cardsStyles.card} ${resultStyles.resultCard} ${resultStyles.resultModalCard}`} role="dialog" aria-modal="true" ref={modalRef} tabIndex="-1">
+			<h2 className={`${resultStyles.resultTitle} ${resultStyles[`resultTitle${room.gameResult.charAt(0).toUpperCase() + room.gameResult.slice(1)}`] || ''}`}>
 				{resultText}
 			</h2>
 			<Link className={`${buttonStyles.btn}`} to="/lobby" ref={cancelBtnRef}>

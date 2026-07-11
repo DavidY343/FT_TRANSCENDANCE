@@ -3,6 +3,8 @@ import { GameBoard } from "./GameBoard";
 import { Actions } from "./Actions";
 import { Clocks } from "./Clocks";
 import cardsStyles from '../../../../styles/cards/cards.module.css';
+import boardStyles from '../../style/board.module.css';
+import gameRoomStyles from '../../style/game-room.module.css';
 
 export function BoardArea({ room })
 {
@@ -20,7 +22,7 @@ export function BoardArea({ room })
 	}
 
 	return (
-		<main className="game-board-area">
+		<main className={`${gameRoomStyles.gameBoardArea}`}>
 			<Clocks
 				clocks={state?.clocks}
 				turn={state?.turn}
@@ -30,8 +32,8 @@ export function BoardArea({ room })
 				}}
 			/>
 
-			<section className={`${cardsStyles.card} board-card`}>
-				<div className="moves-strip">
+			<section className={`${cardsStyles.card} ${boardStyles.boardCard}`}>
+				<div className={`${gameRoomStyles.movesStrip}`}>
 					<span>
 						{state?.is_check ? t('game.check') : t('game.move')}
 					</span>

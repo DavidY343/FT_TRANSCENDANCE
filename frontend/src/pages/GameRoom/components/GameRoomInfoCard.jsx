@@ -3,6 +3,8 @@ import { GameStatus } from "./GameStatus";
 import { useTranslation } from '../../../contexts/LanguageContext';
 import cardsStyles from '../../../styles/cards/cards.module.css';
 import introCardsStyles from '../../../styles/cards/intro-cards.module.css';
+import chatStyles from '../style/chat.module.css';
+import gameRoomStyles from '../style/game-room.module.css';
 
 export function GameRoomInfoCard({ gameId, room })
 {
@@ -30,7 +32,7 @@ export function GameRoomInfoCard({ gameId, room })
 
 	return (
 		<aside className={`${cardsStyles.card} ${introCardsStyles.introCard}`}>
-			<h2 className="card-title">
+			<h2 className={`${chatStyles.cardTitle}`}>
 				{t('game.room_number')}#{gameId}
 			</h2>
 
@@ -51,7 +53,7 @@ export function GameRoomInfoCard({ gameId, room })
 
 			<GameStatus room={room}/>
 
-			<div className="game-room-info-notes">
+			<div className={`${gameRoomStyles.gameRoomInfoNotes}`}>
 				<div className={`${introCardsStyles.infoNote}`}>
 					<span>{t('info.duration')}</span>
 					<p>{state?.time_control_minutes || '-'} {t('info.min')}</p>

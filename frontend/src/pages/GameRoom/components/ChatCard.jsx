@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useTranslation } from '../../../contexts/LanguageContext';
 import cardsStyles from '../../../styles/cards/cards.module.css';
 import buttonStyles from '../../../styles/buttons/button.module.css';
+import chatStyles from '../style/chat.module.css';
 
 function getChatAuthor(chatMessage, room, t)
 {
@@ -64,17 +65,17 @@ export function ChatCard({ room })
 	}, [room.chatMessages.length]);
 
 	return (
-		<aside className={`${cardsStyles.card} game-chat-card`}>
-			<h2 className="card-title">
+		<aside className={`${cardsStyles.card} ${chatStyles.gameChatCard}`}>
+			<h2 className={`${chatStyles.cardTitle}`}>
 				{t('chat.title')}
 			</h2>
 			{isAiGame ? (
-				<p className="chat-unavailable">
+				<p className={`${chatStyles.chatUnavailable}`}>
 					{t('chat.unavailable_ai')}
 				</p>
 			) : (
-				<div className="chat-table">
-					<div className="chat-messages" ref={messagesRef}>
+				<div className={`${chatStyles.chatTable}`}>
+					<div className={`${chatStyles.chatMessages}`} ref={messagesRef}>
 					{room.chatMessages.length > 0 ? (
 						room.chatMessages.map((chatMessage, index) => {
 							const isMine = chatMessage.user_id === room.me?.id;
@@ -83,25 +84,25 @@ export function ChatCard({ room })
 
 							return (
 								<div
-									className={`chat-message ${isMine ? 'chat-message-mine' : 'chat-message-rival'}`}
+									className={`${chatStyles.chatMessage} ${isMine ? chatStyles.chatMessageMine : chatStyles.chatMessageRival}`}
 									key={`${chatMessage.user_id}-${chatMessage.at}-${index}`}
 								>
-									<div className="chat-message-meta">
+									<div className={`${chatStyles.chatMessageMeta}`}>
 										{time && (
-											<span className="chat-message-time">
+											<span className={`${chatStyles.chatMessageTime}`}>
 												{time}
 											</span>
 										)}
 									</div>
 
-									<p className="chat-message-text">
+									<p className={`${chatStyles.chatMessageText}`}>
 										{chatMessage.message}
 									</p>
 								</div>
 							);
 						})
 					) : (
-						<p className="chat-empty">
+						<p className={`${chatStyles.chatEmpty}`}>
 							{t('chat.empty')}
 						</p>
 					)}
@@ -115,9 +116,9 @@ export function ChatCard({ room })
 					}}>
 						{room.wsStatus === 'connected' ? t('status.connected') : room.wsStatus === 'reconnecting' ? t('status.reconnecting') : t('status.disconnected')}
 					</div>
-					<form className="chat-form" onSubmit={room.submitChatMessage}>
+					<form className={`${chatStyles.chatForm}`} onSubmit={room.submitChatMessage}>
 						<input
-							className="chat-input"
+							className={`${chatStyles.chatInput}`}
 							placeholder={t('chat.placeholder')}
 							aria-label={t('chat.aria_label')}
 							maxLength={200}

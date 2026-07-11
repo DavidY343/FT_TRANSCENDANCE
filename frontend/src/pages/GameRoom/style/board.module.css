@@ -1,4 +1,4 @@
-.board-card
+.boardCard
 {
 	border: 1px solid rgb(255 255 255 / 0.08);
 	width: 100%;
@@ -10,7 +10,7 @@
 	background: linear-gradient(145deg, rgb(52 52 52 / 0.98), rgb(35 35 35 / 0.98));
 }
 
-.board-card > div
+.boardCard > div
 {
 	width: 100%;
 }
@@ -22,13 +22,14 @@
 	border: 12px solid var(--chess-dark);
 	border-radius: 10px;
 	overflow: hidden;
+	user-select: none;
 	box-shadow:
 		0 22px 42px rgb(0 0 0 / 0.42),
 		inset 0 0 0 1px rgb(255 255 255 / 0.08);
 }
 
 
-.game-room-actions
+.gameRoomActions
 {
 	display: flex;
 	justify-content: center;
@@ -37,7 +38,7 @@
 	flex-wrap: wrap;
 }
 
-.game-room-actions .btn
+.gameRoomActions .btn
 {
 	min-width: 120px;
 }
@@ -86,4 +87,23 @@
 {
 	background-color: rgb(255 255 255 / 0.08) !important;
 	transform: scale(1.05) !important;
+}
+
+@media (max-width: 760px) {
+	.boardCard {
+		padding: 0.7rem;
+	}
+	.chessboard {
+		border-width: 8px;
+	}
+	.gameRoomActions {
+		gap: 0.5rem;
+	}
+}
+
+@media (max-width: 420px) {
+	.gameRoomActions {
+		flex-direction: column;
+		align-items: stretch;
+	}
 }

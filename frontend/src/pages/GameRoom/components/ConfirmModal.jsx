@@ -3,6 +3,7 @@ import { useModalA11y } from '../../../hooks/useModalA11y';
 import { useTranslation } from '../../../contexts/LanguageContext';
 import cardsStyles from '../../../styles/cards/cards.module.css';
 import buttonStyles from '../../../styles/buttons/button.module.css';
+import confirmStyles from '../style/confirm.module.css';
 
 export function ConfirmModal({ room })
 {
@@ -14,13 +15,13 @@ export function ConfirmModal({ room })
 		return (null);
 
 	return (
-		<div className="confirm-backdrop" role="dialog" aria-modal="true" ref={modalRef} tabIndex="-1">
-			<div className={`${cardsStyles.card} confirm-card`}>
+		<div className={`${confirmStyles.confirmBackdrop}`} role="dialog" aria-modal="true" ref={modalRef} tabIndex="-1">
+			<div className={`${cardsStyles.card} ${confirmStyles.confirmCard}`}>
 				<p className="confirm-text">
 					{t('confirm.resign_question')}
 				</p>
 
-				<div className="confirm-actions">
+				<div className={`${confirmStyles.confirmActions}`}>
 					<button
 						type="button"
 						className={`${buttonStyles.btn} confirm-button`}

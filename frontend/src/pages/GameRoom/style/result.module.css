@@ -1,41 +1,41 @@
-.result-backdrop
+.resultBackdrop
 {
 	position: fixed;
 	inset: 0;
 	z-index: 40;
 }
 
-.result-backdrop-win
+.resultBackdropWin
 {
 	background: rgb(22 163 74 / 0.35);
 }
 
-.result-backdrop-lost
+.resultBackdropLost
 {
 	background: rgb(220 38 38 / 0.35);
 }
 
-.result-backdrop-draw
+.resultBackdropDraw
 {
 	background: rgb(100 116 139 / 0.35);
 }
 
-.game-room-result-win
+.gameRoomResultWin
 {
 	--result-backdrop-color: rgb(22 163 74 / 0.35);
 }
 
-.game-room-result-lost
+.gameRoomResultLost
 {
 	--result-backdrop-color: rgb(220 38 38 / 0.35);
 }
 
-.game-room-result-draw
+.gameRoomResultDraw
 {
 	--result-backdrop-color: rgb(100 116 139 / 0.35);
 }
 
-.result-card
+.resultCard
 {
 	width: min(100%, 380px);
 	padding: 2rem;
@@ -50,12 +50,12 @@
 	gap: 1rem;
 }
 
-.game-room-has-result .game-info-column
+.gameRoomHasResult .gameInfoColumn
 {
 	z-index: 41;
 }
 
-.game-room-has-result .game-info-column::before
+.gameRoomHasResult .gameInfoColumn::before
 {
 	content: '';
 	position: absolute;
@@ -65,29 +65,29 @@
 	background: var(--result-backdrop-color);
 }
 
-.game-room-has-result .result-modal-card
+.gameRoomHasResult .resultModalCard
 {
 	position: relative;
 	z-index: 2;
 }
 
-.result-title
+.resultTitle
 {
 	margin: 0;
 	font-size: 2.4rem;
 	font-weight: 800;
 	letter-spacing: 0;
 }
-.result-title-win
+.resultTitleWin
 {
 	color: green;
 }
-.result-title-lost
+.resultTitleLost
 {
 	color: red;
 }
 
-.result-title-draw
+.resultTitleDraw
 {
 	color: white;
 }
