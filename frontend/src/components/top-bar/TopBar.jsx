@@ -74,7 +74,7 @@ function TopNav(props)
 		clearTokens();
 		clearStoredAchievements();
 		sessionStorage.removeItem('dev_auth');
-		window.location.href = '/login';
+		navigate('/login');
 	}
 
 	if (props.authed)
