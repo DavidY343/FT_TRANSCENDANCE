@@ -156,11 +156,11 @@ export default function ProfilePage()
 
 				{activeTab === 'settings' ? (
 					<>
-						<p className={`${introCardsStyles.sectionKicker}`}>
+						<p className={`${introCardsStyles.sectionKicker} ${profileStyles.centeredTitle}`}>
 							{t('profile.settings.kicker')}
 						</p>
 
-						<h1 className={`${profileStyles.cardTitle}`}>
+						<h1 className={`${profileStyles.cardTitle} ${profileStyles.centeredTitle}`}>
 							{t('profile.settings.title')}
 						</h1>
 

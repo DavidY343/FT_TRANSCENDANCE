@@ -328,6 +328,8 @@ Db_diagram.png
 /playwright/.auth/
 
 # Manu
+/*.md
+!README.md
 GUIDE
 .env
 =*
