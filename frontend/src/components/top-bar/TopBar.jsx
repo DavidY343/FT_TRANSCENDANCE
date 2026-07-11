@@ -82,10 +82,12 @@ function TopNav(props)
 		return (
 			<nav className={`${appTopbarStyles.topNav}`}>
 				<LanguageSelector />
-				<MenuDisplay current={props.current}/>
-				<button className={`${buttonStyles.btn} ${buttonStyles.navBtn}`} onClick={handleLogout}>
-					{t('topbar.logout')}
-				</button>
+				<div className={`${appTopbarStyles.navButtons}`}>
+					<MenuDisplay current={props.current}/>
+					<button className={`${buttonStyles.btn} ${buttonStyles.navBtn}`} onClick={handleLogout}>
+						{t('topbar.logout')}
+					</button>
+				</div>
 			</nav>
 		);
 	}
@@ -94,12 +96,14 @@ function TopNav(props)
 		return (
 			<nav className={`${appTopbarStyles.topNav}`}>
 				<LanguageSelector />
-				<Link className={`${buttonStyles.btn} ${buttonStyles.navBtn}`} to="/login">
-					{t('topbar.login')}
-				</Link>
-				<Link className={`${buttonStyles.btn} ${buttonStyles.navBtn}`} to="/register">
-					{t('topbar.register')}
-				</Link>
+				<div className={`${appTopbarStyles.navButtons}`}>
+					<Link className={`${buttonStyles.btn} ${buttonStyles.navBtn}`} to="/login">
+						{t('topbar.login')}
+					</Link>
+					<Link className={`${buttonStyles.btn} ${buttonStyles.navBtn}`} to="/register">
+						{t('topbar.register')}
+					</Link>
+				</div>
 			</nav>
 		);
 }

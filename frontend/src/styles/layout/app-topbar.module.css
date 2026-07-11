@@ -45,15 +45,43 @@
 	gap: 1rem;
 }
 
+.navButtons
+{
+	display: flex;
+	gap: 1rem;
+	align-items: center;
+}
+
 @media (max-width: 768px) {
 	.topbar {
-		justify-content: space-between;
+		display: grid;
+		grid-template-columns: 1fr auto;
+		grid-template-rows: auto auto;
+		gap: 1rem;
+		padding: 1rem;
+	}
+	.brandBlock {
+		grid-column: 1;
+		grid-row: 1;
 	}
 	.brandSubtitle {
 		display: none;
 	}
 	.topNav {
-		display: flex;
-		flex-direction: column;
+		display: contents; /* Allows LanguageSelector and navButtons to act as grid items */
+	}
+	/* LanguageSelector is a select element directly inside topNav */
+	.topNav > select {
+		grid-column: 2;
+		grid-row: 1;
+		align-self: center;
+		justify-self: end;
+		margin: 0 !important; /* Override inline margin if any */
+	}
+	.navButtons {
+		grid-column: 1 / -1;
+		grid-row: 2;
+		justify-content: center;
+		width: 100%;
 	}
 }
