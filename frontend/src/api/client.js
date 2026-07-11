@@ -124,7 +124,14 @@ window.addEventListener('unhandledrejection', (event) => {
 	async (error) => {
 		const originalRequest = error.config;
 
-		if (error.response?.status === 401 && originalRequest)
+	const isAuthEndpoint =
+		originalRequest?.url?.includes('/auth/login')
+		|| originalRequest?.url?.includes('/auth/register')
+		|| originalRequest?.url?.includes('/auth/refresh');
+
+	const hasRefreshToken = Boolean(getRefreshToken());
+
+	if ( error.response?.status === 401 && originalRequest && !isAuthEndpoint && hasRefreshToken )
 		{
 			if (!originalRequest._retry)
 			{

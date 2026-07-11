@@ -247,7 +247,18 @@ Users are rewarded with persistent achievements based on their in-game actions a
 # Individual Contributions
 
 ## jrubio-m
+## jrubio-m
+I focused mainly on the frontend architecture and user experience, building the application shell from the first React/Vite structure into a modular, navigable interface connected to the backend API. My work centered on turning the chess platform into a complete browser experience, with authentication screens, lobby flow, game room interaction, profile management, friends, chat, history, leaderboard, and responsive styling.
 
+**Key Contributions:**
+- **Frontend Foundation & Architecture:** Created the initial frontend structure, routing, layout system, shared styles, reusable cards, buttons, inputs, top bar, footer, and responsive base. I progressively refactored the frontend into page-based modules and smaller hooks/components to keep the project maintainable.
+- **Authentication & API Integration:** Built and polished the login/register flows, form validation, token handling, expired-session behavior, and later split the frontend API layer into client, token, and error utilities.
+- **Lobby & Game Room Experience:** Implemented the first lobby prototype, active game recovery, matchmaking UI states, and the modular game room foundation. I worked on drag-and-drop moves, board highlighting, promotion handling, turn-based clocks, result modals, resign/confirmation flows, error feedback, and reconnection/disconnection UI.
+- **Social & Player Features:** Built the frontend for profile management, avatar editing, friends search/requests/removal, real-time chat display, match history, and leaderboard states.
+- **UI Polish & Responsiveness:** Improved the visual consistency of the application across auth pages, lobby, profile, friends, leaderboard, history, and game room views. I also handled several responsive fixes, accessibility improvements, hover states, and cleanup of layout issues.
+
+**Challenges Overcome:**
+The main challenge was coordinating a fast-moving frontend with backend game state, authentication, WebSocket events, and multiple user flows at once. The game room in particular required careful state management because board interaction, clocks, chat, reconnect handling, modals, and server updates all had to stay synchronized without making the UI feel unstable or confusing.
 ## dyanex-m
 
 ## cde-la-r
