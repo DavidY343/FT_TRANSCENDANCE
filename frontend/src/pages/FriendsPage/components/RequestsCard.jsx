@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from '../../../contexts/LanguageContext';
 import cardsStyles from '../../../styles/cards/cards.module.css';
 import buttonStyles from '../../../styles/buttons/button.module.css';
+import friendsStyles from '../style/friends.module.css';
 
 export function RequestsCard({
 	incomingRequests,
@@ -18,12 +19,12 @@ export function RequestsCard({
 
 	return (
 		<article className={`${cardsStyles.card} ${cardsStyles.panelCard}`}>
-			<div className="friends-card-header">
+			<div className={`${friendsStyles.friendsCardHeader}`}>
 				<h2 className={`${cardsStyles.panelTitle}`}>
 					{t('friends.requests.title')}
 				</h2>
 				<button
-					className={`${buttonStyles.btn} friends-refresh-btn`}
+					className={`${buttonStyles.btn} ${friendsStyles.friendsRefreshBtn}`}
 					type="button"
 					disabled={loading}
 					onClick={onRefresh}
@@ -34,7 +35,7 @@ export function RequestsCard({
 
 			{feedback && (
 				<p
-					className={`friends-message friends-message-${feedback.type}`}
+					className={`${friendsStyles.friendsMessage} ${feedback.type === 'error' ? friendsStyles.friendsMessageError : friendsStyles.friendsMessageSuccess}`}
 					role={feedback.type === 'error' ? 'alert' : 'status'}
 					aria-live="polite"
 				>
@@ -42,13 +43,13 @@ export function RequestsCard({
 				</p>
 			)}
 			
-			<div className="friends-request-block">
+			<div className={`${friendsStyles.friendsRequestBlock}`}>
 				<h4>
 					{t('friends.requests.incoming')}
 				</h4>
 
 				{incomingRequests.length > 0 ? (
-					<div className="friends-list">
+					<div className={`${friendsStyles.friendsList}`}>
 						{incomingRequests.map((request) => {
 							const user = request.requester;
 
@@ -56,8 +57,8 @@ export function RequestsCard({
 								return null;
 
 							return (
-								<div className="friend-row" key={request.id}>
-									<div className="friend-identity">
+								<div className={`${friendsStyles.friendRow}`} key={request.id}>
+									<div className={`${friendsStyles.friendIdentity}`}>
 										<strong>
 											<Link to={`/profile/${user.id}`} className="profile-link">
 												{user.display_name}
@@ -70,12 +71,12 @@ export function RequestsCard({
 											</Link>
 										</span>
 
-										<span className={user.online ? 'friend-online' : 'friend-offline'}>
+										<span className={user.online ? friendsStyles.friendOnline : friendsStyles.friendOffline}>
 											{user.online ? t('friends.requests.status_online') : t('friends.requests.status_offline')}
 										</span>
 									</div>
 
-									<div className="friend-actions">
+									<div className={`${friendsStyles.friendActions}`}>
 										<button
 											className={`${buttonStyles.btn}`}
 											type="button"
@@ -99,19 +100,19 @@ export function RequestsCard({
 						})}
 					</div>
 				) : (
-					<p className="friends-empty">
+					<p className={`${friendsStyles.friendsEmpty}`}>
 						{t('friends.requests.no_incoming')}
 					</p>
 				)}
 			</div>
 
-			<div className="friends-request-block">
+			<div className={`${friendsStyles.friendsRequestBlock}`}>
 				<h4>
 					{t('friends.requests.outgoing')}
 				</h4>
 
 				{outgoingRequests.length > 0 ? (
-					<div className="friends-list">
+					<div className={`${friendsStyles.friendsList}`}>
 						{outgoingRequests.map((request) => {
 							const user = request.addressee;
 
@@ -119,8 +120,8 @@ export function RequestsCard({
 								return null;
 
 							return (
-								<div className="friend-row" key={request.id}>
-									<div className="friend-identity">
+								<div className={`${friendsStyles.friendRow}`} key={request.id}>
+									<div className={`${friendsStyles.friendIdentity}`}>
 										<strong>
 											<Link to={`/profile/${user.id}`} className="profile-link">
 												{user.display_name}
@@ -133,12 +134,12 @@ export function RequestsCard({
 											</Link>
 										</span>
 
-										<span className={user.online ? 'friend-online' : 'friend-offline'}>
+										<span className={user.online ? friendsStyles.friendOnline : friendsStyles.friendOffline}>
 											{user.online ? t('friends.requests.status_online') : t('friends.requests.status_offline')}
 										</span>
 									</div>
 
-									<span className="friend-pending">
+									<span className={`${friendsStyles.friendPending}`}>
 										{t('friends.requests.pending')}
 									</span>
 								</div>
@@ -146,7 +147,7 @@ export function RequestsCard({
 						})}
 					</div>
 				) : (
-					<p className="friends-empty">
+					<p className={`${friendsStyles.friendsEmpty}`}>
 						{t('friends.requests.no_pending')}
 					</p>
 				)}

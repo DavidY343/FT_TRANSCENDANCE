@@ -1,4 +1,4 @@
-.profile-avatar
+.profileAvatar
 {
 	width: clamp(150px, 18vw, 220px);
 	min-width: clamp(150px, 18vw, 220px);
@@ -16,14 +16,14 @@
 	font-weight: 800;
 }
 
-.profile-avatar img
+.profileAvatar img
 {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
 }
 
-.profile-avatar .default-avatar
+.profileAvatar .defaultAvatar
 {
 	width: 100%;
 	height: 100%;
@@ -36,7 +36,7 @@
 	text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
 }
 
-.profile-avatar-form
+.profileAvatarForm
 {
 	width: 100%;
 	display: grid;
@@ -44,12 +44,12 @@
 	gap: 0.5rem;
 }
 
-.profile-avatar-button
+.profileAvatarButton
 {
 	width: fit-content;
 }
 
-.profile-avatar-input
+.profileAvatarInput
 {
 	position: absolute;
 	width: 1px;
@@ -58,7 +58,7 @@
 	pointer-events: none;
 }
 
-.profile-avatar-form .profile-avatar-help
+.profileAvatarForm .profileAvatarHelp
 {
 	max-width: 260px;
 	margin: 0;
@@ -72,7 +72,7 @@
 	text-align: center;
 }
 
-.profile-avatar-delete
+.profileAvatarDelete
 {
 	width: fit-content;
 	border-color: rgba(248, 113, 113, 0.5);
@@ -80,10 +80,21 @@
 	color: #fecaca;
 }
 
-.profile-avatar-delete:disabled
+.profileAvatarDelete:disabled
 {
 	cursor: not-allowed;
 	opacity: 0.45;
 	transform: none;
 	box-shadow: 6px 6px 6px var(--shadow);
+}
+@media (max-width: 760px) {
+	.profileAvatar {
+		width: 150px;
+		min-width: 150px;
+	}
+	.profileAvatarForm {
+		grid-column: 1;
+		width: 100%;
+		justify-content: center;
+	}
 }

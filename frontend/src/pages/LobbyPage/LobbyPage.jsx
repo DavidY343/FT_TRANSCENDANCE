@@ -6,9 +6,9 @@ import { LobbyHero } from './components/LobbyHero';
 import { MatchmakingCard } from './components/MatchmakingCard';
 import { useLobby } from './hooks/useLobby';
 import { useModalA11y } from '../../hooks/useModalA11y';
-import './style/lobby.css';
 import cardsStyles from '../../styles/cards/cards.module.css';
 import buttonStyles from '../../styles/buttons/button.module.css';
+import lobbyStyles from './style/lobby.module.css';
 
 
 export default function LobbyPage()
@@ -19,7 +19,7 @@ export default function LobbyPage()
 	const { modalRef, cancelBtnRef } = useModalA11y(lobby.confirmResignModal, lobby.cancelResign);
 
 	return (
-		<section className="lobby-layout">
+		<section className={`${lobbyStyles.lobbyLayout}`}>
 			{lobby.confirmResignModal && (
 				<div className="confirm-backdrop" role="dialog" aria-modal="true" ref={modalRef} tabIndex="-1">
 					<div className={`${cardsStyles.card} confirm-card`}>
@@ -55,7 +55,7 @@ export default function LobbyPage()
 				error={lobby.error}
 			/>
 
-			<div className="lobby-actions-grid">
+			<div className={`${lobbyStyles.lobbyActionsGrid}`}>
 				{lobby.activeGameId ? (
 					<div className="active-game-container" style={{ gridColumn: '1 / -1', maxWidth: '600px', margin: '0 auto' }}>
 						<ActiveGameCard

@@ -3,6 +3,7 @@ import { useTranslation } from '../../../contexts/LanguageContext';
 import cardsStyles from '../../../styles/cards/cards.module.css';
 import introCardsStyles from '../../../styles/cards/intro-cards.module.css';
 import buttonStyles from '../../../styles/buttons/button.module.css';
+import historyStyles from '../style/history.module.css';
 
 /*
 	prettyResult → Convierte el resultado interno en un texto legible.
@@ -34,11 +35,11 @@ function prettyResult(result)
 function getResultClass(result)
 {
 	if (result === 'win')
-		return 'history-result-win';
+		return historyStyles.historyResultWin;
 	if (result === 'loss')
-		return 'history-result-loss';
+		return historyStyles.historyResultLoss;
 	if (result === 'draw')
-		return 'history-result-draw';
+		return historyStyles.historyResultDraw;
 
 	return '';
 }
@@ -114,8 +115,8 @@ export function HistoryListCard({ games, loading, error, onRetry })
 	if (loading)
 	{
 		return (
-			<aside className={`${cardsStyles.card} ${cardsStyles.panelCard} history-panel`}>
-				<p className="history-empty" aria-live="polite">
+			<aside className={`${cardsStyles.card} ${cardsStyles.panelCard} ${historyStyles.historyPanel}`}>
+				<p className={`${historyStyles.historyEmpty}`} aria-live="polite">
 					{t('history.list.loading')}
 				</p>
 			</aside>
@@ -124,7 +125,7 @@ export function HistoryListCard({ games, loading, error, onRetry })
 	if (error)
 	{
 		return (
-			<aside className={`${cardsStyles.card} ${cardsStyles.panelCard} history-panel`}>
+			<aside className={`${cardsStyles.card} ${cardsStyles.panelCard} ${historyStyles.historyPanel}`}>
 				<p className={`${introCardsStyles.formError}`} role="alert">
 					{error}
 				</p>
@@ -141,34 +142,34 @@ export function HistoryListCard({ games, loading, error, onRetry })
 	}
 	if (games.length === 0)
 		return (
-			<p className="history-empty">
+			<p className={`${historyStyles.historyEmpty}`}>
 				{t('history.list.no_games')}
 			</p>
 		);
 
 	return (
-		<aside className={`${cardsStyles.card} ${cardsStyles.panelCard} history-panel`}>
+		<aside className={`${cardsStyles.card} ${cardsStyles.panelCard} ${historyStyles.historyPanel}`}>
 			<h3 className={`${cardsStyles.panelTitle}`}>
 				{t('history.list.timeline')}
 			</h3>
-			<ul className="history-list">
+			<ul className={`${historyStyles.historyList}`}>
 				{games.map((game) => (
-					<li key={game.id} className="history-item">
-						<div className="history-row-main">
+					<li key={game.id} className={`${historyStyles.historyItem}`}>
+						<div className={`${historyStyles.historyRowMain}`}>
 							<strong>{t('history.list.game_id').replace('{id}', game.id)}</strong>
 
-							<span className={`history-result ${getResultClass(game.result_for_me)}`}>
+							<span className={`${historyStyles.historyResult} ${getResultClass(game.result_for_me)}`}>
 								{prettyResult(game.result_for_me)}
 							</span>
 						</div>
 
-						<div className="history-sides">
-							<div className="history-side history-side-white">
+						<div className={`${historyStyles.historySides}`}>
+							<div className={`${historyStyles.historySide} ${historyStyles.historySideWhite}`}>
 								<span>{t('history.list.white')}</span>
 								<strong>{getPlayersBySide(game, t).white}</strong>
 							</div>
 
-							<div className="history-side history-side-black">
+							<div className={`${historyStyles.historySide} ${historyStyles.historySideBlack}`}>
 								<span>{t('history.list.black')}</span>
 								<strong>{getPlayersBySide(game, t).black}</strong>
 							</div>

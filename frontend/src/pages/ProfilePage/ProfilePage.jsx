@@ -7,15 +7,12 @@ import { ProfileAvatarForm } from './components/ProfileAvatarForm';
 import { fetchAchievements, fetchUserAchievements } from './hooks/profileApi';
 import { getApiErrorMessage } from '../../api';
 import { useTranslation } from '../../contexts/LanguageContext';
-import './style/avatar.css';
-import './style/edit-form.css';
-import './style/messages.css';
-import './style/profile.css';
-import './style/summary.css';
-import './style/achievements.css';
 import cardsStyles from '../../styles/cards/cards.module.css';
 import introCardsStyles from '../../styles/cards/intro-cards.module.css';
 import buttonStyles from '../../styles/buttons/button.module.css';
+import profileStyles from './style/profile.module.css';
+import achievementsStyles from './style/achievements.module.css';
+import messagesStyles from './style/messages.module.css';
 
 export function AchievementsPanel({ userId, onError })
 {
@@ -56,30 +53,30 @@ export function AchievementsPanel({ userId, onError })
 	}, [onError]);
 
 	return (
-		<div className="achievements-panel">
-			<header className="achievements-header">
+		<div className={`${achievementsStyles.achievementsPanel}`}>
+			<header className={`${achievementsStyles.achievementsHeader}`}>
 				<p className={`${introCardsStyles.sectionKicker}`}>{t('profile.achievements.kicker')}</p>
-				<h2 className="card-title">{t('profile.achievements.title')}</h2>
+				<h2 className={`${profileStyles.cardTitle}`}>{t('profile.achievements.title')}</h2>
 				<p>{t('profile.achievements.copy')}</p>
 			</header>
 
 			{loading ? (
 				<p>{t('profile.achievements.loading')}</p>
 			) : (
-				<div className="achievements-grid">
+				<div className={`${achievementsStyles.achievementsGrid}`}>
 					{achievements.map((achievement) => (
 						<article
 							key={achievement.id}
-							className={`achievement-card${achievement.unlocked ? '' : ' achievement-card-locked'}`}
+							className={`${achievementsStyles.achievementCard}${achievement.unlocked ? '' : ` ${achievementsStyles.achievementCardLocked}`}`}
 						>
-							<span className="achievement-emoji" aria-hidden="true">
+							<span className={`${achievementsStyles.achievementEmoji}`} aria-hidden="true">
 								{achievement.emoji}
 							</span>
-							<div className="achievement-info">
+							<div className={`${achievementsStyles.achievementInfo}`}>
 								<h3>{achievement.title}</h3>
 								<p>{achievement.description}</p>
 								<span
-									className={`achievement-badge${achievement.unlocked ? ' achievement-badge-unlocked' : ''}`}
+									className={`${achievementsStyles.achievementBadge}${achievement.unlocked ? ` ${achievementsStyles.achievementBadgeUnlocked}` : ''}`}
 								>
 									{achievement.unlocked ? t('profile.achievements.completed') : t('profile.achievements.locked')}
 								</span>
@@ -100,15 +97,15 @@ export default function ProfilePage()
 
 	if (profile.loading)
 		return (
-			<section className={`${cardsStyles.card} profile-card`}>
+			<section className={`${cardsStyles.card} ${profileStyles.profileCard}`}>
 				<p>{t('profile.loading')}</p>
 			</section>
 		);
 	if (profile.error && !profile.user)
 	{
 		return (
-			<section className="profile-layout">
-				<article className={`${cardsStyles.card} profile-card`}>
+			<section className={`${profileStyles.profileLayout}`}>
+				<article className={`${cardsStyles.card} ${profileStyles.profileCard}`}>
 					<p className={`${introCardsStyles.formError}`} role="alert">
 						{profile.error}
 					</p>
@@ -126,18 +123,18 @@ export default function ProfilePage()
 	}
 
 	return (
-		<section className="profile-layout">
-			<article className={`${cardsStyles.card} ${introCardsStyles.introCard} profile-card`}>
-				<div className="profile-tabs">
+		<section className={`${profileStyles.profileLayout}`}>
+			<article className={`${cardsStyles.card} ${introCardsStyles.introCard} ${profileStyles.profileCard}`}>
+				<div className={`${achievementsStyles.profileTabs}`}>
 					<button
-						className={`profile-tab-btn${activeTab === 'settings' ? ' profile-tab-btn-active' : ''}`}
+						className={`${achievementsStyles.profileTabBtn}${activeTab === 'settings' ? ` ${achievementsStyles.profileTabBtnActive}` : ''}`}
 						type="button"
 						onClick={() => setActiveTab('settings')}
 					>
 						{t('profile.tabs.settings')}
 					</button>
 					<button
-						className={`profile-tab-btn${activeTab === 'achievements' ? ' profile-tab-btn-active' : ''}`}
+						className={`${achievementsStyles.profileTabBtn}${activeTab === 'achievements' ? ` ${achievementsStyles.profileTabBtnActive}` : ''}`}
 						type="button"
 						onClick={() => setActiveTab('achievements')}
 					>
@@ -152,7 +149,7 @@ export default function ProfilePage()
 				)}
 
 				{profile.success && (
-					<p className="profile-success">
+					<p className={`${messagesStyles.profileSuccess}`}>
 						{profile.success}
 					</p>
 				)}
@@ -163,16 +160,16 @@ export default function ProfilePage()
 							{t('profile.settings.kicker')}
 						</p>
 
-						<h1 className="card-title">
+						<h1 className={`${profileStyles.cardTitle}`}>
 							{t('profile.settings.title')}
 						</h1>
 
-						<div className="profile-left">
+						<div className={`${profileStyles.profileLeft}`}>
 							<ProfileAvatarForm profile={profile} />
 							<ProfileSummary user={profile.user} />
 						</div>
 
-						<div className="profile-right">
+						<div className={`${profileStyles.profileRight}`}>
 							<ProfileEditForm profile={profile} />
 						</div>
 					</>

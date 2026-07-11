@@ -1,12 +1,13 @@
 import { useTranslation } from '../../../contexts/LanguageContext';
 import buttonStyles from '../../../styles/buttons/button.module.css';
 import layoutStyles from '../../../styles/layout/layout.module.css';
+import editFormStyles from '../style/edit-form.module.css';
 
 export function ProfileEditForm({ profile })
 {
 	const { t } = useTranslation();
 	return (
-		<form className="profile-edit-form" onSubmit={profile.saveProfile} noValidate>
+		<form className={`${editFormStyles.profileEditForm}`} onSubmit={profile.saveProfile} noValidate>
 			<label className={`${layoutStyles.lab}`} htmlFor="profile-display-name">
 				{t('profile.edit.display_name_label')}
 			</label>

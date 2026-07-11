@@ -1,4 +1,6 @@
 import { useTranslation } from '../../../contexts/LanguageContext';
+import avatarStyles from '../style/avatar.module.css';
+import summaryStyles from '../style/summary.module.css';
 
 export function ProfileSummary({ user })
 {
@@ -24,8 +26,8 @@ export function ProfileSummary({ user })
 	const { level: calculatedLevel, rank: calculatedRank, color: levelColor, progress } = getLevelDetails(user?.elo);
 
 	return (
-		<div className="profile-summary">
-			<div className="profile-avatar">
+		<div className={`${summaryStyles.profileSummary}`}>
+			<div className={`${avatarStyles.profileAvatar}`}>
 				{user?.avatar_url ? (
 					<img
 						src={user.avatar_url}
@@ -33,7 +35,7 @@ export function ProfileSummary({ user })
 					/>
 				) : (
 					<span
-						className="default-avatar"
+						className={`${avatarStyles.defaultAvatar}`}
 						style={{
 							filter: `hue-rotate(${((user?.username?.length || 0) * 47) % 360}deg)`,
 						}}
@@ -44,25 +46,25 @@ export function ProfileSummary({ user })
 			</div>
 
 			<div>
-				<h2 className="profile-name">
+				<h2 className={`${summaryStyles.profileName}`}>
 					{user?.display_name}
 				</h2>
 
-				<p className="profile-username">
+				<p className={`${summaryStyles.profileUsername}`}>
 					@{user?.username}
 				</p>
 
-				<p className="profile-elo">
+				<p className={`${summaryStyles.profileElo}`}>
 					ELO {user?.elo}
 				</p>
 
-				<div className="profile-level">
-					<span className="profile-level-text" style={{ color: levelColor }}>
+				<div className={`${summaryStyles.profileLevel}`}>
+					<span className={`${summaryStyles.profileLevelText}`} style={{ color: levelColor }}>
 						{t('profile.summary.level')} {calculatedLevel} - {calculatedRank}
 					</span>
-					<div className="profile-progress-bar" title={`${Math.round(progress)}% ${t('profile.summary.to_next_level')}`}>
+					<div className={`${summaryStyles.profileProgressBar}`} title={`${Math.round(progress)}% ${t('profile.summary.to_next_level')}`}>
 						<div 
-							className="profile-progress-fill" 
+							className={`${summaryStyles.profileProgressFill}`} 
 							style={{ width: `${progress}%`, backgroundColor: levelColor }}
 						/>
 					</div>

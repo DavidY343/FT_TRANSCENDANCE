@@ -1,0 +1,24 @@
+
+.profileEditForm
+{
+	width: min(100%, 620px);
+	justify-self: center;
+	display: grid;
+	gap: 1rem;
+}
+
+.profileEditForm input
+{
+	text-align: center;
+}
+
+.profileEditForm .submitBtn
+{
+	justify-self: center;
+}
+@media (max-width: 760px) {
+	.profileEditForm {
+		grid-column: 1;
+		width: 100%;
+	}
+}

@@ -1,13 +1,13 @@
 import { RegisterForm } from "./components/AuthForm";
 import { RegisterIntroCard } from "./components/AuthIntroCard";
 import { useRegisterForm } from './hooks/useFormHooks/useRegisterForm';
-import './style/auth.css';
+import authStyles from './style/auth.module.css';
 export default function Register()
 {
 	const registerForm = useRegisterForm();
 
 	return (
-		<section className="auth-layout">
+		<section className={`${authStyles.authLayout}`}>
 			<RegisterIntroCard />
 			<RegisterForm
 				form={registerForm.form}

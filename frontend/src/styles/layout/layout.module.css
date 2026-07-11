@@ -36,3 +36,11 @@ APP STRUCTURE
 	white-space: nowrap;
 	border: 0;
 }
+
+@media (max-width: 768px) {
+	.appLayout {
+		min-height: 100dvh;
+		justify-content: center;
+		text-align: center;
+	}
+}

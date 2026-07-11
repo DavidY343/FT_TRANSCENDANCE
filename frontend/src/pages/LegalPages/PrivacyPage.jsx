@@ -1,26 +1,26 @@
 import { useTranslation } from '../../contexts/LanguageContext';
-import './style/legal.css';
 import cardsStyles from '../../styles/cards/cards.module.css';
 import introCardsStyles from '../../styles/cards/intro-cards.module.css';
+import legalStyles from './style/legal.module.css';
 
 export default function PrivacyPage()
 {
 	const { t } = useTranslation();
 
 	return (
-		<section className="legal-page">
-			<div className={`${cardsStyles.card} ${introCardsStyles.introCard} legal-card`}>
-				<header className="legal-header">
+		<section className={`${legalStyles.legalPage}`}>
+			<div className={`${cardsStyles.card} ${introCardsStyles.introCard} ${legalStyles.legalCard}`}>
+				<header className={`${legalStyles.legalHeader}`}>
 					<p className={`${introCardsStyles.sectionKicker}`}>{t('legal.privacy.kicker')}</p>
 					<h1 className={`${introCardsStyles.introTitle}`}>{t('legal.privacy.title')}</h1>
-					<p className="legal-intro">
+					<p className={`${legalStyles.legalIntro}`}>
 						{t('legal.privacy.intro1')}
 						<strong> {t('legal.privacy.intro_strong')}</strong> {t('legal.privacy.intro2')}
 					</p>
 				</header>
 
-				<div className="legal-grid">
-					<article className="legal-item">
+				<div className={`${legalStyles.legalGrid}`}>
+					<article className={`${legalStyles.legalItem}`}>
 						<h2>{t('legal.privacy.sec1_title')}</h2>
 						<p>{t('legal.privacy.sec1_p1')}</p>
 						<ul>
@@ -34,7 +34,7 @@ export default function PrivacyPage()
 						</p>
 					</article>
 
-					<article className="legal-item">
+					<article className={`${legalStyles.legalItem}`}>
 						<h2>{t('legal.privacy.sec2_title')}</h2>
 						<p>{t('legal.privacy.sec2_p1')}</p>
 						<ul>
@@ -49,13 +49,13 @@ export default function PrivacyPage()
 						</p>
 					</article>
 
-					<article className="legal-item">
+					<article className={`${legalStyles.legalItem}`}>
 						<h2>{t('legal.privacy.sec3_title')}</h2>
 						<p>{t('legal.privacy.sec3_p1')}</p>
 						<p>{t('legal.privacy.sec3_p2')}</p>
 					</article>
 
-					<article className="legal-item">
+					<article className={`${legalStyles.legalItem}`}>
 						<h2>{t('legal.privacy.sec4_title')}</h2>
 						<p>
 							{t('legal.privacy.sec4_p1_1')} <strong>{t('legal.privacy.not')}</strong> {t('legal.privacy.sec4_p1_2')}
@@ -64,12 +64,12 @@ export default function PrivacyPage()
 						<p>{t('legal.privacy.sec4_p2')}</p>
 					</article>
 
-					<article className="legal-item">
+					<article className={`${legalStyles.legalItem}`}>
 						<h2>{t('legal.privacy.sec5_title')}</h2>
 						<p>{t('legal.privacy.sec5_p1')}</p>
 					</article>
 
-					<article className="legal-item">
+					<article className={`${legalStyles.legalItem}`}>
 						<h2>{t('legal.privacy.sec6_title')}</h2>
 						<p>{t('legal.privacy.sec6_p1')}</p>
 						<ul>
@@ -79,7 +79,7 @@ export default function PrivacyPage()
 						</ul>
 					</article>
 
-					<article className="legal-item">
+					<article className={`${legalStyles.legalItem}`}>
 						<h2>{t('legal.privacy.sec7_title')}</h2>
 						<p>{t('legal.privacy.sec7_p1')}</p>
 						<ul>
@@ -91,17 +91,17 @@ export default function PrivacyPage()
 						<p>{t('legal.privacy.sec7_p2')}</p>
 					</article>
 
-					<article className="legal-item">
+					<article className={`${legalStyles.legalItem}`}>
 						<h2>{t('legal.privacy.sec8_title')}</h2>
 						<p>{t('legal.privacy.sec8_p1')}</p>
 					</article>
 
-					<article className="legal-item">
+					<article className={`${legalStyles.legalItem}`}>
 						<h2>{t('legal.privacy.sec9_title')}</h2>
 						<p>{t('legal.privacy.sec9_p1')}</p>
 					</article>
 
-					<article className="legal-item">
+					<article className={`${legalStyles.legalItem}`}>
 						<h2>{t('legal.privacy.sec10_title')}</h2>
 						<p>{t('legal.privacy.sec10_p1')}</p>
 					</article>

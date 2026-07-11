@@ -44,3 +44,16 @@
 	align-items: center;
 	gap: 1rem;
 }
+
+@media (max-width: 768px) {
+	.topbar {
+		justify-content: space-between;
+	}
+	.brandSubtitle {
+		display: none;
+	}
+	.topNav {
+		display: flex;
+		flex-direction: column;
+	}
+}

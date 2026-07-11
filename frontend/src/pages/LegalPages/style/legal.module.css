@@ -1,4 +1,4 @@
-.legal-page
+.legalPage
 {
 	grid-column: 1 / -1;
 	width: 100%;
@@ -8,7 +8,7 @@
 	place-items: center;
 }
 
-.legal-card
+.legalCard
 {
 	width: min(100%, 1080px);
 	min-height: 0;
@@ -16,21 +16,21 @@
 	text-align: center;
 }
 
-.legal-header
+.legalHeader
 {
 	display: grid;
 	justify-items: center;
 	gap: 0.65rem;
 }
 
-.legal-header .section-kicker,
-.legal-header .intro-title,
-.legal-header .legal-intro
+.legalHeader .sectionKicker,
+.legalHeader .introTitle,
+.legalHeader .legalIntro
 {
 	margin: 0;
 }
 
-.legal-intro
+.legalIntro
 {
 	max-width: 780px;
 	color: var(--text-soft);
@@ -38,14 +38,14 @@
 	line-height: 1.7;
 }
 
-.legal-grid
+.legalGrid
 {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: 1rem;
 }
 
-.legal-item
+.legalItem
 {
 	display: grid;
 	align-content: start;
@@ -58,7 +58,7 @@
 	text-align: left;
 }
 
-.legal-item h2
+.legalItem h2
 {
 	margin: 0;
 	color: var(--text);
@@ -66,8 +66,8 @@
 	line-height: 1.2;
 }
 
-.legal-card .legal-item p,
-.legal-card .legal-item li
+.legalCard .legalItem p,
+.legalCard .legalItem li
 {
 	margin: 0;
 	color: var(--text-soft);
@@ -75,7 +75,7 @@
 	line-height: 1.65;
 }
 
-.legal-item ul
+.legalItem ul
 {
 	margin: 0;
 	padding-left: 1.15rem;
@@ -83,12 +83,12 @@
 	gap: 0.45rem;
 }
 
-.legal-item strong
+.legalItem strong
 {
 	color: var(--text);
 }
 
-.legal-item code
+.legalItem code
 {
 	border: 1px solid rgb(255 255 255 / 0.08);
 	border-radius: 6px;
@@ -100,19 +100,19 @@
 
 @media (max-width: 760px)
 {
-	.legal-page
+	.legalPage
 	{
 		min-height: auto;
 		padding: 1rem;
 	}
 
-	.legal-card
+	.legalCard
 	{
 		width: min(100%, 560px);
 		padding: 1.25rem;
 	}
 
-	.legal-grid
+	.legalGrid
 	{
 		grid-template-columns: 1fr;
 	}

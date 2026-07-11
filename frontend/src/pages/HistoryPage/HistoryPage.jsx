@@ -3,9 +3,9 @@ import { api, getApiErrorMessage } from '../../api';
 import { HistoryListCard } from './components/HistoryListCard';
 import { useTranslation } from '../../contexts/LanguageContext';
 
-import './style/history.css';
 import cardsStyles from '../../styles/cards/cards.module.css';
 import introCardsStyles from '../../styles/cards/intro-cards.module.css';
+import historyStyles from './style/history.module.css';
 
 /*
 	HistoryPage → Gestiona y muestra el historial de partidas del usuario.
@@ -68,8 +68,8 @@ export default function HistoryPage()
 	}, []);
 
 	return (
-		<section className="history-layout">
-			<aside className={`${cardsStyles.card} ${introCardsStyles.introCard} history-hero`}>
+		<section className={`${historyStyles.historyLayout}`}>
+			<aside className={`${cardsStyles.card} ${introCardsStyles.introCard} ${historyStyles.historyHero}`}>
 				<p className={`${introCardsStyles.sectionKicker}`}>{t('history.kicker')}</p>
 
 				<h2 className={`${introCardsStyles.introTitle}`}>
@@ -80,7 +80,7 @@ export default function HistoryPage()
 					{t('history.desc')}
 				</p>
 
-				<div className="history-stats">
+				<div className={`${historyStyles.historyStats}`}>
 					<div className={`${introCardsStyles.infoNote}`}>
 						<span>{t('history.total_games')}</span>
 						<p>{games.length}</p>

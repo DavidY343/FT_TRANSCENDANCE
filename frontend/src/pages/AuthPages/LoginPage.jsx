@@ -1,13 +1,13 @@
 import { LoginIntroCard } from "./components/AuthIntroCard";
 import { LoginForm } from "./components/AuthForm";
 import { useLoginForm } from './hooks/useFormHooks/useLoginForm';
-import './style/auth.css';
+import authStyles from './style/auth.module.css';
 export default function LoginPage()
 {
 	const loginForm = useLoginForm();
 
 	return (
-		<section className="auth-layout">
+		<section className={`${authStyles.authLayout}`}>
 			<LoginIntroCard />
 			<LoginForm
 				email={loginForm.email}

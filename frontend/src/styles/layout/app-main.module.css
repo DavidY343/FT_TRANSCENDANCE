@@ -22,3 +22,11 @@ APP MAIN
 	width: 100%;
 	margin: 0 auto;
 }
+
+@media (max-width: 768px) {
+	.appMain {
+		overflow-y: auto;
+		padding-inline: 1rem;
+		padding-block: 1rem;
+	}
+}

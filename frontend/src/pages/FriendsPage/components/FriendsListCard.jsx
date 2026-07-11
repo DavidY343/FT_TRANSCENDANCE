@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from '../../../contexts/LanguageContext';
 import cardsStyles from '../../../styles/cards/cards.module.css';
 import buttonStyles from '../../../styles/buttons/button.module.css';
+import friendsStyles from '../style/friends.module.css';
 
 export function FriendsListCard({
 	friends,
@@ -21,7 +22,7 @@ export function FriendsListCard({
 
 			{feedback && (
 				<p
-					className={`friends-message friends-message-${feedback.type}`}
+					className={`${friendsStyles.friendsMessage} ${feedback.type === 'error' ? friendsStyles.friendsMessageError : friendsStyles.friendsMessageSuccess}`}
 					role={feedback.type === 'error' ? 'alert' : 'status'}
 					aria-live="polite"
 				>
@@ -30,14 +31,14 @@ export function FriendsListCard({
 			)}
 			
 			{loading ? (
-				<p className="friends-empty">
+				<p className={`${friendsStyles.friendsEmpty}`}>
 					{t('friends.list.loading')}
 				</p>
 			) : friends.length > 0 ? (
-				<div className="friends-list">
+				<div className={`${friendsStyles.friendsList}`}>
 					{friends.map((friend) => (
-						<div className="friend-row" key={friend.id}>
-							<div className="friend-identity">
+						<div className={`${friendsStyles.friendRow}`} key={friend.id}>
+							<div className={`${friendsStyles.friendIdentity}`}>
 								<strong>
 									<Link to={`/profile/${friend.id}`} className="profile-link">
 										{friend.display_name}
@@ -50,7 +51,7 @@ export function FriendsListCard({
 									</Link>
 								</span>
 
-								<span className={friend.online ? 'friend-online' : 'friend-offline'}>
+								<span className={friend.online ? friendsStyles.friendOnline : friendsStyles.friendOffline}>
 									{friend.online ? t('friends.list.status_online') : t('friends.list.status_offline')}
 								</span>
 							</div>
@@ -67,7 +68,7 @@ export function FriendsListCard({
 					))}
 				</div>
 			) : (
-				<p className="friends-empty">
+				<p className={`${friendsStyles.friendsEmpty}`}>
 					{t('friends.list.empty')}
 				</p>
 			)}

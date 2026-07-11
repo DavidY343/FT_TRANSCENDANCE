@@ -4,10 +4,10 @@ import { api, getApiErrorMessage } from '../../api';
 import { useTranslation } from '../../contexts/LanguageContext';
 import { ProfileSummary } from '../ProfilePage/components/ProfileSummary';
 import { AchievementsPanel } from '../ProfilePage/ProfilePage';
-import '../ProfilePage/style/achievements.css';
 import cardsStyles from '../../styles/cards/cards.module.css';
 import introCardsStyles from '../../styles/cards/intro-cards.module.css';
 import buttonStyles from '../../styles/buttons/button.module.css';
+import profileStyles from '../ProfilePage/style/profile.module.css';
 
 export default function PublicProfilePage()
 {
@@ -50,8 +50,8 @@ export default function PublicProfilePage()
 	if (loading)
 	{
 		return (
-			<section className="profile-layout">
-				<article className={`${cardsStyles.card} profile-card`}>
+			<section className={`${profileStyles.profileLayout}`}>
+				<article className={`${cardsStyles.card} ${profileStyles.profileCard}`}>
 					<p>{t('profile.loading')}</p>
 				</article>
 			</section>
@@ -61,8 +61,8 @@ export default function PublicProfilePage()
 	if (error || !user)
 	{
 		return (
-			<section className="profile-layout">
-				<article className={`${cardsStyles.card} profile-card`}>
+			<section className={`${profileStyles.profileLayout}`}>
+				<article className={`${cardsStyles.card} ${profileStyles.profileCard}`}>
 					<p className={`${introCardsStyles.formError}`} role="alert">
 						{error || "User not found"}
 					</p>
@@ -75,9 +75,9 @@ export default function PublicProfilePage()
 	}
 
 	return (
-		<section className="profile-layout">
-			<article className={`${cardsStyles.card} ${introCardsStyles.introCard} profile-card`} style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem', padding: 'clamp(1.5rem, 4vw, 2.5rem)' }}>
-				<div className="profile-left" style={{ margin: '0 auto', width: '100%', maxWidth: '400px', gridColumn: 'unset' }}>
+		<section className={`${profileStyles.profileLayout}`}>
+			<article className={`${cardsStyles.card} ${introCardsStyles.introCard} ${profileStyles.profileCard}`} style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem', padding: 'clamp(1.5rem, 4vw, 2.5rem)' }}>
+				<div className={`${profileStyles.profileLeft}`} style={{ margin: '0 auto', width: '100%', maxWidth: '400px', gridColumn: 'unset' }}>
 					<ProfileSummary user={user} />
 				</div>
 				<div style={{ width: '100%' }}>

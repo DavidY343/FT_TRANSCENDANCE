@@ -1,4 +1,4 @@
-.profile-layout
+.profileLayout
 {
 	grid-column: 1 / -1;
 	width: min(100%, 1180px);
@@ -8,7 +8,7 @@
 	place-items: center;
 }
 
-.profile-card
+.profileCard
 {
 	width: min(100%, 940px);
 	display: grid;
@@ -17,19 +17,19 @@
 	gap: clamp(1.25rem, 4vw, 2.75rem);
 }
 
-.profile-card .section-kicker,
-.profile-card .card-title
+.profileCard .sectionKicker,
+.profileCard .cardTitle
 {
 	grid-column: 1 / -1;
 }
 
-.profile-card .section-kicker
+.profileCard .sectionKicker
 {
 	margin: 0;
 	text-align: center;
 }
 
-.profile-card .card-title
+.profileCard .cardTitle
 {
 	margin: 0;
 	text-align: center;
@@ -38,7 +38,7 @@
 }
 
 
-.profile-left
+.profileLeft
 {
 	display: grid;
 	justify-items: center;
@@ -51,7 +51,7 @@
 	background: rgba(42, 42, 42, 0.32);
 }
 
-.profile-right
+.profileRight
 {
 	display: grid;
 	align-content: start;
@@ -61,4 +61,28 @@
 	border-radius: 8px;
 	padding: clamp(1rem, 3vw, 1.4rem);
 	background: rgba(42, 42, 42, 0.32);
+}
+
+@media (max-width: 760px) {
+	.profileLayout {
+		padding: 1rem;
+	}
+	.profileCard {
+		width: min(100%, 560px);
+		padding: 1.25rem;
+		grid-template-columns: 1fr;
+		gap: 1rem;
+	}
+	.profileCard .cardTitle {
+		text-align: center;
+	}
+	.profileSummary {
+		grid-row: auto;
+		justify-items: center;
+		text-align: center;
+	}
+	.profileLeft, .profileRight {
+		grid-column: 1;
+		width: 100%;
+	}
 }

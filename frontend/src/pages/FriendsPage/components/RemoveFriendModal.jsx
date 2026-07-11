@@ -2,6 +2,7 @@ import { useModalA11y } from '../../../hooks/useModalA11y';
 import { useTranslation } from '../../../contexts/LanguageContext';
 import cardsStyles from '../../../styles/cards/cards.module.css';
 import buttonStyles from '../../../styles/buttons/button.module.css';
+import friendsStyles from '../style/friends.module.css';
 
 export function RemoveFriendModal({
 	friend,
@@ -25,20 +26,20 @@ export function RemoveFriendModal({
 	const displayName = friend.display_name || friend.username || t('friends.modal.default_friend');
 
 	return (
-		<div className="friends-modal-backdrop" role="dialog" aria-modal="true" ref={modalRef} tabIndex="-1">
+		<div className={`${friendsStyles.friendsModalBackdrop}`} role="dialog" aria-modal="true" ref={modalRef} tabIndex="-1">
 			<div
-				className={`${cardsStyles.card} friends-modal-card`}
+				className={`${cardsStyles.card} ${friendsStyles.friendsModalCard}`}
 				aria-labelledby="remove-friend-title"
 			>
 				<h2 id="remove-friend-title" className={`${cardsStyles.panelTitle}`}>
 					{t('friends.modal.title')}
 				</h2>
 
-				<p className="friends-modal-copy">
+				<p className={`${friendsStyles.friendsModalCopy}`}>
 					{t('friends.modal.copy').replace('{name}', displayName)}
 				</p>
 
-				<div className="friends-modal-actions">
+				<div className={`${friendsStyles.friendsModalActions}`}>
 					<button
 						className={`${buttonStyles.btn}`}
 						type="button"
@@ -50,7 +51,7 @@ export function RemoveFriendModal({
 					</button>
 
 					<button
-						className={`${buttonStyles.btn} friends-danger-btn`}
+						className={`${buttonStyles.btn} ${friendsStyles.friendsDangerBtn}`}
 						type="button"
 						disabled={actionLoading[friend.id]}
 						onClick={onConfirm}

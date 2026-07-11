@@ -1,4 +1,4 @@
-.lobby-layout
+.lobbyLayout
 {
 	display: grid;
 	gap: clamp(1rem, 3vw, 2rem);
@@ -7,34 +7,34 @@
 	padding: clamp(1rem, 3vw, 2rem);
 }
 
-.lobby-hero
+.lobbyHero
 {
 	display: grid;
 	gap: 2rem;
 }
 
-.lobby-actions-grid
+.lobbyActionsGrid
 {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 	gap: clamp(1rem, 3vw, 2rem);
 }
 
-.lobby-status-strip
+.lobbyStatusStrip
 {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
 	gap: 1rem;
 }
 
-.lobby-status-item
+.lobbyStatusItem
 {
 	border-left: 3px solid var(--chess-light);
 	padding: 0.9rem 1rem;
 	background: var(--bg);
 }
 
-.lobby-status-item span
+.lobbyStatusItem span
 {
 	display: block;
 	color: var(--text-muted);
@@ -43,7 +43,7 @@
 	text-transform: uppercase;
 }
 
-.lobby-status-item strong
+.lobbyStatusItem strong
 {
 	display: block;
 	margin-top: 0.35rem;
@@ -51,14 +51,14 @@
 	font-size: 1.4rem;
 }
 
-.lobby-action-card
+.lobbyActionCard
 {
 	display: grid;
 	align-content: start;
 	gap: 1rem;
 }
 
-.lobby-card-title
+.lobbyCardTitle
 {
 	margin: 0;
 	color: var(--text);
@@ -66,12 +66,12 @@
 	line-height: 2;
 }
 
-.lobby-card-play
+.lobbyCardPlay
 {
 	justify-self: center;
 }
 
-.lobby-card-copy
+.lobbyCardCopy
 {
 	text-align: center;
 	margin: 0;
@@ -80,7 +80,7 @@
 	line-height: 1.6;
 }
 
-.lobby-card-actions
+.lobbyCardActions
 {
 	display: flex;
 	flex-wrap: wrap;
@@ -88,7 +88,7 @@
 	margin-top: 0.5rem;
 }
 
-.lobby-card-actions .btn
+.lobbyCardActions .btn
 {
 	flex: 1 1 180px;
 }
@@ -118,4 +118,10 @@ button:disabled
 {
 	cursor: not-allowed;
 	opacity: 0.55;
+}
+
+@media (max-width: 760px) {
+	.lobbyStatusStrip {
+		grid-template-columns: 1fr;
+	}
 }

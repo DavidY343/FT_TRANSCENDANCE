@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom';
 import { api, getApiErrorMessage } from '../../api';
 import { useTranslation } from '../../contexts/LanguageContext';
 
-import './style/leaderboard.css';
 import cardsStyles from '../../styles/cards/cards.module.css';
 import introCardsStyles from '../../styles/cards/intro-cards.module.css';
 import buttonStyles from '../../styles/buttons/button.module.css';
+import leaderboardStyles from './style/leaderboard.module.css';
 
 /*
 	LeaderboardRow → Representa una posición individual del ranking.
@@ -25,12 +25,12 @@ function LeaderboardRow({ row, rank })
 	const displayName = row.display_name || row.username || t('leaderboard.unknown_player');
 
 	return (
-		<li className="leaderboard-item">
-			<div className="leaderboard-rank">
+		<li className={`${leaderboardStyles.leaderboardItem}`}>
+			<div className={`${leaderboardStyles.leaderboardRank}`}>
 				<span>#{rank}</span>
 			</div>
 
-			<div className="leaderboard-player">
+			<div className={`${leaderboardStyles.leaderboardPlayer}`}>
 				<strong>
 					<Link to={`/profile/${row.id}`} className="profile-link">
 						{displayName}
@@ -43,7 +43,7 @@ function LeaderboardRow({ row, rank })
 				</span>
 			</div>
 
-			<div className="leaderboard-rating">
+			<div className={`${leaderboardStyles.leaderboardRating}`}>
 				<span>{t('leaderboard.rating')}</span>
 				<strong>{row.elo ?? '-'}</strong>
 			</div>
@@ -117,8 +117,8 @@ export default function LeaderboardPage()
 	), [rows]);
 
 	return (
-		<section className="leaderboard-layout">
-			<aside className={`${cardsStyles.card} ${introCardsStyles.introCard} leaderboard-hero`}>
+		<section className={`${leaderboardStyles.leaderboardLayout}`}>
+			<aside className={`${cardsStyles.card} ${introCardsStyles.introCard} ${leaderboardStyles.leaderboardHero}`}>
 				<p className={`${introCardsStyles.sectionKicker}`}>{t('leaderboard.kicker')}</p>
 
 				<h2 className={`${introCardsStyles.introTitle}`}>
@@ -129,7 +129,7 @@ export default function LeaderboardPage()
 					{t('leaderboard.desc')}
 				</p>
 
-				<div className="leaderboard-stats">
+				<div className={`${leaderboardStyles.leaderboardStats}`}>
 					<div className={`${introCardsStyles.infoNote}`}>
 						<span>{t('leaderboard.players_count')}</span>
 						<p>{rows.length}</p>
@@ -141,20 +141,20 @@ export default function LeaderboardPage()
 					</div>
 				</div>
 
-				<div className="leaderboard-champion">
+				<div className={`${leaderboardStyles.leaderboardChampion}`}>
 					<span>{t('leaderboard.current_leader')}</span>
 					<strong>{topPlayer?.display_name || topPlayer?.username || '-'}</strong>
 				</div>
 
 			</aside>
 
-			<aside className={`${cardsStyles.card} ${cardsStyles.panelCard} leaderboard-panel`}>
+			<aside className={`${cardsStyles.card} ${cardsStyles.panelCard} ${leaderboardStyles.leaderboardPanel}`}>
 				<h3 className={`${cardsStyles.panelTitle}`}>
 					{t('leaderboard.standings')}
 				</h3>
 
 				{loading ? (
-					<p className="leaderboard-empty" aria-live="polite">
+					<p className={`${leaderboardStyles.leaderboardEmpty}`} aria-live="polite">
 						{t('leaderboard.loading')}
 					</p>
 				) : error ? (
@@ -172,11 +172,11 @@ export default function LeaderboardPage()
 						</button>
 					</div>
 				) : rows.length === 0 ? (
-					<p className="leaderboard-empty">
+					<p className={`${leaderboardStyles.leaderboardEmpty}`}>
 						{t('leaderboard.empty')}
 					</p>
 				) : (
-					<ol className="leaderboard-list">
+					<ol className={`${leaderboardStyles.leaderboardList}`}>
 						{rows.map((row, index) => (
 							<LeaderboardRow
 								key={row.id}

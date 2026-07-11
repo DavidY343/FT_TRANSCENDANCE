@@ -5,6 +5,7 @@ import cardsStyles from '../../../styles/cards/cards.module.css';
 import buttonStyles from '../../../styles/buttons/button.module.css';
 import layoutStyles from '../../../styles/layout/layout.module.css';
 import introCardsStyles from '../../../styles/cards/intro-cards.module.css';
+import authStyles from '../style/auth.module.css';
 
 export function RegisterForm({
 	form,
@@ -25,7 +26,7 @@ export function RegisterForm({
 				{t('auth.register.title')}
 			</h2>
 
-			<form className="form-container" onSubmit={onSubmit} noValidate>
+			<form className={`${authStyles.formContainer}`} onSubmit={onSubmit} noValidate>
 				<label className={`${layoutStyles.lab}`} htmlFor="register-email">{t('auth.register.emailLabel')}</label>
 				<input
 					className={errorField === 'email' ? 'input-error' : ''}
@@ -174,7 +175,7 @@ export function LoginForm({
 				{t('auth.login.title')}
 			</h2>
 
-			<form className="form-container" onSubmit={onSubmit} noValidate>
+			<form className={`${authStyles.formContainer}`} onSubmit={onSubmit} noValidate>
 				<label className={`${layoutStyles.lab}`} htmlFor="login-email">{t('auth.login.emailLabel')}</label>
 				<input
 					className={errorField === 'email' ? 'input-error' : ''}

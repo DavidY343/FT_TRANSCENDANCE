@@ -10,3 +10,11 @@
 
 	background: var(--surface);
 }
+
+@media (max-width: 768px) {
+	.appFooter {
+		text-align: center;
+		justify-content: space-between;
+		padding-inline: 4rem;
+	}
+}

@@ -1,4 +1,4 @@
-.auth-layout
+.authLayout
 {
 	display: grid;
 	align-items: stretch;
@@ -9,9 +9,19 @@
 	padding: clamp(1rem, 3vw, 2rem);
 }
 
-.form-container
+.formContainer
 {
 	display: grid;
 	gap: 2rem;
 	margin-top: 1.5rem;
+}
+
+@media (max-width: 760px) {
+	.authLayout {
+		grid-template-columns: 1fr;
+		padding: 1rem;
+	}
+	.authLayout .introCard {
+		display: none;
+	}
 }

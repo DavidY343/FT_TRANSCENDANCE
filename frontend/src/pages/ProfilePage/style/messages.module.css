@@ -1,4 +1,4 @@
-.profile-success
+.profileSuccess
 {
 	margin: 0;
 	border-radius: 8px;
@@ -9,8 +9,8 @@
 }
 
 
-.profile-card .form-error,
-.profile-card .profile-success
+.profileCard .formError,
+.profileCard .profileSuccess
 {
 	grid-column: 1 / -1;
 }

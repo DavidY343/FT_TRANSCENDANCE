@@ -6,15 +6,15 @@ import { RequestsCard } from './components/RequestsCard';
 import { RemoveFriendModal } from './components/RemoveFriendModal';
 
 import { useFriends } from './hooks/useFriends';
+import friendsStyles from './style/friends.module.css';
 
-import './style/friends.css';
 
 export default function FriendsPage()
 {
 	const friends = useFriends();
 
 	return (
-		<section className="friends-layout">
+		<section className={`${friendsStyles.friendsLayout}`}>
 			<FriendsInfoCard />
 			<SearchCard
 				query={friends.searchQuery}

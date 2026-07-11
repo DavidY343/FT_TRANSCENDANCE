@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from '../../../contexts/LanguageContext';
 import cardsStyles from '../../../styles/cards/cards.module.css';
 import buttonStyles from '../../../styles/buttons/button.module.css';
+import friendsStyles from '../style/friends.module.css';
 
 export function SearchCard({
 	query,
@@ -23,7 +24,7 @@ export function SearchCard({
 				{t('friends.search.title')}
 			</h2>
 
-			<form className="friends-search-form" onSubmit={onSubmit}>
+			<form className={`${friendsStyles.friendsSearchForm}`} onSubmit={onSubmit}>
 				<input
 					type="search"
 					aria-label={t('friends.search.aria_label')}
@@ -43,7 +44,7 @@ export function SearchCard({
 
 			{feedback && (
 				<p
-					className={`friends-message friends-message-${feedback.type}`}
+					className={`${friendsStyles.friendsMessage} ${feedback.type === 'error' ? friendsStyles.friendsMessageError : friendsStyles.friendsMessageSuccess}`}
 					role={feedback.type === 'error' ? 'alert' : 'status'}
 					aria-live="polite"
 				>
@@ -51,10 +52,10 @@ export function SearchCard({
 				</p>
 			)}
 			{results.length > 0 && (
-				<div className="friends-list">
+				<div className={`${friendsStyles.friendsList}`}>
 					{results.map((user) => (
-						<div className="friend-row" key={user.id}>
-							<div className="friend-identity">
+						<div className={`${friendsStyles.friendRow}`} key={user.id}>
+							<div className={`${friendsStyles.friendIdentity}`}>
 								<strong>
 									<Link to={`/profile/${user.id}`} className="profile-link">
 										{user.display_name}
@@ -67,7 +68,7 @@ export function SearchCard({
 									</Link>
 								</span>
 
-								<span className={user.online ? 'friend-online' : 'friend-offline'}>
+								<span className={user.online ? friendsStyles.friendOnline : friendsStyles.friendOffline}>
 									{user.online ? t('friends.search.status_online') : t('friends.search.status_offline')}
 								</span>
 							</div>
@@ -85,7 +86,7 @@ export function SearchCard({
 				</div>
 			)}
 			{hasSearched && !searching && results.length === 0 && (
-				<p className="friends-empty">
+				<p className={`${friendsStyles.friendsEmpty}`}>
 					{t('friends.search.no_players')}
 				</p>
 			)}

@@ -1,4 +1,4 @@
-.profile-summary
+.profileSummary
 {
 	display: grid;
 	justify-items: center;
@@ -8,7 +8,7 @@
 	text-align: center;
 }
 
-.profile-name
+.profileName
 {
 	margin: 0;
 	color: var(--text);
@@ -19,9 +19,9 @@
 	word-break: break-word;
 }
 
-.profile-username,
-.profile-elo,
-.profile-level
+.profileUsername,
+.profileElo,
+.profileLevel
 {
 	margin: 0.35rem 0 0;
 	color: var(--text-soft);
@@ -29,7 +29,7 @@
 	overflow-wrap: anywhere;
 }
 
-.profile-level
+.profileLevel
 {
 	margin-top: 0.5rem;
 	font-weight: 600;
@@ -39,11 +39,11 @@
 	gap: 0.5rem;
 }
 
-.profile-level-text {
+.profileLevelText {
 	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-.profile-progress-bar
+.profileProgressBar
 {
 	width: 100%;
 	max-width: 200px;
@@ -53,9 +53,17 @@
 	overflow: hidden;
 }
 
-.profile-progress-fill
+.profileProgressFill
 {
 	height: 100%;
 	border-radius: 4px;
 	transition: width 0.5s ease-in-out;
+}
+
+@media (max-width: 760px) {
+	.profileName,
+	.profileUsername,
+	.profileElo {
+		text-align: center;
+	}
 }

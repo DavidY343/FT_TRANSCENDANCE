@@ -1,4 +1,4 @@
-.leaderboard-layout
+.leaderboardLayout
 {
 	grid-column: 1 / -1;
 	display: grid;
@@ -10,41 +10,41 @@
 	padding: clamp(0.75rem, 1.5vw, 1.25rem);
 }
 
-.leaderboard-layout > .card
+.leaderboardLayout > .card
 {
 	min-width: 0;
 	height: 100%;
 }
 
-.leaderboard-hero
+.leaderboardHero
 {
 	justify-content: start;
 }
 
-.leaderboard-hero .section-kicker,
-.leaderboard-hero .intro-title
+.leaderboardHero .sectionKicker,
+.leaderboardHero .introTitle
 {
 	margin: 0;
 }
 
-.leaderboard-stats
+.leaderboardStats
 {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: 0.75rem;
 }
 
-.leaderboard-stats .info-note
+.leaderboardStats .infoNote
 {
 	min-width: 0;
 }
 
-.leaderboard-stats .info-note p
+.leaderboardStats .infoNote p
 {
 	overflow-wrap: anywhere;
 }
 
-.leaderboard-champion
+.leaderboardChampion
 {
 	display: grid;
 	gap: 0.35rem;
@@ -54,7 +54,7 @@
 	background: rgba(161, 98, 7, 0.14);
 }
 
-.leaderboard-champion span
+.leaderboardChampion span
 {
 	color: var(--text-muted);
 	font-size: 0.72rem;
@@ -62,7 +62,7 @@
 	text-transform: uppercase;
 }
 
-.leaderboard-champion strong
+.leaderboardChampion strong
 {
 	color: #fef08a;
 	font-size: 1.1rem;
@@ -72,14 +72,14 @@
 	white-space: nowrap;
 }
 
-.leaderboard-panel
+.leaderboardPanel
 {
 	display: grid;
 	align-content: start;
 	gap: 1.25rem;
 }
 
-.leaderboard-list
+.leaderboardList
 {
 	--leaderboard-item-height: 92px;
 
@@ -93,7 +93,7 @@
 	list-style: none;
 }
 
-.leaderboard-item
+.leaderboardItem
 {
 	display: grid;
 	grid-template-columns: auto minmax(0, 1fr) auto;
@@ -107,7 +107,7 @@
 	background: rgb(0 0 0 / 0.14);
 }
 
-.leaderboard-rank
+.leaderboardRank
 {
 	display: grid;
 	place-items: center;
@@ -118,21 +118,21 @@
 	background: rgb(0 0 0 / 0.18);
 }
 
-.leaderboard-rank span
+.leaderboardRank span
 {
 	color: var(--text-soft);
 	font-size: 0.9rem;
 	font-weight: 900;
 }
 
-.leaderboard-player
+.leaderboardPlayer
 {
 	min-width: 0;
 	display: grid;
 	gap: 0.2rem;
 }
 
-.leaderboard-player strong
+.leaderboardPlayer strong
 {
 	color: var(--text);
 	font-size: 1rem;
@@ -142,8 +142,8 @@
 	white-space: nowrap;
 }
 
-.leaderboard-player span,
-.leaderboard-rating span
+.leaderboardPlayer span,
+.leaderboardRating span
 {
 	color: var(--text-muted);
 	font-size: 0.72rem;
@@ -154,7 +154,7 @@
 	white-space: nowrap;
 }
 
-.leaderboard-rating
+.leaderboardRating
 {
 	min-width: 5rem;
 	display: grid;
@@ -162,7 +162,7 @@
 	gap: 0.15rem;
 }
 
-.leaderboard-rating strong
+.leaderboardRating strong
 {
 	color: #bbf7d0;
 	font-size: 1.35rem;
@@ -170,7 +170,7 @@
 	font-weight: 900;
 }
 
-.leaderboard-empty
+.leaderboardEmpty
 {
 	margin: 0;
 	border: 1px dashed var(--line);
@@ -182,7 +182,7 @@
 
 @media (max-width: 920px)
 {
-	.leaderboard-layout
+	.leaderboardLayout
 	{
 		grid-template-columns: 1fr;
 		width: min(100%, 720px);
@@ -191,24 +191,24 @@
 
 @media (max-width: 560px)
 {
-	.leaderboard-stats
+	.leaderboardStats
 	{
 		grid-template-columns: 1fr;
 	}
 
-	.leaderboard-item
+	.leaderboardItem
 	{
 		grid-template-columns: auto minmax(0, 1fr) auto;
 		gap: 0.5rem;
 		padding: 0.65rem;
 	}
 
-	.leaderboard-rank
+	.leaderboardRank
 	{
 		width: 2.5rem;
 	}
 
-	.leaderboard-rating
+	.leaderboardRating
 	{
 		min-width: 3.5rem;
 		justify-items: end;

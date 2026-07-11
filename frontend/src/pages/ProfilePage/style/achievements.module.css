@@ -1,4 +1,4 @@
-.profile-tabs
+.profileTabs
 {
 	grid-column: 1 / -1;
 	display: flex;
@@ -10,7 +10,7 @@
 	padding-bottom: 0.65rem;
 }
 
-.profile-tab-btn
+.profileTabBtn
 {
 	border: 1px solid transparent;
 	border-radius: 8px;
@@ -22,15 +22,15 @@
 	cursor: pointer;
 }
 
-.profile-tab-btn:hover,
-.profile-tab-btn-active
+.profileTabBtn:hover,
+.profileTabBtnActive
 {
 	border-color: rgba(136, 176, 75, 0.48);
 	background: rgba(136, 176, 75, 0.1);
 	color: var(--text);
 }
 
-.achievements-panel
+.achievementsPanel
 {
 	grid-column: 1 / -1;
 	display: grid;
@@ -38,27 +38,27 @@
 	width: 100%;
 }
 
-.achievements-header
+.achievementsHeader
 {
 	text-align: center;
 	display: grid;
 	gap: 0.35rem;
 }
 
-.achievements-header p
+.achievementsHeader p
 {
 	margin: 0;
 	color: var(--text-soft);
 }
 
-.achievements-grid
+.achievementsGrid
 {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
 	gap: 1rem;
 }
 
-.achievement-card
+.achievementCard
 {
 	display: grid;
 	grid-template-columns: auto minmax(0, 1fr);
@@ -70,12 +70,12 @@
 	background: rgba(42, 42, 42, 0.4);
 }
 
-.achievement-card-locked
+.achievementCardLocked
 {
 	opacity: 0.58;
 }
 
-.achievement-emoji
+.achievementEmoji
 {
 	display: grid;
 	place-items: center;
@@ -86,36 +86,36 @@
 	font-size: 1.75rem;
 }
 
-.achievement-card-locked .achievement-emoji
+.achievementCardLocked .achievementEmoji
 {
 	filter: grayscale(1);
 }
 
-.achievement-info
+.achievementInfo
 {
 	min-width: 0;
 	display: grid;
 	gap: 0.25rem;
 }
 
-.achievement-info h3,
-.achievement-info p
+.achievementInfo h3,
+.achievementInfo p
 {
 	margin: 0;
 }
 
-.achievement-info h3
+.achievementInfo h3
 {
 	font-size: 1rem;
 }
 
-.achievement-info p
+.achievementInfo p
 {
 	color: var(--text-soft);
 	font-size: 0.9rem;
 }
 
-.achievement-badge
+.achievementBadge
 {
 	width: fit-content;
 	border-radius: 6px;
@@ -126,7 +126,7 @@
 	background: rgba(255, 255, 255, 0.06);
 }
 
-.achievement-badge-unlocked
+.achievementBadgeUnlocked
 {
 	color: #9bd27c;
 	background: rgba(113, 191, 102, 0.14);
