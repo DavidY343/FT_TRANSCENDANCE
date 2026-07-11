@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom"
 import { clearTokens } from "../../api";
 import { clearStoredAchievements } from '../../hooks/useAchievementToasts';
+import { ConfirmModal } from '../../pages/GameRoom/components/ConfirmModal';
 import { MenuDisplay } from "./MenuDisplay";
 import { useTranslation } from '../../contexts/LanguageContext';
 import buttonStyles from '../../styles/buttons/button.module.css';
@@ -62,15 +64,21 @@ function TopNav(props)
 {
 	const navigate = useNavigate();
 	const { t } = useTranslation();
+	const [confirmLogoutOpen, setConfirmLogoutOpen] = useState(false);
 
-	function handleDevLogin()
+	function requestLogout()
 	{
-		sessionStorage.setItem('dev_auth', 'true');
-		navigate('/lobby');
+		setConfirmLogoutOpen(true);
 	}
 
-	function handleLogout()
+	function cancelLogout()
 	{
+		setConfirmLogoutOpen(false);
+	}
+
+	function confirmLogout()
+	{
+		setConfirmLogoutOpen(false);
 		clearTokens();
 		clearStoredAchievements();
 		sessionStorage.removeItem('dev_auth');
@@ -84,10 +92,19 @@ function TopNav(props)
 				<LanguageSelector />
 				<div className={`${appTopbarStyles.navButtons}`}>
 					<MenuDisplay current={props.current}/>
-					<button className={`${buttonStyles.btn} ${buttonStyles.navBtn}`} onClick={handleLogout}>
+					<button className={`${buttonStyles.btn} ${buttonStyles.navBtn}`} onClick={requestLogout}>
 						{t('topbar.logout')}
 					</button>
 				</div>
+				<ConfirmModal
+					isOpen={confirmLogoutOpen}
+					questionKey="confirm.logout_question"
+					confirmLabelKey="topbar.logout"
+					onCancel={cancelLogout}
+					onConfirm={confirmLogout}
+					danger={true}
+					warning={false}
+				/>
 			</nav>
 		);
 	}

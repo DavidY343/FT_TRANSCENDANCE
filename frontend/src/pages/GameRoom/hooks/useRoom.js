@@ -215,6 +215,7 @@ export function useRoom(gameId)
 		cancelAction: actions.cancelAction,
 		confirmResign: actions.confirmResign,
 		offerDraw: actions.offerDraw,
+		confirmDrawOffer: actions.confirmDrawOffer,
 		acceptDraw: actions.acceptDraw,
 		declineDraw: actions.declineDraw,
 	};

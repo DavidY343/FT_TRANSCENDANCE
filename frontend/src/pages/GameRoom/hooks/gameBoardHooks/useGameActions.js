@@ -10,6 +10,11 @@ export function useGameActions({ wsRef, setError })
 		setConfirmAction('resign');
 	}
 
+	function requestDrawOffer()
+	{
+		setConfirmAction('draw');
+	}
+
 	function cancelAction()
 	{
 		setConfirmAction(null);
@@ -21,8 +26,9 @@ export function useGameActions({ wsRef, setError })
 		return (sendResign({ wsRef, setError }));
 	}
 
-	function offerDraw()
+	function confirmDrawOffer()
 	{
+		setConfirmAction(null);
 		return (sendDrawOffer({ wsRef, setError }));
 	}
 
@@ -41,7 +47,8 @@ export function useGameActions({ wsRef, setError })
 		requestResign,
 		cancelAction,
 		confirmResign,
-		offerDraw,
+		offerDraw: requestDrawOffer,
+		confirmDrawOffer,
 		acceptDraw,
 		declineDraw,
 	});
