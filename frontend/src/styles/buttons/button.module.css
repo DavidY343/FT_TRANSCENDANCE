@@ -7,6 +7,8 @@
 	align-items: center;
 	justify-content: center;
 	font-family: inherit;
+	font-size: 1.05rem;
+	font-weight: 500;
 	line-height: 1;
 	color: var(--text);
 	background: var(--chess-light);
@@ -43,8 +45,6 @@
 
 .submitBtn
 {
-	font-size: large;
-	font-weight: 700;
 	justify-self: right;
 }
 

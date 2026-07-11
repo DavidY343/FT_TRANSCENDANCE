@@ -12,6 +12,9 @@
 .authCard, .formCard, .panelCard
 {
 	width: 100%;
+	display: grid;
+	align-content: start;
+	gap: 1.75rem;
 }
 
 .panelTitle
