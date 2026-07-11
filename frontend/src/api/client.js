@@ -128,20 +128,16 @@ window.addEventListener('unhandledrejection', (event) => {
 		originalRequest?.url?.includes('/auth/login')
 		|| originalRequest?.url?.includes('/auth/register')
 		|| originalRequest?.url?.includes('/auth/refresh');
+	
+	const refreshToken = getRefreshToken();
 
-	const hasRefreshToken = Boolean(getRefreshToken());
-
-	if ( error.response?.status === 401 && originalRequest && !isAuthEndpoint && hasRefreshToken )
+	if ( error.response?.status === 401 && originalRequest && !isAuthEndpoint && refreshToken )
 		{
 			if (!originalRequest._retry)
 			{
 				originalRequest._retry = true;
 				try
 				{
-					const refreshToken = getRefreshToken();
-					if (!refreshToken)
-						throw new Error('Missing refresh token');
-
 					const response = await axios.post(
 						`${API_BASE}/auth/refresh`,
 						{ refresh_token: refreshToken }
@@ -183,7 +179,6 @@ window.addEventListener('unhandledrejection', (event) => {
 
 		const safeError = new Error(error.message);
 		safeError.isSafe = true;
-		safeError.config = error.config;
 		safeError.code = error.code;
 		safeError.response = error.response;
 
