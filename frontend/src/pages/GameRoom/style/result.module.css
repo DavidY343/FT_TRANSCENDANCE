@@ -50,12 +50,12 @@
 	gap: 1rem;
 }
 
-.gameRoomHasResult .gameInfoColumn
+.resultInfoColumn
 {
 	z-index: 41;
 }
 
-.gameRoomHasResult .gameInfoColumn::before
+.resultInfoColumn::before
 {
 	content: '';
 	position: absolute;
@@ -65,7 +65,7 @@
 	background: var(--result-backdrop-color);
 }
 
-.gameRoomHasResult .resultModalCard
+.resultInfoColumn .resultModalCard
 {
 	position: relative;
 	z-index: 2;

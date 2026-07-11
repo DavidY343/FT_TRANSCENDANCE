@@ -29,7 +29,7 @@ export default function GameRoomPage()
 					aria-hidden="true"
 				/>
 			)}
-			<div className={`${gameRoomStyles.gameInfoColumn}`}>
+			<div className={`${gameRoomStyles.gameInfoColumn}${room.gameResult ? ` ${resultStyles.resultInfoColumn}` : ''}`}>
 				<GameRoomInfoCard gameId={gameId} room={room} />
 				<DisconnectGraceModal room={room} />
 				<ResultModal room={room} />
