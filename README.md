@@ -39,10 +39,10 @@ Artificial Intelligence assistants were utilized during the development of this 
 
 # Team Information
 
-- Product Owner (PO): 
-- Project Manager (PM): 
-- Technical Lead (TL): 
-- Developers (Devs): jrubio-m, dyanez-m, jonjimen, cde-la-r.
+- Product Owner (PO): dyanez-m (Defined the overall project scope and feature requirements, managed the product backlog, and drove the architectural migration from Django to FastAPI).
+- Project Manager (PM): jonjimen (Organized development phases, coordinated team tasks and milestones, and managed initial database/seeding configuration workflows).
+- Technical Lead (TL): jrubio-m (Designed the frontend architecture and React/Vite structure, established technical standards, and coordinated key API and state-synchronization designs).
+- Developers (Devs): jrubio-m, dyanez-m, jonjimen, cde-la-r (Collaboratively built the core features, designed the user interface, implemented backend APIs and database relations, and synchronized real-time gameplay).
 
 # Project Management
 
