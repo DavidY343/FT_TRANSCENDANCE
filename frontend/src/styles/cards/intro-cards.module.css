@@ -1,6 +1,6 @@
 /* 
 	CARDS
-	Shared intro and form card styles.
+	Estilos compartidos para las tarjetas de introducción y formularios.
  */
 
 
@@ -22,14 +22,14 @@
 
 /*
 	INTRO CARD BEFORE
-	It creates a decorative top border for the intro card
-	::before is used to add the border without extra HTML
-	The pseudo-element does not block clicks or interactions
+	Crea un borde superior decorativo para la tarjeta de introducción
+	Se usa ::before para añadir el borde sin necesidad de HTML extra
+	El pseudo-elemento no bloquea clics ni interacciones
 
-	-content: creates the pseudo-element, even if it is empty
-	-position: absolute places it over the intro-card area
-	-inset: 0: makes it cover the full card: top, right, bottom and left
-	-border-top: draws the colored top line, and pointer-events lets clicks pass through
+	-content: crea el pseudo-elemento, incluso si está vacío
+	-position: absolute lo coloca sobre el área de la tarjeta
+	-inset: 0: hace que cubra toda la tarjeta: arriba, derecha, abajo e izquierda
+	-border-top: dibuja la línea superior coloreada, y pointer-events permite que los clics pasen a través
 */
 .introCard::before
 {

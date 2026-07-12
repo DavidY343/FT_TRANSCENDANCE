@@ -4,12 +4,12 @@
 
 /*
 APP STRUCTURE
-	- fill the complete viewport
-	- displayed as grid ☰
+	- llena completamente el viewport
+	- se muestra como un grid ☰
 		|-TOPBAR-|
 		|- MAIN -|
 		|-FOOTER-|
-	- give each row the size it needs
+	- le da a cada fila el tamaño que necesita
 */ 
 .appLayout
 {

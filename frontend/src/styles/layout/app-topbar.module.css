@@ -68,15 +68,15 @@
 		display: none;
 	}
 	.topNav {
-		display: contents; /* Allows LanguageSelector and navButtons to act as grid items */
+		display: contents; /* Permite que LanguageSelector y navButtons actúen como elementos del grid */
 	}
-	/* LanguageSelector is a select element directly inside topNav */
+	/* LanguageSelector es un elemento select directamente dentro de topNav */
 	.topNav > select {
 		grid-column: 2;
 		grid-row: 1;
 		align-self: center;
 		justify-self: end;
-		margin: 0 !important; /* Override inline margin if any */
+		margin: 0 !important; /* Sobrescribe el margen en línea si existe */
 	}
 	.navButtons {
 		grid-column: 1 / -1;

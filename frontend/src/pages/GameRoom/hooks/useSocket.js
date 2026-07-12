@@ -32,7 +32,7 @@ export function useSocket({ gameId, setState, setError, setMoveError, setGameOve
 
 			const ws = new WebSocket(buildSocketUrl(gameId));
 			wsRef.current = ws;
-			window.__ACTIVE_WS__ = ws; // Expose for testing
+			window.__ACTIVE_WS__ = ws; // Exponerlo para testing
 
 			ws.onopen = () => {
 				setWsStatus('connected');

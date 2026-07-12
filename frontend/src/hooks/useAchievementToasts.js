@@ -102,7 +102,7 @@ export function useAchievementToasts(isAuthed)
 			}
 			catch (_err)
 			{
-				// Achievement checks are non-critical and should not disturb the app.
+				// Las comprobaciones de logros no son críticas y no deben interferir con la app.
 			}
 		}
 

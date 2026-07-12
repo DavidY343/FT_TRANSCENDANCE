@@ -22,7 +22,7 @@ export function useChat({ wsRef, setError })
 			if (sent)
 				setChatMessage('');
 		} catch (e) {
-			// Catch silently to avoid Unhandled Promise Rejections
+			// Capturarlo silenciosamente para evitar Unhandled Promise Rejections
 		}
 	}
 

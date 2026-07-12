@@ -50,7 +50,7 @@ export function useModalA11y(isOpen, onClose) {
 
 		window.addEventListener('keydown', handleKeyDown);
 
-		// Automatically focus on the cancel button (or the modal container itself) when opening
+		// Focaliza automáticamente en el botón de cancelar (o en el propio contenedor del modal) al abrir
 		if (cancelBtnRef.current) {
 			cancelBtnRef.current.focus();
 		} else if (modalRef.current) {

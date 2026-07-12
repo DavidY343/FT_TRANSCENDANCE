@@ -44,9 +44,9 @@
 }
 
 /* 
-	Fix for react-chessboard promotion dialog clipping.
-	The dialog is an absolutely positioned 2x2 grid. We center it perfectly
-	inside the board and add a premium backdrop dimming effect.
+	Solución para el recorte del diálogo de promoción de react-chessboard.
+	El diálogo es un grid 2x2 posicionado de forma absoluta. Lo centramos perfectamente
+	dentro del tablero y añadimos un efecto premium de oscurecimiento de fondo.
 */
 .chessboard [data-boardid] > div[style*="display: grid"],
 .chessboard div[style*="display: grid"]
@@ -62,7 +62,7 @@
 	border-radius: 12px !important;
 	box-shadow: 
 		0 22px 42px rgb(0 0 0 / 0.6), 
-		0 0 0 2000px rgb(0 0 0 / 0.4), /* Backdrop dimming */
+		0 0 0 2000px rgb(0 0 0 / 0.4), /* Oscurecimiento de fondo */
 		inset 0 0 0 1px rgb(255 255 255 / 0.1) !important;
 	z-index: 1000 !important;
 	overflow: hidden;
