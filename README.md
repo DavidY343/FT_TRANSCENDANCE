@@ -125,51 +125,51 @@ erDiagram
 
 ## Secure Profile Management
 - **Behavioral Description:** The user can create an account, customize their display name, upload a personal avatar, and manage security settings. The system secures the session and updates the user profile globally across the platform.
-- *Contributors:* cde-la-r
+- *Contributors:* dyanez-m, cde-la-r
 
 ## Time-Control Matchmaking
 - **Behavioral Description:** The system allows the user to join a matchmaking queue by selecting between 5, 10, or 30-minute limits. The system automatically pairs players in the same queue and shuffles colors randomly upon game initialization.
-- *Contributors:*
+- *Contributors:* dyanez-m
 
 ## Real-Time Move Validation
 - **Behavioral Description:** When dragging pieces, the interface highlights valid destination squares and automatically rejects any illegal moves according to standard chess rules.
-- *Contributors:*
+- *Contributors:* dyanez-m
 
 ## AI Practice Mode
 - **Behavioral Description:** The user can start a local match against an AI opponent, configuring its difficulty (Easy, Medium, Hard) and time controls. The AI calculates board states and plays moves with simulated latency to mimic human behavior.
-- *Contributors:* cde-la-r
+- *Contributors:* dyanez-m, cde-la-r
 
 ## In-Game Clocks
 - **Behavioral Description:** The interface displays countdown timers representing each player's remaining time. The active player's clock counts down and pauses immediately when they register a move, subsequently starting the opponent's clock. A clock reaching zero automatically triggers a defeat by time.
-- *Contributors:*
+- *Contributors:* dyanez-m
 
 ## Resignation & Draw Requests
 - **Behavioral Description:** Players can click buttons to resign the match (immediately awarding the win to the opponent) or offer a draw. If a draw is offered, the opponent receives an on-screen prompt to accept or decline the tie.
-- *Contributors:* cde-la-r
+- *Contributors:* dyanez-m, cde-la-r
 
 ## Live Reconnection Grace Period
 - **Behavioral Description:** If a player loses their connection during a match, the system triggers a 30-second countdown. If the player reconnects before the timer expires, the game resumes; otherwise, the match is awarded to the opponent.
-- *Contributors:* cde-la-r
+- *Contributors:* dyanez-m, cde-la-r
 
 ## Live Friend Management
 - **Behavioral Description:** The user can search for other players by username to send friend requests. The system manages these requests (accept, decline, unfriend) and updates a visual list displaying each friend's online/offline status in real-time.
-- *Contributors:*
+- *Contributors:* dyanez-m
 
 ## Global In-Game Chat
 - **Behavioral Description:** Active players can type and send text messages through a chat interface during a match. The system processes and appends these messages to a scrollable log visible to both participants instantly.
-- *Contributors:*
+- *Contributors:* dyanez-m
 
 ## Match History Archive
 - **Behavioral Description:** The system registers the outcome (win, loss, draw, resignation), game mode, date, and move count of every completed game. Users can review these records in a chronological list on their profile.
-- *Contributors:* cde-la-r
+- *Contributors:* dyanez-m, cde-la-r
 
 ## Dynamic Elo Leaderboard
 - **Behavioral Description:** After completing a human vs. human match, the system recalculates both players' Elo ratings based on the match outcome and the difference between their ratings. A global leaderboard ranks users by their current Elo.
-- *Contributors:* cde-la-r
+- *Contributors:* dyanez-m, cde-la-r
 
 ## Achievement Milestones
 - **Behavioral Description:** The system evaluates player statistics (e.g., first win, adding a friend, reaching 1250 Elo) and triggers on-screen notifications when milestones are reached, displaying unlocked badges permanently on the user's profile.
-- *Contributors:*
+- *Contributors:* dyanez-m
 
 ## Hot Language Switching
 - **Behavioral Description:** The user can change the application's language (English or Spanish) via a dropdown selector. The system instantly translates all user interface texts without reloading the page.
@@ -182,32 +182,32 @@ erDiagram
 ## Use a framework for both the frontend and backend (Major: +2)
 The project utilizes React (built with Vite) as the frontend framework and FastAPI for the backend architecture.
 - *Justification:* React provides a robust component ecosystem, and FastAPI is extremely fast for asynchronous operations needed in real-time games.
-- *Contributors:* 
+- *Contributors:* dyanez-m
 
 ## Real-time features using WebSockets (Major: +2)
 Implemented via `realtime.py` in the backend and `useSocket.js` in the frontend. It handles live move broadcasting, matchmaking, chat messages, and presence state.
 - *Justification:* WebSockets are essential for low-latency, bi-directional communication required in multiplayer gaming and live chat.
-- *Contributors:* 
+- *Contributors:* dyanez-m
 
 ## Allow users to interact with other users (Major: +2)
 A comprehensive social system is implemented. This includes a live chat (`ChatCard.jsx`), friend requests and management (`FriendsPage.jsx`), and real-time online status visibility.
 - *Justification:* Social features significantly increase user engagement and retention in a multiplayer environment.
-- *Contributors:* 
+- *Contributors:* dyanez-m
 
 ## Use an ORM for the database (Minor: +1)
 SQLAlchemy is used as the Object-Relational Mapper to interact with the PostgreSQL database, defining schemas, tables, and relationships in `models.py`.
 - *Justification:* An ORM prevents SQL injection vulnerabilities and speeds up development by allowing database interactions using native Python objects.
-- *Contributors:* 
+- *Contributors:* dyanez-m
 
 ## Standard user management and authentication (Major: +2)
 Features secure signup and login flows (`AuthForm.jsx`), profile editing, and avatar uploads (`ProfileAvatarForm.jsx`). Secure authentication is handled via JWT tokens (`auth.py`, `tokens.js`).
 - *Justification:* Essential for maintaining individual player profiles, Elo ratings, and secure access to personal data.
-- *Contributors:* 
+- *Contributors:* dyanez-m
 
 ## Game statistics and match history (Minor: +1)
 The application tracks user game statistics, including wins and losses, and displays past matches alongside an Elo-based ranking system (`HistoryPage.jsx`, `LeaderboardPage.jsx`, `README-elo-rating.md`).
 - *Justification:* Provides players with a sense of progression and allows them to review past performances.
-- *Contributors:* cde-la-r
+- *Contributors:* dyanez-m, cde-la-r
 
 ## Support for multiple languages (Minor: +1)
 The UI incorporates an internationalization system allowing users to switch between at least three languages, with all user-facing text abstracted to support localization.
@@ -228,26 +228,25 @@ The application ensures full compatibility across Chromium, Firefox, and WebKit 
 ## Introduce an AI Opponent (Major: +2)
 A custom chess AI is integrated via `ai_engine.py`. It provides human-like responses and different difficulty levels for single-player matches.
 - *Justification:* Allows users to practice or play when no other players are available for matchmaking.
-- *Contributors:* cde-la-r
+- *Contributors:* dyanez-m, cde-la-r
 
 ## Implement a complete web-based game (Major: +2)
 A fully functional online chess game with server-side legal move validation, win/loss/draw conditions, and an interactive board UI (`GameBoard.jsx`, `boardRules.js`).
 - *Justification:* The core requirement of the project, delivering a complete and playable game directly in the browser.
-- *Contributors:* 
+- *Contributors:* dyanez-m
 
 ## Remote players (Major: +2)
 Two players on different machines can play against each other in real-time. The system includes server-authoritative state synchronization, clock management (`Clocks.jsx`), and robust disconnection/reconnection handling (`useDisconnectGraceCountdown.js`).
 - *Justification:* Ensures fair play by making the server the source of truth, preventing cheating via client-side manipulation.
-- *Contributors:* cde-la-r
+- *Contributors:* dyanez-m, cde-la-r
 
 ## A gamification system (Minor: +1)
 Users are rewarded with persistent achievements based on their in-game actions and overall progression. This feature is managed and rendered via `useAchievementToasts.js` and `AchievementToastContainer.jsx`.
 - *Justification:* Enhances player motivation and adds an extra layer of enjoyment beyond the standard chess gameplay.
-- *Contributors:* 
+- *Contributors:* dyanez-m
 
 # Individual Contributions
 
-## jrubio-m
 ## jrubio-m
 I focused mainly on the frontend architecture and user experience, building the application shell from the first React/Vite structure into a modular, navigable interface connected to the backend API. My work centered on turning the chess platform into a complete browser experience, with authentication screens, lobby flow, game room interaction, profile management, friends, chat, history, leaderboard, and responsive styling.
 
@@ -261,7 +260,17 @@ I focused mainly on the frontend architecture and user experience, building the 
 **Challenges Overcome:**
 The main challenge was coordinating a fast-moving frontend with backend game state, authentication, WebSocket events, and multiple user flows at once. The game room in particular required careful state management because board interaction, clocks, chat, reconnect handling, modals, and server updates all had to stay synchronized without making the UI feel unstable or confusing.
 ## dyanez-m
+I served as the core backend architect and developer, laying the foundation for the application's infrastructure. After a major restructuring of the team, I took on the responsibility of manually rebasing the repository and migrating the entire backend architecture from Django to a high-performance, asynchronous FastAPI framework. My focus was on implementing the real-time gameplay loops, secure session management, persistent data layers, and gamification elements.
 
+**Key Contributions:**
+- **FastAPI Backend Architecture:** Designed and implemented the complete asynchronous backend from scratch. Developed the modular routing system (`auth.py`, `friends.py`, `games.py`, `matchmaking.py`, `users.py`), configured PostgreSQL database integrations via SQLAlchemy 2.0 ORM schemas, and set up the main application life-cycle and dependencies.
+- **Real-Time WebSockets & Presence:** Created the WebSocket server engine (`realtime.py`) to handle low-latency communications. This included managing real-time multiplayer connections, game-state broadcasting, active player lobbies, global chat message propagation, and immediate online/offline presence synchronization linked to user authentication status.
+- **Matchmaking & Gameplay Robustness:** Implemented backend logic to validate player status, including prevention mechanisms to block players from entering multiple games or queues concurrently (1v1 vs. AI). Integrated display name metadata and check/checkmate (`is_check`) calculations into the synchronized game state.
+- **Gamification & Achievements:** Developed the backend models for player achievements. On the frontend, designed and built the interactive Achievements Tab on the profile page, along with dynamic, slide-in toast notifications to celebrate unlocked milestones.
+- **Security & SSL Configuration:** Set up the Nginx reverse proxy configuration to support HTTPS connections using self-signed SSL certificates. Integrated secure JWT-based stateless authentication, handling expired tokens in the frontend to gracefully redirect users back to the login page.
+
+**Challenges Overcome:**
+The most significant challenge was the full migration from Django to FastAPI. Refactoring all views, models, and serializers into asynchronous FastAPI endpoints and SQLAlchemy schemas while maintaining system integrity required a deep understanding of async programming. Additionally, synchronizing WebSocket connection states with DB transactions during rapid moves and unexpected disconnections required implementing robust error containment and state recovery.
 ## cde-la-r
 I joined the project in its advanced stages as the final developer. My primary goal was to polish the user experience, implement remaining core frontend mechanics, and ensure overall stability and security. 
 
