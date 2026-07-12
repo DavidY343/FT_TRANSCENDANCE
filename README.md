@@ -125,51 +125,51 @@ erDiagram
 
 ## Secure Profile Management
 - **Behavioral Description:** The user can create an account, customize their display name, upload a personal avatar, and manage security settings. The system secures the session and updates the user profile globally across the platform.
-- *Contributors:* dyanez-m, cde-la-r
+- *Contributors:* dyanez-m, cde-la-r, jrubio-m
 
 ## Time-Control Matchmaking
 - **Behavioral Description:** The system allows the user to join a matchmaking queue by selecting between 5, 10, or 30-minute limits. The system automatically pairs players in the same queue and shuffles colors randomly upon game initialization.
-- *Contributors:* 
+- *Contributors:* jrubio-m
 
 ## Real-Time Move Validation
 - **Behavioral Description:** When dragging pieces, the interface highlights valid destination squares and automatically rejects any illegal moves according to standard chess rules.
-- *Contributors:* 
+- *Contributors:* jrubio-m
 
 ## AI Practice Mode
 - **Behavioral Description:** The user can start a local match against an AI opponent, configuring its difficulty (Easy, Medium, Hard) and time controls. The AI calculates board states and plays moves with simulated latency to mimic human behavior.
-- *Contributors:* dyanez-m, cde-la-r
+- *Contributors:* dyanez-m, cde-la-r, jrubio-m
 
 ## In-Game Clocks
 - **Behavioral Description:** The interface displays countdown timers representing each player's remaining time. The active player's clock counts down and pauses immediately when they register a move, subsequently starting the opponent's clock. A clock reaching zero automatically triggers a defeat by time.
-- *Contributors:* 
+- *Contributors:* jrubio-m
 
 ## Resignation & Draw Requests
 - **Behavioral Description:** Players can click buttons to resign the match (immediately awarding the win to the opponent) or offer a draw. If a draw is offered, the opponent receives an on-screen prompt to accept or decline the tie.
-- *Contributors:* cde-la-r
+- *Contributors:* cde-la-r, jrubio-m
 
 ## Live Reconnection Grace Period
 - **Behavioral Description:** If a player loses their connection during a match, the system triggers a 30-second countdown. If the player reconnects before the timer expires, the game resumes; otherwise, the match is awarded to the opponent.
-- *Contributors:* cde-la-r
+- *Contributors:* cde-la-r, jrubio-m
 
 ## Live Friend Management
 - **Behavioral Description:** The user can search for other players by username to send friend requests. The system manages these requests (accept, decline, unfriend) and updates a visual list displaying each friend's online/offline status in real-time.
-- *Contributors:* dyanez-m
+- *Contributors:* dyanez-m, jrubio-m
 
 ## Global In-Game Chat
 - **Behavioral Description:** Active players can type and send text messages through a chat interface during a match. The system processes and appends these messages to a scrollable log visible to both participants instantly.
-- *Contributors:* dyanez-m
+- *Contributors:* dyanez-m, jrubio-m
 
 ## Match History Archive
 - **Behavioral Description:** The system registers the outcome (win, loss, draw, resignation), game mode, date, and move count of every completed game. Users can review these records in a chronological list on their profile.
-- *Contributors:* dyanez-m, cde-la-r
+- *Contributors:* dyanez-m, cde-la-r, jrubio-m
 
 ## Dynamic Elo Leaderboard
 - **Behavioral Description:** After completing a human vs. human match, the system recalculates both players' Elo ratings based on the match outcome and the difference between their ratings. A global leaderboard ranks users by their current Elo.
-- *Contributors:* dyanez-m, cde-la-r
+- *Contributors:* dyanez-m, cde-la-r, jrubio-m
 
 ## Achievement Milestones
 - **Behavioral Description:** The system evaluates player statistics (e.g., first win, adding a friend, reaching 1250 Elo) and triggers on-screen notifications when milestones are reached, displaying unlocked badges permanently on the user's profile.
-- *Contributors:* dyanez-m
+- *Contributors:* dyanez-m, jrubio-m
 
 ## Hot Language Switching
 - **Behavioral Description:** The user can change the application's language (English or Spanish) via a dropdown selector. The system instantly translates all user interface texts without reloading the page.
@@ -182,17 +182,17 @@ erDiagram
 ## Use a framework for both the frontend and backend (Major: +2)
 The project utilizes React (built with Vite) as the frontend framework and FastAPI for the backend architecture.
 - *Justification:* React provides a robust component ecosystem, and FastAPI is extremely fast for asynchronous operations needed in real-time games.
-- *Contributors:* dyanez-m
+- *Contributors:* dyanez-m, jrubio-m
 
 ## Real-time features using WebSockets (Major: +2)
 Implemented via `realtime.py` in the backend and `useSocket.js` in the frontend. It handles live move broadcasting, matchmaking, chat messages, and presence state.
 - *Justification:* WebSockets are essential for low-latency, bi-directional communication required in multiplayer gaming and live chat.
-- *Contributors:* dyanez-m
+- *Contributors:* dyanez-m, jrubio-m
 
 ## Allow users to interact with other users (Major: +2)
 A comprehensive social system is implemented. This includes a live chat (`ChatCard.jsx`), friend requests and management (`FriendsPage.jsx`), and real-time online status visibility.
 - *Justification:* Social features significantly increase user engagement and retention in a multiplayer environment.
-- *Contributors:* dyanez-m
+- *Contributors:* dyanez-m, jrubio-m
 
 ## Use an ORM for the database (Minor: +1)
 SQLAlchemy is used as the Object-Relational Mapper to interact with the PostgreSQL database, defining schemas, tables, and relationships in `models.py`.
@@ -202,12 +202,12 @@ SQLAlchemy is used as the Object-Relational Mapper to interact with the PostgreS
 ## Standard user management and authentication (Major: +2)
 Features secure signup and login flows (`AuthForm.jsx`), profile editing, and avatar uploads (`ProfileAvatarForm.jsx`). Secure authentication is handled via JWT tokens (`auth.py`, `tokens.js`).
 - *Justification:* Essential for maintaining individual player profiles, Elo ratings, and secure access to personal data.
-- *Contributors:* dyanez-m
+- *Contributors:* dyanez-m, jrubio-m
 
 ## Game statistics and match history (Minor: +1)
 The application tracks user game statistics, including wins and losses, and displays past matches alongside an Elo-based ranking system (`HistoryPage.jsx`, `LeaderboardPage.jsx`, `README-elo-rating.md`).
 - *Justification:* Provides players with a sense of progression and allows them to review past performances.
-- *Contributors:* dyanez-m, cde-la-r
+- *Contributors:* dyanez-m, cde-la-r, jrubio-m
 
 ## Support for multiple languages (Minor: +1)
 The UI incorporates an internationalization system allowing users to switch between at least three languages, with all user-facing text abstracted to support localization.
@@ -228,22 +228,22 @@ The application ensures full compatibility across Chromium, Firefox, and WebKit 
 ## Introduce an AI Opponent (Major: +2)
 A custom chess AI is integrated via `ai_engine.py`. It provides human-like responses and different difficulty levels for single-player matches.
 - *Justification:* Allows users to practice or play when no other players are available for matchmaking.
-- *Contributors:* dyanez-m, cde-la-r
+- *Contributors:* dyanez-m, cde-la-r, jrubio-m
 
 ## Implement a complete web-based game (Major: +2)
 A fully functional online chess game with server-side legal move validation, win/loss/draw conditions, and an interactive board UI (`GameBoard.jsx`, `boardRules.js`).
 - *Justification:* The core requirement of the project, delivering a complete and playable game directly in the browser.
-- *Contributors:* dyanez-m
+- *Contributors:* dyanez-m, jrubio-m
 
 ## Remote players (Major: +2)
 Two players on different machines can play against each other in real-time. The system includes server-authoritative state synchronization, clock management (`Clocks.jsx`), and robust disconnection/reconnection handling (`useDisconnectGraceCountdown.js`).
 - *Justification:* Ensures fair play by making the server the source of truth, preventing cheating via client-side manipulation.
-- *Contributors:* dyanez-m, cde-la-r
+- *Contributors:* dyanez-m, cde-la-r, jrubio-m
 
 ## A gamification system (Minor: +1)
 Users are rewarded with persistent achievements based on their in-game actions and overall progression. This feature is managed and rendered via `useAchievementToasts.js` and `AchievementToastContainer.jsx`.
 - *Justification:* Enhances player motivation and adds an extra layer of enjoyment beyond the standard chess gameplay.
-- *Contributors:* dyanez-m
+- *Contributors:* dyanez-m, jrubio-m
 
 # Individual Contributions
 
