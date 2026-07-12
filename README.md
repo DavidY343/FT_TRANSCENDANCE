@@ -182,7 +182,7 @@ erDiagram
 ## Use a framework for both the frontend and backend (Major: +2)
 The project utilizes React (built with Vite) as the frontend framework and FastAPI for the backend architecture.
 - *Justification:* React provides a robust component ecosystem, and FastAPI is extremely fast for asynchronous operations needed in real-time games.
-- *Contributors:* dyanez-m, jrubio-m, jonjimen
+- *Contributors:* dyanez-m, jrubio-m, jonjimen, cde-la-r
 
 ## Real-time features using WebSockets (Major: +2)
 Implemented via `realtime.py` in the backend and `useSocket.js` in the frontend. It handles live move broadcasting, matchmaking, chat messages, and presence state.
@@ -243,7 +243,7 @@ Two players on different machines can play against each other in real-time. The 
 ## A gamification system (Minor: +1)
 Users are rewarded with persistent achievements based on their in-game actions and overall progression. This feature is managed and rendered via `useAchievementToasts.js` and `AchievementToastContainer.jsx`.
 - *Justification:* Enhances player motivation and adds an extra layer of enjoyment beyond the standard chess gameplay.
-- *Contributors:* dyanez-m, jrubio-m,  jonjimen
+- *Contributors:* dyanez-m, jrubio-m,  jonjimen, cde-la-r
 
 # Individual Contributions
 
