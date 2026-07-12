@@ -129,11 +129,11 @@ erDiagram
 
 ## Time-Control Matchmaking
 - **Behavioral Description:** The system allows the user to join a matchmaking queue by selecting between 5, 10, or 30-minute limits. The system automatically pairs players in the same queue and shuffles colors randomly upon game initialization.
-- *Contributors:* dyanez-m
+- *Contributors:* 
 
 ## Real-Time Move Validation
 - **Behavioral Description:** When dragging pieces, the interface highlights valid destination squares and automatically rejects any illegal moves according to standard chess rules.
-- *Contributors:* dyanez-m
+- *Contributors:* 
 
 ## AI Practice Mode
 - **Behavioral Description:** The user can start a local match against an AI opponent, configuring its difficulty (Easy, Medium, Hard) and time controls. The AI calculates board states and plays moves with simulated latency to mimic human behavior.
@@ -141,15 +141,15 @@ erDiagram
 
 ## In-Game Clocks
 - **Behavioral Description:** The interface displays countdown timers representing each player's remaining time. The active player's clock counts down and pauses immediately when they register a move, subsequently starting the opponent's clock. A clock reaching zero automatically triggers a defeat by time.
-- *Contributors:* dyanez-m
+- *Contributors:* 
 
 ## Resignation & Draw Requests
 - **Behavioral Description:** Players can click buttons to resign the match (immediately awarding the win to the opponent) or offer a draw. If a draw is offered, the opponent receives an on-screen prompt to accept or decline the tie.
-- *Contributors:* dyanez-m, cde-la-r
+- *Contributors:* cde-la-r
 
 ## Live Reconnection Grace Period
 - **Behavioral Description:** If a player loses their connection during a match, the system triggers a 30-second countdown. If the player reconnects before the timer expires, the game resumes; otherwise, the match is awarded to the opponent.
-- *Contributors:* dyanez-m, cde-la-r
+- *Contributors:* cde-la-r
 
 ## Live Friend Management
 - **Behavioral Description:** The user can search for other players by username to send friend requests. The system manages these requests (accept, decline, unfriend) and updates a visual list displaying each friend's online/offline status in real-time.
@@ -197,7 +197,7 @@ A comprehensive social system is implemented. This includes a live chat (`ChatCa
 ## Use an ORM for the database (Minor: +1)
 SQLAlchemy is used as the Object-Relational Mapper to interact with the PostgreSQL database, defining schemas, tables, and relationships in `models.py`.
 - *Justification:* An ORM prevents SQL injection vulnerabilities and speeds up development by allowing database interactions using native Python objects.
-- *Contributors:* dyanez-m
+- *Contributors:*
 
 ## Standard user management and authentication (Major: +2)
 Features secure signup and login flows (`AuthForm.jsx`), profile editing, and avatar uploads (`ProfileAvatarForm.jsx`). Secure authentication is handled via JWT tokens (`auth.py`, `tokens.js`).
